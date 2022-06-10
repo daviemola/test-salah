@@ -1,0 +1,24 @@
+.iconsContainer {
+  display: flex;
+  justify-content: center;
+}
+
+.socialMediaIcon {
+  margin: 0 10px;
+}
+
+.socialMediaIcon a {
+  text-decoration: none;
+}
+
+@media (max-width: 600px) {
+  .socialMediaIcon {
+    margin: 0 5px;
+  }
+  .socialMediaIcon a {
+    display: flex;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 50px;
+    padding: 10px;
+  }
+}

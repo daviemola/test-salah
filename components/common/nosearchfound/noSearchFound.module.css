@@ -1,0 +1,177 @@
+.w_100{
+    width: 100%;
+}
+.search_not_found{
+    display: -webkit-flex;
+    display: -moz-box;
+    display: flex;
+    -webkit-justify-content: center;
+    -moz-box-pack: center;
+    justify-content: center;
+    -webkit-align-items: center;
+    -moz-box-align: center;
+    align-items: center;
+    -webkit-flex-direction: column;
+    -moz-box-orient: vertical;
+    -moz-box-direction: normal;
+    flex-direction: column;
+    margin-top: 80px;
+}
+.search_not_found_title{
+    font-size: 21px;
+    margin-bottom: 0;
+}
+.search_not_found_title_product {
+    font-weight: 700;
+}
+.search_not_found_contact{
+    margin-top: 30px;
+}
+.dropdown_container {
+    display: -webkit-flex;
+    display: -moz-box;
+    display: flex;
+    -webkit-align-items: center;
+    -moz-box-align: center;
+    align-items: center;
+    position: relative;
+}
+.button{
+    cursor: pointer;
+    border: 1px solid rgba(0,0,0,.05);
+    padding: 10px 20px;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    min-height: 50px;
+    border-radius: 5px;
+    outline: none;
+    background: #fafafa;
+    color: #57584e;
+}
+.dropdown_container_button {
+    text-decoration: none;
+    border: 1px solid rgba(0,0,0,.05);
+    display: -webkit-flex;
+    display: -moz-box;
+    display: flex;
+    -webkit-align-items: center;
+    -moz-box-align: center;
+    align-items: center;
+    background-color: rgb(245, 245, 245);
+    border-color: rgb(87, 88, 78);
+    color: rgb(87, 88, 78);
+}
+.icon_container{
+    display: -webkit-flex;
+    display: -moz-box;
+    display: flex;
+    -webkit-align-items: center;
+    -moz-box-align: center;
+    align-items: center;
+}
+.start{
+    margin-right: 5px;
+}
+.dropdown_container_title {
+    font-size: 14px;
+    font-weight: 400;
+    padding: 0 8px;
+}
+.end{
+    margin-left: 5px;
+}
+.menu{
+    -webkit-box-shadow: 0 0.05rem 0.2rem rgb(48 55 66 / 30%);
+    box-shadow: 0 0.05rem 0.2rem rgb(48 55 66 / 30%);
+    background: #fff;
+    border-radius: .1rem;
+    list-style: none;
+    margin: 0;
+    min-width: 180px;
+    padding: .4rem;
+    -webkit-transform: translateY(.2rem);
+    transform: translateY(.2rem);
+    z-index: 300;
+}
+.dropdown_container_menu{
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    padding: 0;
+    background-color: transparent;
+    -webkit-animation: slide-down .15s ease 1;
+    animation: slide-down .15s ease 1;
+    /* display: none; */
+    left: 0;
+    max-height: 50vh;
+    overflow-y: auto;
+    position: absolute;
+    top: 100%;
+    background-color: rgb(245, 245, 245);
+    border-color: rgb(87, 88, 78);
+    color: rgb(87, 88, 78);
+}
+.cursor_pointer{
+    cursor: pointer;
+}
+.tag{
+    -webkit-flex-direction: row;
+    -moz-box-orient: horizontal;
+    -moz-box-direction: normal;
+    flex-direction: row;
+    -webkit-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -webkit-justify-content: center;
+    -moz-box-pack: center;
+    justify-content: center;
+    -webkit-align-content: center;
+    align-content: center;
+    -webkit-align-items: center;
+    -moz-box-align: center;
+    align-items: center;
+    padding: 5px 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    min-height: 30px;
+    border: 1px solid transparent;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    background: #f5f5f5;
+    border-radius: 100px;
+    color: #57584e;
+    max-width: 170px;
+}
+.tag_contact{
+    width: 100%;
+    background-color: #fff;
+    border: 1px solid #f5f5f5;
+    max-width: 190px;
+    height: 42px;
+    margin-top: 10px;
+    background-color: rgb(245, 245, 245);
+    border-color: rgb(87, 88, 78);
+    color: rgb(87, 88, 78);
+}
+.flex{
+    display: -webkit-flex;
+    display: -moz-box;
+    display: flex;
+}
+.flex_align_center{
+    -webkit-align-items: center;
+    -moz-box-align: center;
+    align-items: center;
+    margin-top: 6px;
+}
+.content{
+    width: 100%;
+    margin-left: 5px;
+    color: rgb(87, 88, 78);
+    margin-bottom: 1px;
+}
+.svg{
+    margin-left: 10px;
+    overflow: visible;
+    overflow: initial;
+}

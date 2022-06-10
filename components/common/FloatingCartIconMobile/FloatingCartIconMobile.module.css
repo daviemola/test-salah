@@ -1,0 +1,31 @@
+.bag_fab {
+  background-color: rgb(87, 88, 78);
+  display: none;
+  -webkit-justify-content: center;
+  -moz-box-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -moz-box-align: center;
+  align-items: center;
+  min-width: 65px;
+  height: 45px;
+  position: fixed;
+  bottom: 35px;
+  right: 15px;
+  -webkit-filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.3));
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.3));
+  border-radius: 50px;
+  z-index: 5;
+}
+.bag_fab_cart_total {
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 24px;
+  margin: 7px 4px 4px;
+  color: rgb(245, 245, 245);
+}
+@media (max-width: 600px) {
+  .bag_fab {
+    display: flex;
+  }
+}

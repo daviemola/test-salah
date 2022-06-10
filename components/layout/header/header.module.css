@@ -1,0 +1,136 @@
+.navbarMain {
+  display: flex;
+  padding: 30px 50px 25px;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  justify-content: space-between;
+  background: var(--body-color);
+}
+.pointer {
+  cursor: pointer;
+}
+.navbarLeft {
+  align-items: flex-start;
+  flex-basis: 15%;
+}
+
+.navbarCenter {
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  flex-basis: 70%;
+  text-align: center;
+}
+
+.navbarBrand {
+  font-size: 26px;
+  pointer-events: none;
+  margin-bottom: 5px;
+  line-height: 36px;
+  font-weight: 600;
+}
+
+.navbarRight {
+  align-items: flex-end;
+  justify-content: flex-end;
+  flex-basis: 15%;
+  text-align: right;
+  position: relative;
+}
+.cart_length {
+  margin-left: 10px;
+  font-size: 20px;
+  position: absolute;
+}
+.navbarFadein {
+  animation: navbarFadeInAnimation 0.2s;
+}
+
+.navbarFadeout {
+  animation: navbarFadeOutAnimation 0.2s;
+  display: none;
+}
+
+.navbarMerchantName {
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 24px;
+  pointer-events: none;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+.navbarWelcomeMessage {
+  font-weight: 300;
+  font-size: 18px;
+  line-height: 22px;
+}
+
+.icons {
+  display: none;
+}
+
+@keyframes navbarFadeInAnimation {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes navbarFadeOutAnimation {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@media (min-width: 840px) {
+  .navbarContainer {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    padding-bottom: 20px;
+    z-index: 300;
+  }
+}
+
+@media (max-width: 600px) {
+  .navbarMain {
+    padding: 20px;
+  }
+  .navbarCenter {
+    margin-top: 50px;
+  }
+  .navbarMerchantName {
+    cursor: pointer;
+    pointer-events: visible;
+    text-decoration: underline;
+  }
+  .navbarWelcomeMessage {
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 15.6px;
+  }
+  .navbarBrand {
+    pointer-events: visible;
+    font-size: 22px;
+    font-style: normal;
+    line-height: 30px;
+    cursor: pointer;
+  }
+  .icons {
+    display: block;
+  }
+
+  .navbarFadein {
+    animation: unset;
+  }
+  .navbarFadeout {
+    animation: unset;
+    display: inherit;
+  }
+}

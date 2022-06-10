@@ -1,0 +1,12 @@
+.loading_view{
+    margin-top: 80px;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: flex;
+    -webkit-justify-content: center;
+    -moz-box-pack: center;
+    justify-content: center;
+}
+.loading_view_title {
+    font-size: 18px;
+}

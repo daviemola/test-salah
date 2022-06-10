@@ -1,0 +1,35 @@
+.mainFooter {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+
+.footerContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.footerLeft {
+  padding: 50px;
+}
+
+.footerLeft a {
+  color: var(--text-primary);
+}
+
+.footerRight {
+  padding: 50px;
+}
+
+@media (max-width: 840px) {
+  .mainFooter {
+    position: inherit;
+  }
+}
+
+@media (max-width: 600px) {
+  .mainFooter {
+    display: none;
+  }
+}
