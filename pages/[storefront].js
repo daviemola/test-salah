@@ -43,46 +43,48 @@ const StoreFront = ({ products, detail }) => {
 
   // console.log(showProducts);
 
-  // const findKeywordData = async (e) => {
-  //   if (e.key === "Enter") {
-  //     setLoading(true);
-  //     const apiServices = new ApiServices();
-  //     const data = await apiServices.searchProducts(searchKeyword, storefront);
-  //     if (data.length > 0) {
-  //       setLoading(false);
-  //       setShowProducts(data);
-  //     } else {
-  //       setLoading(false);
-  //       setShowProducts(data);
-  //     }
-  //   }
-  //   if (searchKeyword == "") {
-  //     setShowProducts(products);
-  //   }
-  // };
-  // useEffect(() => {
-  //   const callSearchApi = setTimeout(async () => {
-  //     if (searchKeyword !== "") {
-  //       setLoading(true);
-  //       const apiServices = new ApiServices();
-  //       const data = await apiServices.searchProducts(
-  //         searchKeyword,
-  //         storefront
-  //       );
-  //       if (data.length > 0) {
-  //         setLoading(false);
-  //         setShowProducts(data);
-  //       } else {
-  //         setLoading(false);
-  //         setShowProducts(data);
-  //       }
-  //     } else {
-  //       setShowProducts(products);
-  //     }
-  //   }, 2000);
+  const findKeywordData = async (e) => {
+    if (e.key === "Enter") {
+      setLoading(true);
+      const apiServices = new ApiServices();
+      const data = await apiServices.searchProducts(searchKeyword, storefront);
+      if (data.length > 0) {
+        setLoading(false);
+        setShowProducts(data);
+      } else {
+        setLoading(false);
+        setShowProducts(data);
+      }
+    }
+    if (searchKeyword == "") {
+      setShowProducts(products);
+    }
+  };
 
-  //   return () => clearTimeout(callSearchApi);
-  // }, [searchKeyword]);
+  useEffect(() => {
+    const callSearchApi = setTimeout(async () => {
+      if (searchKeyword !== "") {
+        setLoading(true);
+        const apiServices = new ApiServices();
+        const data = await apiServices.searchProducts(
+          searchKeyword,
+          storefront
+        );
+        if (data.length > 0) {
+          setLoading(false);
+          setShowProducts(data);
+        } else {
+          setLoading(false);
+          setShowProducts(data);
+        }
+      } else {
+        setShowProducts(products);
+      }
+    }, 2000);
+
+    return () => clearTimeout(callSearchApi);
+    //eslint-disable-next-line
+  }, [searchKeyword]);
 
   return (
     <>
@@ -91,7 +93,7 @@ const StoreFront = ({ products, detail }) => {
           <SearchBox
             setSearchKeyword={setSearchKeyword}
             searchKeyword={searchKeyword}
-            // findKeywordData={findKeywordData}
+            findKeywordData={findKeywordData}
           />
           {showProducts && showProducts.length > 0 && loading == false ? (
             <div className="container page-height">
