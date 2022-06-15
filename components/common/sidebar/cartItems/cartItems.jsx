@@ -1,16 +1,20 @@
 import React from "react";
-// import { useDispatch } from "react-redux";
-// import { addToCart, minusCart } from "../../../../store/action/sideBar";
 import styles from "./cartItems.module.css";
+import CartContext from "@/context/CartContext";
+import { useContext, useState } from "react";
 
 const CartItemDisplay = ({ item, index, deleteItem }) => {
-  const dispatch = useDispatch();
+  const { increase, decrease } = useContext(CartContext);
+  const [quantity, setQuantity] = useState("");
+
   const addToCartItem = () => {
-    dispatch(addToCart(item));
+    increase(item);
   };
+
   const minusFromCart = () => {
-    dispatch(minusCart(item));
+    decrease(item);
   };
+
   return (
     <div className={styles.bagView_product} key={index}>
       <div className={`${styles.flex} ${styles.flex_justify_start}`}>
@@ -52,6 +56,7 @@ const CartItemDisplay = ({ item, index, deleteItem }) => {
               type="number"
               className={styles.quantity_input}
               value={item?.quantity}
+              onChange={(e) => setQuantity(e.target.value)}
             />
             <span>
               <button

@@ -7,10 +7,12 @@ const options = [
   { value: "dubai", label: "Dubai" },
   { value: "saudia arabia", label: "Saudia Arabia" },
 ];
+
 const shippingOptions = [
   { value: "Lagos Mainland (NGN 1,500)", label: "Lagos Mainland (NGN 1,500)" },
   { value: "Lagos Island (NGN 2,000)", label: "Lagos Island (NGN 2,000)" },
 ];
+
 const Checkout = ({
   close,
   show_order_detail,
@@ -493,10 +495,10 @@ const CheckOutDetails = ({
             <div
               className={`${styles.flex} ${styles.flex_direction_column} ${styles.w_100} ${styles.m_t_10}`}
             >
-              <textarea
+              <input
                 placeholder={"Optional"}
                 name="deliveryNote"
-                type="email"
+                type="text"
                 className={`${styles.input} ${styles.h_34}`}
                 rows={1}
                 value={deliveryNote}
@@ -636,9 +638,9 @@ const PaymentSection = ({
                   }}
                 />
                 {customerEmailError && (
-                  <span className={styles.error_text}>
+                  <div className={styles.error_text}>
                     Please Enter Email Address
-                  </span>
+                  </div>
                 )}
               </div>
             </div>

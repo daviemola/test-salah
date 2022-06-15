@@ -1,14 +1,13 @@
 import React from "react";
 
-import { Header } from "./header";
-import { Footer } from "./footer";
-
+import Header from "./header/Header";
+import Footer from "./footer/footer";
 
 const Layout = ({ children, detail }) => {
   return (
     <div
       className="main-layout"
-      style={{ backgroundColor: detail?.background_color,height:"100%" }}
+      style={{ backgroundColor: detail?.background_color, height: "100%" }}
     >
       <div className="wrapper">
         <Header detail={detail} />

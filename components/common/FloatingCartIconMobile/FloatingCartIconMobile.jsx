@@ -1,12 +1,11 @@
 import React from "react";
-// import {useSelector} from 'react-redux';
 import styles from "./FloatingCartIconMobile.module.css";
+import CartContext from "@/context/CartContext";
+import { useContext } from "react";
 
 const FloatingCartIconMobile = ({ onClose }) => {
-  // const cartItems = useSelector(({ sidebar }) => {
-  //   return sidebar.cart;
-  // });
-  let cartItems = [];
+  const { cartItems } = useContext(CartContext);
+  let len = cartItems.length;
 
   return (
     <div className={styles.bag_fab} onClick={onClose}>
@@ -31,7 +30,7 @@ const FloatingCartIconMobile = ({ onClose }) => {
           fill="#F5F5F5"
         ></path>
       </svg>
-      <span className={styles.bag_fab_cart_total}>{cartItems.length}</span>
+      {/* <div className={styles.bag_fab_cart_total}>{`${len}`}</div> */}
     </div>
   );
 };

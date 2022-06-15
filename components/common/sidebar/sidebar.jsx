@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "./sidebar.module.css";
-// import { toggleSidebar } from "../../../store/action/sideBar";
-// import { useDispatch } from "react-redux";
-// import { deleteDataFromCart, deleteCart } from "../../../store/action/sideBar";
+import CartContext from "@/context/CartContext";
+import { useContext } from "react";
 import CartItemDisplay from "./cartItems/cartItems";
 import EmptyCart from "./emptyCart/emptyCart";
 import Checkout from "./checkout/checkout";
@@ -10,7 +9,7 @@ import OrderDeail from "./reviewOrder/reviewOrder";
 import axios from "axios";
 
 const SideBar = ({ cartItems, total }) => {
-  const dispatch = useDispatch();
+  const { toggleSidebar, deleteDataFromCart } = useContext(CartContext);
   const [showCheckout, setShowCheckout] = useState(false);
   const [showOrderDeatil, setShowOrderDeatil] = useState(false);
 
@@ -50,21 +49,22 @@ const SideBar = ({ cartItems, total }) => {
   const [updatedCartItems, setUpdatedCartItems] = useState([]);
   const manageCartItems = async () => {
     let updateCart = [];
-    await Promise.all(
-      cartItems.map((data) => {
-        let item = data?.variant_options[0]?.id;
-        let quantity = data.quantity;
-        let type = "variant";
-        let setObject = { item, quantity, type };
-        updateCart.push(setObject);
-      })
-    );
+    // await Promise?.all(
+    cartItems?.map((data) => {
+      let item = data?.variant_options[0]?.id;
+      let quantity = data.quantity;
+      let type = "variant";
+      let setObject = { item, quantity, type };
+      updateCart.push(setObject);
+    });
+    // );
     setUpdatedCartItems(updateCart);
   };
   const deleteItem = (e, item) => {
     e.preventDefault();
-    dispatch(deleteDataFromCart(item));
+    deleteDataFromCart(item);
   };
+
   const closeCheckOut = () => {
     setShowCheckout(!showCheckout);
   };
@@ -212,6 +212,7 @@ const SideBar = ({ cartItems, total }) => {
   useEffect(() => {
     manageCartItems();
   }, [cartItems]);
+
   return (
     <>
       <div className={styles.off_canvas_sidebar}>
@@ -320,7 +321,7 @@ const SideBar = ({ cartItems, total }) => {
                           fontWeight: "bold",
                         }}
                       >
-                        {cartItems.length}
+                        {cartItems?.length}
                       </span>
                     </div>
                   </div>
@@ -361,7 +362,7 @@ const SideBar = ({ cartItems, total }) => {
                 <button
                   className={styles.btn_primary}
                   onClick={() => {
-                    dispatch(toggleSidebar());
+                    toggleSidebar();
                   }}
                 >
                   Keep Shopping

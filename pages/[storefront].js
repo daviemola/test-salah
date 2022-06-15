@@ -6,10 +6,11 @@ import { Layout } from "@/components/layout/index";
 import { Sidebar } from "@/components/common/sidebar/index";
 import { ApiServices } from "@/services/apiService";
 import Drawer from "@mui/material/Drawer";
-// import { toggleSidebar } from "../store/action/sideBar";
 import { FloatingCartIconMobile } from "@/components/common/FloatingCartIconMobile/index";
 import { NoSearchFound } from "@/components/common/nosearchfound/index";
 import { LoadingView } from "@/components/common/loadingView/index";
+import CartContext from "@/context/CartContext";
+import { useContext } from "react";
 
 export const getStaticPaths = () => {
   const paths = [
@@ -32,15 +33,16 @@ const StoreFront = ({ products, detail }) => {
   const [searchKeyword, setSearchKeyword] = useState("");
   const [showProducts, setShowProducts] = useState(products);
   const [loading, setLoading] = useState(false);
+  const { toggleSidebar, sidetoggle, cartItems } = useContext(CartContext);
 
-  console.log(showProducts);
+  console.log(sidetoggle);
 
-  // const totalPrice = useSelector(({ sidebar }) => {
-  //   return sidebar.total;
-  // });
-  // const toggleDrawer = () => {
-  //   dispatch(toggleSidebar());
-  // };
+  const toggleDrawer = () => {
+    toggleSidebar();
+  };
+
+  // console.log(showProducts);
+
   // const findKeywordData = async (e) => {
   //   if (e.key === "Enter") {
   //     setLoading(true);
@@ -111,16 +113,13 @@ const StoreFront = ({ products, detail }) => {
           ) : (
             <NoSearchFound />
           )}
-          <Drawer
-            anchor={"right"}
-            // open={sideBar}
-            // onClose={toggleDrawer}
-          >
-            <Sidebar />
+          <Drawer anchor={"right"} open={sidetoggle} onClose={toggleDrawer}>
+            <Sidebar
+              cartItems={cartItems}
+              // total={total}
+            />
           </Drawer>
-          <FloatingCartIconMobile
-          // onClose={toggleDrawer}
-          />
+          <FloatingCartIconMobile onClose={toggleDrawer} />
         </div>
       </Layout>
     </>

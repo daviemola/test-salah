@@ -9,7 +9,7 @@ const SocialMediaIcons = ({ detail }) => {
       <div className="social-media__icon-section">
         <a
           href={`https://instagram.com/${
-            detail?.social_media.find(
+            detail?.social_media?.find(
               (media) => media.type_name === "Instagram"
             ).handle
           }`}
@@ -27,7 +27,7 @@ const SocialMediaIcons = ({ detail }) => {
       <div className={styles.socialMediaIcon}>
         <a
           href={`https://twitter.com/${
-            detail?.social_media.find((media) => media.type_name === "Twitter")
+            detail?.social_media?.find((media) => media.type_name === "Twitter")
               .handle
           }`}
         >

@@ -3,9 +3,9 @@ export const lightOrDark = (color) => {
   var r, g, b, hsp;
 
   // Check the format of the color, HEX or RGB?
-  if (color.match(/^rgb/)) {
+  if (color?.match(/^rgb/)) {
     // If RGB --> store the red, green, blue values in separate variables
-    color = color.match(
+    color = color?.match(
       /^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+(?:\.\d+)?))?\)$/
     );
 
@@ -14,7 +14,9 @@ export const lightOrDark = (color) => {
     b = color[3];
   } else {
     // If hex --> Convert it to RGB: http://gist.github.com/983661
-    color = +("0x" + color.slice(1).replace(color.length < 5 && /./g, "$&$&"));
+    color = +(
+      "0x" + color?.slice(1).replace(color?.length < 5 && /./g, "$&$&")
+    );
 
     r = color >> 16;
     g = (color >> 8) & 255;

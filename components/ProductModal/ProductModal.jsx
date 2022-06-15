@@ -1,16 +1,15 @@
 import React from "react";
 import Modal from "@mui/material/Modal";
 import { useKeenSlider } from "keen-slider/react";
-// import {addToCart, toggleSidebar} from "../../store/action/sideBar";
-
-// import { useDispatch } from "react-redux";
+import CartContext from "@/context/CartContext";
+import { useContext } from "react";
 import styles from "./ProductModal.module.css";
 import "keen-slider/keen-slider.min.css";
 import ProductSlider from "../ProductSlider/ProductSlider";
 
 const regex = /(<([^>]+)>)/gi;
 const ProductModal = ({ openModal, objectDetail, toggle, detail }) => {
-  // const dispatch = useDispatch();
+  console.log(objectDetail);
   const [size, setSize] = React.useState("Choose");
   const [border, setBorder] = React.useState("Choose");
   const [frame, setFrame] = React.useState("");
@@ -25,34 +24,49 @@ const ProductModal = ({ openModal, objectDetail, toggle, detail }) => {
       setCurrentSlide(s.details().relativeSlide);
     },
   });
+
+  const { addToCart, toggleSidebar } = useContext(CartContext);
+
   const addToCartItem = () => {
+    console.log(size);
     if (
-      size !== "Choose" &&
-      border !== "Choose" &&
-      frame !== "" &&
+      // size !== "Choose" &&
+      // border !== "Choose" &&
+      // frame !== "" &&
       quantity !== 0
     ) {
+      console.log("here");
+
       let data = objectDetail;
       data.size = size;
       data.border = border;
       data.frame = frame;
       data.quantity = quantity;
-      dispatch(addToCart(data));
+      addToCart(data);
       setSize("Choose");
       setBorder("Choose");
       setFrame("");
       setQuantity(1);
       setButtonShow(false);
       toggle();
-      dispatch(toggleSidebar());
+      toggleSidebar();
     }
+    console.log(
+      "size" + size,
+      "border" + border,
+      "frame" + frame,
+      "quantity" + quantity
+    );
   };
+
   const getSize = (e) => {
     setSize(e.target.value);
   };
+
   const getBorder = (e) => {
     setBorder(e.target.value);
   };
+
   const toggleClick = () => {
     setToggleContactSeller(!toggleContactSeller);
   };
@@ -68,7 +82,7 @@ const ProductModal = ({ openModal, objectDetail, toggle, detail }) => {
           <div className={styles.modal_header}>
             <a
               className={`${styles.btn} ${styles.btn_clear} ${styles.float_right}`}
-              ariaLabel="Close"
+              aria-label="Close"
               onClick={toggle}
             >
               &times;
@@ -77,7 +91,11 @@ const ProductModal = ({ openModal, objectDetail, toggle, detail }) => {
               className={`${styles.product_view_title} ${styles.flex} ${styles.pointer}`}
             >
               <span>Buy</span>
-              <img src="/assets/images/arrowTop.svg" className={styles.ml_6} />
+              <img
+                src="/assets/images/arrowTop.svg"
+                className={styles.ml_6}
+                alt="img"
+              />
             </div>
           </div>
           <div className={styles.productView_Content}>
@@ -145,11 +163,11 @@ const ProductModal = ({ openModal, objectDetail, toggle, detail }) => {
                                     setButtonShow(true);
                                   }}
                                 >
-                                  <option value="choose" disabled selected>
-                                    Choose
-                                  </option>
+                                  <option disabled>Choose</option>
                                   {option.values.map((value, index) => (
-                                    <option key={value}>{value.name}</option>
+                                    <option key={index} value={value.id}>
+                                      {value.name}
+                                    </option>
                                   ))}
                                 </select>
                               </div>
@@ -158,7 +176,7 @@ const ProductModal = ({ openModal, objectDetail, toggle, detail }) => {
                         );
                       } else {
                         return (
-                          <div>
+                          <div key={index}>
                             <h6 className={styles.product_view__text_light}>
                               {option.name}
                             </h6>
@@ -213,6 +231,7 @@ const ProductModal = ({ openModal, objectDetail, toggle, detail }) => {
                         type="tel"
                         className={styles.quantity_input}
                         value={quantity}
+                        onChange={(e) => setQuantity(e.target.value)}
                         min="0"
                         max="100"
                       />

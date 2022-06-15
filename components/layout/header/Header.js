@@ -1,52 +1,19 @@
-import React from "react";
-
+import React, { useState, useEffect } from "react";
+import CartContext from "@/context/CartContext";
+import { useContext } from "react";
 import { SocialMediaIcons } from "../../common";
 import { useWindowSize } from "../../../hooks/useWindowSize";
-// import {useSelector, useDispatch} from "react-redux";
 import styles from "./header.module.css";
-// import { toggleSidebar } from "../../../store/action/sideBar";
 import { lightOrDark } from "../../../utils/lightOrDark";
 
 const Header = ({ detail }) => {
-  // const dispatch = useDispatch();
   const { width, height } = useWindowSize();
-  let cartItems = [];
-  // const cartItems = useSelector(({ sidebar }) => {
-  //   return sidebar.cart;
-  // });
-  const getLeftPartOfNavbar = () => {
-    if (typeof width === "undefined" || width > 600) {
-      return (
-        <div className="bagicon">
-          <img
-            className={styles.pointer}
-            src={
-              lightOrDark(detail.background_color) === "light"
-                ? "/assets/images/cart.svg"
-                : "/assets/images/cart-white.svg"
-            }
-            alt="cart"
-            // onClick={(e) => dispatch(toggleSidebar())}
-          />
-          {cartItems?.length > 0 ? (
-            <span
-              className="navbar__cart-total"
-              style={{
-                color:
-                  lightOrDark(detail.background_color) === "light"
-                    ? "#57584E"
-                    : "#ffffff",
-              }}
-            >
-              {cartItems.length}
-            </span>
-          ) : null}
-        </div>
-      );
-    } else {
-      return <img src="/assets/images/search.svg" alt="search" />;
-    }
-  };
+  const [length, setLength] = useState();
+  const { toggleSidebar, cartItems } = useContext(CartContext);
+
+  useEffect(() => {
+    setLength(cartItems.length);
+  }, [cartItems]);
 
   let navCenterStyles = null;
   if (!width || width > 600) {
@@ -85,7 +52,7 @@ const Header = ({ detail }) => {
               }}
               className="navbar-brand navbar-merchant-name"
             >
-              {`BY ${detail.integration.name}`}
+              {`BY ${detail?.integration?.name}`}
             </h4>
             <span
               style={{
@@ -106,7 +73,40 @@ const Header = ({ detail }) => {
           </div>
         </section>
         <section className="navbar__right hide-sm">
-          {getLeftPartOfNavbar()}
+          {/* {getLeftPartOfNavbar()} */}
+          {typeof width === "undefined" || width > 600 ? (
+            <>
+              <div className="bagicon">
+                <img
+                  className={styles.pointer}
+                  src={
+                    lightOrDark(detail.background_color) === "light"
+                      ? "/assets/images/cart.svg"
+                      : "/assets/images/cart-white.svg"
+                  }
+                  alt="cart"
+                  onClick={toggleSidebar}
+                />
+                {length > 0 ? (
+                  <>
+                    <div
+                      className="navbar__cart-total"
+                      style={{
+                        color:
+                          lightOrDark(detail.background_color) === "light"
+                            ? "#57584E"
+                            : "#ffffff",
+                      }}
+                    >
+                      {length}
+                    </div>
+                  </>
+                ) : null}
+              </div>
+            </>
+          ) : (
+            <img src="/assets/images/search.svg" alt="search" />
+          )}
         </section>
       </header>
       <div className={styles.icons}>
