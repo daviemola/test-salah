@@ -1349,7 +1349,7 @@
   font-family: Graphik;
   font-style: normal;
   font-weight: 400;
-  font-display: fallback;
+  font-display: swap;
   src: url(/assets/fonts/graphik/graphik_regular.eot);
   src: url(/assets/fonts/graphik/graphik_regular.woff) format("woff"),
     url(/assets/fonts/graphik/graphik_regular.ttf) format("truetype"),
@@ -1362,7 +1362,7 @@
   font-family: Graphik;
   font-style: normal;
   font-weight: 300;
-  font-display: fallback;
+  font-display: swap;
   src: url(/assets/fonts/graphik/graphik_light.eot);
   src: url(/assets/fonts/graphik/graphik_light.woff) format("woff"),
     url(/assets/fonts/graphik/graphik_light.ttf) format("truetype"),
@@ -1375,7 +1375,7 @@
   font-family: Graphik;
   font-style: normal;
   font-weight: 500;
-  font-display: fallback;
+  font-display: swap;
   src: url(/assets/fonts/graphik/graphik_medium.eot);
   src: url(/assets/fonts/graphik/graphik_medium.eot?#iefix)
       format("embedded-opentype"),
@@ -1386,7 +1386,7 @@
 }
 @font-face {
   font-family: Graphik;
-  font-display: fallback;
+  font-display: swap;
   font-style: normal;
   font-weight: 600;
   src: url(/assets/fonts/graphik/graphik_semibold.eot);
