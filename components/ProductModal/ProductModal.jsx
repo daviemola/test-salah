@@ -26,6 +26,7 @@ const ProductModal = ({ openModal, objectDetail, toggle, detail }) => {
   });
 
   const { addToCart, toggleSidebar } = useContext(CartContext);
+  // console.log(quantity);
 
   const addToCartItem = () => {
     console.log(size);
@@ -52,10 +53,10 @@ const ProductModal = ({ openModal, objectDetail, toggle, detail }) => {
       toggleSidebar();
     }
     console.log(
-      "size" + size,
-      "border" + border,
-      "frame" + frame,
-      "quantity" + quantity
+      "size " + size,
+      "border " + border,
+      "frame " + frame,
+      "quantity " + quantity
     );
   };
 
@@ -158,9 +159,10 @@ const ProductModal = ({ openModal, objectDetail, toggle, detail }) => {
                                 </div>
                                 <select
                                   value={border}
+                                  disabled={objectDetail?.quantity === 0}
                                   onChange={(e) => {
                                     setBorder(e.target.value);
-                                    setButtonShow(true);
+                                    // setButtonShow(true);
                                   }}
                                 >
                                   <option disabled>Choose</option>
@@ -190,6 +192,7 @@ const ProductModal = ({ openModal, objectDetail, toggle, detail }) => {
                                     className={"d-flex flex-wrap"}
                                   >
                                     <button
+                                      disabled={objectDetail?.quantity === 0}
                                       className={
                                         frame == value.name
                                           ? `${styles.variant_button} ${styles.m_r_10} ${styles.active}`
@@ -197,7 +200,7 @@ const ProductModal = ({ openModal, objectDetail, toggle, detail }) => {
                                       }
                                       onClick={(e) => {
                                         setFrame(value.name);
-                                        setButtonShow(true);
+                                        // setButtonShow(true);
                                       }}
                                     >
                                       {value.name}
@@ -219,6 +222,7 @@ const ProductModal = ({ openModal, objectDetail, toggle, detail }) => {
                       <span>
                         <button
                           type="button"
+                          disabled={objectDetail?.quantity === 0}
                           className="quantity--minus"
                           onClick={(e) => {
                             quantity > 1 && setQuantity(quantity - 1);
@@ -229,6 +233,7 @@ const ProductModal = ({ openModal, objectDetail, toggle, detail }) => {
                       </span>
                       <input
                         type="tel"
+                        disabled={objectDetail?.quantity === 0}
                         className={styles.quantity_input}
                         value={quantity}
                         onChange={(e) => setQuantity(e.target.value)}
@@ -238,6 +243,7 @@ const ProductModal = ({ openModal, objectDetail, toggle, detail }) => {
                       <span>
                         <button
                           className="quantity--plus"
+                          disabled={objectDetail?.quantity === 0}
                           onClick={(e) => {
                             setQuantity(quantity + 1);
                           }}
@@ -257,12 +263,17 @@ const ProductModal = ({ openModal, objectDetail, toggle, detail }) => {
                       <button
                         className={`${styles.button} ${styles.button_cta}`}
                         style={{
-                          backgroundColor: "rgb(59, 183, 94)",
+                          backgroundColor: "#03649A",
                           fontWeight: "600",
-                          opacity: buttonShow ? 1 : 0.5,
+                          opacity: objectDetail?.quantity > 0 ? 1 : 0.5,
                         }}
                         onClick={addToCartItem}
-                        disabled={buttonShow ? false : true}
+                        disabled={
+                          // buttonShow ||
+                          objectDetail?.quantity === 0
+                          // ? false
+                          // : true
+                        }
                       >
                         Add to bag
                       </button>
@@ -326,7 +337,7 @@ const ProductModal = ({ openModal, objectDetail, toggle, detail }) => {
                                       className={`${styles.flex} ${styles.flex_align_center}`}
                                     >
                                       <img
-                                        src="/assets/svg/whatsapp.svg"
+                                        src="/assets/images/social/whatsapp.svg"
                                         alt="click"
                                         className={styles.tag_img_custom}
                                       />
@@ -348,7 +359,7 @@ const ProductModal = ({ openModal, objectDetail, toggle, detail }) => {
                                       className={`${styles.flex} ${styles.flex_align_center}`}
                                     >
                                       <img
-                                        src="/assets/svg/phone.svg"
+                                        src="/assets/images/phone.svg"
                                         alt="click"
                                         className={styles.tag_img_custom}
                                       />

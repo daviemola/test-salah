@@ -7,7 +7,11 @@ const Layout = ({ children, detail }) => {
   return (
     <div
       className="main-layout"
-      style={{ backgroundColor: detail?.background_color, height: "100%" }}
+      style={{
+        backgroundColor: detail?.background_color,
+        minHeight: "100vh",
+        marginBottom: "48px",
+      }}
     >
       <div className="wrapper">
         <Header detail={detail} />

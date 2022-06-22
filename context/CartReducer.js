@@ -139,7 +139,7 @@ const CartReducer = (state, action) => {
       let set_total_price = 0;
       let found_InCart = false;
       let cart_Index;
-      for (let i = 0; i < cart_Clone.length; i++) {
+      for (let i = 0; i < cart_Clone?.length; i++) {
         if (cart_Clone[i].id == productGet.id) {
           found_InCart = true;
           cart_Index = i;

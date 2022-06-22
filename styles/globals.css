@@ -2381,6 +2381,7 @@
   bottom: 0;
   left: 0;
   width: 100%;
+  background: #03649a;
 }
 @media (max-width: 480px) {
   .main-footer {
@@ -2806,6 +2807,8 @@
 @media (max-width: 480px) {
   .navbar.navbar-main {
     padding: 20px;
+    display: flex;
+    justify-content: center;
   }
 }
 @media (max-width: 600px) {
@@ -2852,7 +2855,7 @@
 @media (max-width: 480px) {
   .navbar .navbar__center {
     z-index: 1;
-    margin-top: 50px;
+    /* margin-top: 50px; */
   }
   .navbar .navbar__center span {
     font-size: 13px;
@@ -2866,7 +2869,7 @@
 @media (max-width: 600px) {
   .navbar .navbar__center {
     z-index: 1;
-    margin-top: 50px;
+    /* margin-top: 50px; */
   }
   .navbar .navbar__center span {
     font-size: 13px;

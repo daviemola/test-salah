@@ -2,10 +2,14 @@ import React from "react";
 
 import styles from "./socialMediaIcons.module.css";
 import { lightOrDark } from "../../../utils/lightOrDark";
+import { BsTwitter, BsInstagram } from "react-icons/bs";
 
 const SocialMediaIcons = ({ detail }) => {
   return (
-    <div className="social-media flex flex-justify--center">
+    <div
+      className="social-media flex flex-justify--center"
+      style={{ marginBottom: "16px" }}
+    >
       <div className="social-media__icon-section">
         <a
           href={`https://instagram.com/${
@@ -14,13 +18,10 @@ const SocialMediaIcons = ({ detail }) => {
             ).handle
           }`}
         >
-          <img
-            src={
-              lightOrDark(detail?.background_color ?? "#fff") === "light"
-                ? "/assets/images/social/instagram.svg"
-                : "/assets/images/social/instagram-white.svg"
-            }
-            alt="instagram"
+          <BsInstagram
+            style={{
+              color: "#fff",
+            }}
           />
         </a>
       </div>
@@ -31,13 +32,10 @@ const SocialMediaIcons = ({ detail }) => {
               .handle
           }`}
         >
-          <img
-            src={
-              lightOrDark(detail?.background_color ?? "#fff") === "light"
-                ? "/assets/images/social/twitter.svg"
-                : "/assets/images/social/twitter-white.svg"
-            }
-            alt="instagram"
+          <BsTwitter
+            style={{
+              color: "#fff",
+            }}
           />
         </a>
       </div>

@@ -35,7 +35,7 @@ const StoreFront = ({ products, detail }) => {
   const [loading, setLoading] = useState(false);
   const { toggleSidebar, sidetoggle, cartItems } = useContext(CartContext);
 
-  console.log(sidetoggle);
+  console.log(detail);
 
   const toggleDrawer = () => {
     toggleSidebar();
@@ -118,6 +118,7 @@ const StoreFront = ({ products, detail }) => {
           <Drawer anchor={"right"} open={sidetoggle} onClose={toggleDrawer}>
             <Sidebar
               cartItems={cartItems}
+              detail={detail}
               // total={total}
             />
           </Drawer>

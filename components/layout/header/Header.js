@@ -5,6 +5,8 @@ import { SocialMediaIcons } from "../../common";
 import { useWindowSize } from "../../../hooks/useWindowSize";
 import styles from "./header.module.css";
 import { lightOrDark } from "../../../utils/lightOrDark";
+import { SearchBox } from "@/components/common";
+import { ApiServices } from "@/services/apiService";
 
 const Header = ({ detail }) => {
   const { width, height } = useWindowSize();
@@ -23,13 +25,31 @@ const Header = ({ detail }) => {
       navCenterStyles = styles.navbarFadein;
     }
   }
+
   return (
     <div className="navbar-container z-300">
+      <div
+        style={{
+          marginTop: "20px",
+        }}
+      >
+        {/* <SearchBox
+          type="showsm"
+          setSearchKeyword={setSearchKeyword}
+          searchKeyword={searchKeyword}
+          findKeywordData={findKeywordData}
+        /> */}
+      </div>
+
       <header
         className="navbar navbar-main"
-        style={{ backgroundColor: detail?.background_color }}
+        style={{
+          backgroundColor: detail?.background_color,
+          display: "flex",
+          justifyContent: "center",
+        }}
       >
-        <section className="navbar__left"></section>
+        <section className="navbar__left hide-sm"></section>
         <section className="navbar__center">
           <h3
             className="navbar-brand navbar-title"
