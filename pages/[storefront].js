@@ -35,8 +35,6 @@ const StoreFront = ({ products, detail }) => {
   const [loading, setLoading] = useState(false);
   const { toggleSidebar, sidetoggle, cartItems } = useContext(CartContext);
 
-  console.log(detail);
-
   const toggleDrawer = () => {
     toggleSidebar();
   };

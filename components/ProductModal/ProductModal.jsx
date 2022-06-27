@@ -9,7 +9,6 @@ import ProductSlider from "../ProductSlider/ProductSlider";
 
 const regex = /(<([^>]+)>)/gi;
 const ProductModal = ({ openModal, objectDetail, toggle, detail }) => {
-  console.log(objectDetail);
   const [size, setSize] = React.useState("Choose");
   const [border, setBorder] = React.useState("Choose");
   const [frame, setFrame] = React.useState("");
@@ -120,7 +119,7 @@ const ProductModal = ({ openModal, objectDetail, toggle, detail }) => {
                     {objectDetail?.name}
                   </h5>
                   <h5 className={styles.product_view__merchant_name}>
-                    {`By ${detail.integration.name}`}
+                    {`By ${detail?.integration?.name}`}
                   </h5>
                   <p className={styles.product_view__product_description}>
                     {objectDetail?.description.replace(regex, "")}.

@@ -4,7 +4,6 @@ import ProductSlider from "../ProductSlider/ProductSlider";
 import ProductModal from "../ProductModal/ProductModal";
 
 const ProductCard = ({ item, productQuery, detail }) => {
-  console.log(item);
   const router = useRouter();
   const { storefront } = router.query;
   const [openModal, setOpenModal] = useState(false);

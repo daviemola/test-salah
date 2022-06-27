@@ -47,7 +47,6 @@ const SideBar = ({ cartItems, total, detail }) => {
   const [showPaymentSection, setShowPaymentSection] = useState(false);
   const [showEmailSection, setShowEmailSection] = useState(false);
   const [updatedCartItems, setUpdatedCartItems] = useState([]);
-  console.log(detail);
   const manageCartItems = async () => {
     let updateCart = [];
     // await Promise?.all(
