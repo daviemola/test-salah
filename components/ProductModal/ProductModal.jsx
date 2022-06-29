@@ -9,7 +9,9 @@ import ProductSlider from "../ProductSlider/ProductSlider";
 
 const regex = /(<([^>]+)>)/gi;
 const ProductModal = ({ openModal, objectDetail, toggle, detail }) => {
+  console.log(objectDetail);
   const [size, setSize] = React.useState("Choose");
+  const [err, setErr] = React.useState("");
   const [border, setBorder] = React.useState("Choose");
   const [frame, setFrame] = React.useState("");
   let [quantity, setQuantity] = React.useState(1);
@@ -158,10 +160,11 @@ const ProductModal = ({ openModal, objectDetail, toggle, detail }) => {
                                 </div>
                                 <select
                                   value={border}
-                                  disabled={objectDetail?.quantity === 0}
                                   onChange={(e) => {
                                     setBorder(e.target.value);
-                                    // setButtonShow(true);
+                                    objectDetail?.quantity === 0
+                                      ? setErr("Product not found")
+                                      : setErr("");
                                   }}
                                 >
                                   <option disabled>Choose</option>
@@ -191,7 +194,7 @@ const ProductModal = ({ openModal, objectDetail, toggle, detail }) => {
                                     className={"d-flex flex-wrap"}
                                   >
                                     <button
-                                      disabled={objectDetail?.quantity === 0}
+                                      // disabled={objectDetail?.quantity === 0}
                                       className={
                                         frame == value.name
                                           ? `${styles.variant_button} ${styles.m_r_10} ${styles.active}`
@@ -199,6 +202,9 @@ const ProductModal = ({ openModal, objectDetail, toggle, detail }) => {
                                       }
                                       onClick={(e) => {
                                         setFrame(value.name);
+                                        objectDetail?.quantity === 0
+                                          ? setErr("Product not found")
+                                          : setErr("");
                                         // setButtonShow(true);
                                       }}
                                     >
@@ -221,10 +227,13 @@ const ProductModal = ({ openModal, objectDetail, toggle, detail }) => {
                       <span>
                         <button
                           type="button"
-                          disabled={objectDetail?.quantity === 0}
+                          // disabled={objectDetail?.quantity === 0}
                           className="quantity--minus"
                           onClick={(e) => {
                             quantity > 1 && setQuantity(quantity - 1);
+                            objectDetail?.quantity === 0
+                              ? setErr("Product not found")
+                              : setErr("");
                           }}
                         >
                           <img src="assets/images/minus.svg" alt="Decrement" />
@@ -232,19 +241,31 @@ const ProductModal = ({ openModal, objectDetail, toggle, detail }) => {
                       </span>
                       <input
                         type="tel"
-                        disabled={objectDetail?.quantity === 0}
+                        // disabled={objectDetail?.quantity === 0}
                         className={styles.quantity_input}
                         value={quantity}
-                        onChange={(e) => setQuantity(e.target.value)}
+                        onChange={(e) => {
+                          setQuantity(e.target.value);
+                          e.target.value > objectDetail.quantity
+                            ? setErr(
+                                `Only ${objectDetail?.quantity} is in stock.`
+                              )
+                            : setErr("");
+                        }}
                         min="0"
                         max="100"
                       />
                       <span>
                         <button
                           className="quantity--plus"
-                          disabled={objectDetail?.quantity === 0}
+                          // disabled={objectDetail?.quantity === 0}
                           onClick={(e) => {
                             setQuantity(quantity + 1);
+                            if (quantity > objectDetail.quantity)
+                              setErr(`Only ${objectDetail.quantity} in stock`);
+                            objectDetail?.quantity === 0
+                              ? setErr("Product not found")
+                              : setErr("");
                           }}
                         >
                           <img src="assets/images/plus.svg" alt="Increment" />
@@ -256,8 +277,11 @@ const ProductModal = ({ openModal, objectDetail, toggle, detail }) => {
                     <h6 className={styles.product_view__text_light}>Price</h6>
                     <p className={styles.product_view_text_price}>
                       {objectDetail?.currency}{" "}
-                      {`${objectDetail?.min_variant_price} - ${objectDetail?.max_variant_price}`}
+                      {`${objectDetail?.min_variant_price.toLocaleString()} - ${objectDetail?.max_variant_price.toLocaleString()}`}
                     </p>
+                    {err && (
+                      <p style={{ color: "red", fontWeight: "500" }}>{err}</p>
+                    )}
                     <div className={`d-flex mt-3 ${styles.mobile_change}`}>
                       <button
                         className={`${styles.button} ${styles.button_cta}`}
@@ -267,12 +291,6 @@ const ProductModal = ({ openModal, objectDetail, toggle, detail }) => {
                           opacity: objectDetail?.quantity > 0 ? 1 : 0.5,
                         }}
                         onClick={addToCartItem}
-                        disabled={
-                          // buttonShow ||
-                          objectDetail?.quantity === 0
-                          // ? false
-                          // : true
-                        }
                       >
                         Add to bag
                       </button>
