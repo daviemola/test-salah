@@ -4,6 +4,7 @@ import ProductSlider from "../ProductSlider/ProductSlider";
 import ProductModal from "../ProductModal/ProductModal";
 
 const ProductCard = ({ item, productQuery, detail }) => {
+  // console.log({ item, productQuery, detail });
   const router = useRouter();
   const { storefront } = router.query;
   const [openModal, setOpenModal] = useState(false);
@@ -56,11 +57,11 @@ const ProductCard = ({ item, productQuery, detail }) => {
       >
         <div className="product">
           <div className="product__media-container product__media-container--single-file">
-            {item.files.length > 1 ? (
+            {item?.files?.length > 1 ? (
               <ProductSlider images={item.files} />
             ) : (
               <div className="file-wrapper file-wrapper__single-image">
-                {item.files.length == 0 ? (
+                {item?.files?.length == 0 ? (
                   <img
                     src="https://res.cloudinary.com/paystack/image/upload/q_auto/w_350,c_limit/public/files/products/81sxt23daevgm7w2hoi7.jpeg"
                     className="product-view__media--img "
@@ -68,7 +69,7 @@ const ProductCard = ({ item, productQuery, detail }) => {
                   />
                 ) : (
                   <img
-                    src={item.files[0].path}
+                    src={item?.files[0]?.path}
                     className="product-view__media--img"
                     alt="product-image"
                   />
@@ -78,10 +79,10 @@ const ProductCard = ({ item, productQuery, detail }) => {
           </div>
           <div className="product__details">
             <div className="product__details__name">
-              <span>{item.name}</span>
+              <span>{item?.name}</span>
             </div>
             <div className="product__details__price">
-              {item.currency} {item.price / 100}
+              {item?.currency} {item?.price / 100}
             </div>
           </div>
         </div>

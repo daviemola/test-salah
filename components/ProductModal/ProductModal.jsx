@@ -5,15 +5,22 @@ import CartContext from "@/context/CartContext";
 import { useContext } from "react";
 import styles from "./ProductModal.module.css";
 import "keen-slider/keen-slider.min.css";
+import axios from "axios";
+import { useRouter } from "next/router";
 import ProductSlider from "../ProductSlider/ProductSlider";
 
 const regex = /(<([^>]+)>)/gi;
 const ProductModal = ({ openModal, objectDetail, toggle, detail }) => {
-  console.log(objectDetail);
+  // console.log(objectDetail);
+  const router = useRouter();
   const [size, setSize] = React.useState("Choose");
   const [err, setErr] = React.useState("");
-  const [border, setBorder] = React.useState("Choose");
+  const [errZero, setErrZero] = React.useState("");
+  const [border, setBorder] = React.useState("");
   const [frame, setFrame] = React.useState("");
+  const [variantlength, setVariantLength] = React.useState(
+    objectDetail?.variant_options?.length
+  );
   let [quantity, setQuantity] = React.useState(1);
   const [buttonShow, setButtonShow] = React.useState(false);
   const [currentSlide, setCurrentSlide] = React.useState(0);
@@ -31,34 +38,17 @@ const ProductModal = ({ openModal, objectDetail, toggle, detail }) => {
 
   const addToCartItem = () => {
     console.log(size);
-    if (
-      // size !== "Choose" &&
-      // border !== "Choose" &&
-      // frame !== "" &&
-      quantity !== 0
-    ) {
-      console.log("here");
-
+    if (quantity !== 0) {
       let data = objectDetail;
       data.size = size;
       data.border = border;
       data.frame = frame;
-      data.quantity = quantity;
+      data.quantity_cart = quantity;
       addToCart(data);
-      setSize("Choose");
-      setBorder("Choose");
-      setFrame("");
-      setQuantity(1);
       setButtonShow(false);
       toggle();
       toggleSidebar();
     }
-    console.log(
-      "size " + size,
-      "border " + border,
-      "frame " + frame,
-      "quantity " + quantity
-    );
   };
 
   const getSize = (e) => {
@@ -68,10 +58,32 @@ const ProductModal = ({ openModal, objectDetail, toggle, detail }) => {
   const getBorder = (e) => {
     setBorder(e.target.value);
   };
+  console.log(quantity);
+  console.log(err);
 
   const toggleClick = () => {
     setToggleContactSeller(!toggleContactSeller);
   };
+
+  // const checkQuantity = () => {
+  //   Number(quantity) > objectDetail?.quantity
+  //     ? setErr(`Only ${objectDetail?.quantity} in stock.`)
+  //     : setErr("");
+  // };
+
+  const validateItems = async () => {
+    try {
+      const { data } = await axios.get(
+        `https://api.paystack.co/product/verify/${objectDetail?.name}/variant?size=${frame}&another%20option=${border}`
+      );
+      return data.data;
+    } catch (error) {
+      setErr(error?.response?.data?.message);
+      // console.log(error.response.data);
+      return [];
+    }
+  };
+
   return (
     <React.Fragment>
       <Modal
@@ -160,16 +172,19 @@ const ProductModal = ({ openModal, objectDetail, toggle, detail }) => {
                                 </div>
                                 <select
                                   value={border}
+                                  disabled={!frame}
                                   onChange={(e) => {
                                     setBorder(e.target.value);
-                                    objectDetail?.quantity === 0
-                                      ? setErr("Product not found")
-                                      : setErr("");
+                                    setErr("");
+                                    validateItems();
+                                    // objectDetail?.quantity === 0
+                                    //   ? setErr("Product not foun d")
+                                    //   : setErr("");
                                   }}
                                 >
                                   <option disabled>Choose</option>
                                   {option.values.map((value, index) => (
-                                    <option key={index} value={value.id}>
+                                    <option key={index} value={value.name}>
                                       {value.name}
                                     </option>
                                   ))}
@@ -201,10 +216,14 @@ const ProductModal = ({ openModal, objectDetail, toggle, detail }) => {
                                           : `${styles.variant_button} ${styles.m_r_10}`
                                       }
                                       onClick={(e) => {
+                                        console.log("clicking");
+                                        console.log(border);
+
                                         setFrame(value.name);
-                                        objectDetail?.quantity === 0
-                                          ? setErr("Product not found")
-                                          : setErr("");
+                                        border ? validateItems() : null;
+                                        // objectDetail?.quantity === 0
+                                        //   ? setErr("Product not fou nd")
+                                        //   : setErr("");
                                         // setButtonShow(true);
                                       }}
                                     >
@@ -227,13 +246,11 @@ const ProductModal = ({ openModal, objectDetail, toggle, detail }) => {
                       <span>
                         <button
                           type="button"
-                          // disabled={objectDetail?.quantity === 0}
+                          disabled={border === "" && err !== ""}
                           className="quantity--minus"
                           onClick={(e) => {
-                            quantity > 1 && setQuantity(quantity - 1);
-                            objectDetail?.quantity === 0
-                              ? setErr("Product not found")
-                              : setErr("");
+                            quantity > 1 && setQuantity(Number(quantity) - 1);
+                            setErrZero("");
                           }}
                         >
                           <img src="assets/images/minus.svg" alt="Decrement" />
@@ -241,16 +258,26 @@ const ProductModal = ({ openModal, objectDetail, toggle, detail }) => {
                       </span>
                       <input
                         type="tel"
-                        // disabled={objectDetail?.quantity === 0}
+                        disabled={
+                          border === "" &&
+                          err !== "" &&
+                          objectDetail?.variant_options.length > 0
+                        }
                         className={styles.quantity_input}
-                        value={quantity}
+                        value={Number(quantity)}
                         onChange={(e) => {
                           setQuantity(e.target.value);
-                          e.target.value > objectDetail.quantity
-                            ? setErr(
-                                `Only ${objectDetail?.quantity} is in stock.`
-                              )
+                          objectDetail?.unlimited === false &&
+                          Number(e.target.value) > objectDetail?.quantity
+                            ? setErr(`Only ${objectDetail?.quantity} in stock.`)
                             : setErr("");
+                          Number(e.target.value) < 1
+                            ? setErrZero(
+                                "You cannot order few than 1 items at a time"
+                              )
+                            : setErrZero("");
+
+                          // objectDetail?.quantity === 0
                         }}
                         min="0"
                         max="100"
@@ -258,14 +285,11 @@ const ProductModal = ({ openModal, objectDetail, toggle, detail }) => {
                       <span>
                         <button
                           className="quantity--plus"
-                          // disabled={objectDetail?.quantity === 0}
+                          disabled={border === "" && err !== ""}
                           onClick={(e) => {
-                            setQuantity(quantity + 1);
-                            if (quantity > objectDetail.quantity)
-                              setErr(`Only ${objectDetail.quantity} in stock`);
-                            objectDetail?.quantity === 0
-                              ? setErr("Product not found")
-                              : setErr("");
+                            console.log("first");
+                            setQuantity(Number(quantity) + 1);
+                            setErrZero("");
                           }}
                         >
                           <img src="assets/images/plus.svg" alt="Increment" />
@@ -275,25 +299,75 @@ const ProductModal = ({ openModal, objectDetail, toggle, detail }) => {
                   </div>
                   <div className={styles.mt_4}>
                     <h6 className={styles.product_view__text_light}>Price</h6>
-                    <p className={styles.product_view_text_price}>
+                    <p
+                      className={styles.product_view_text_price}
+                      style={{ marginBottom: "24px" }}
+                    >
                       {objectDetail?.currency}{" "}
-                      {`${objectDetail?.min_variant_price.toLocaleString()} - ${objectDetail?.max_variant_price.toLocaleString()}`}
+                      {`${objectDetail?.min_variant_price / 100} `}
                     </p>
-                    {err && (
+                    {err ? (
                       <p style={{ color: "red", fontWeight: "500" }}>{err}</p>
+                    ) : objectDetail?.unlimited === false &&
+                      quantity > objectDetail?.quantity ? (
+                      <p
+                        style={{ color: "red", fontWeight: "500" }}
+                      >{`Only ${objectDetail?.quantity} in stock.`}</p>
+                    ) : errZero ? (
+                      <p style={{ color: "red", fontWeight: "500" }}>
+                        You cannot order fewer than 1 items at a time
+                      </p>
+                    ) : (
+                      ""
                     )}
                     <div className={`d-flex mt-3 ${styles.mobile_change}`}>
-                      <button
-                        className={`${styles.button} ${styles.button_cta}`}
-                        style={{
-                          backgroundColor: "#03649A",
-                          fontWeight: "600",
-                          opacity: objectDetail?.quantity > 0 ? 1 : 0.5,
-                        }}
-                        onClick={addToCartItem}
-                      >
-                        Add to bag
-                      </button>
+                      {objectDetail?.variant_options.length > 0 &&
+                      border === "" &&
+                      !err ? (
+                        <button
+                          className={`${styles.button} ${styles.button_cta}`}
+                          disabled
+                          // disabled={
+                          //   !frame
+                          //   // objectDetail?.quantity === 0
+                          // }
+                          style={{
+                            backgroundColor: "#03649A",
+                            fontWeight: "600",
+                            opacity: 0.5,
+                          }}
+                          onClick={addToCartItem}
+                        >
+                          Add to bag
+                        </button>
+                      ) : (
+                        <button
+                          className={`${styles.button} ${styles.button_cta}`}
+                          disabled={
+                            (Number(quantity) < 1 &&
+                              objectDetail?.unlimited === false &&
+                              quantity > objectDetail?.quantity) ||
+                            err ||
+                            errZero
+                          }
+                          style={{
+                            backgroundColor: "#03649A",
+                            fontWeight: "600",
+                            opacity:
+                              (objectDetail?.unlimited === false &&
+                                Number(quantity) > objectDetail?.quantity &&
+                                Number(quantity) < 1) ||
+                              err ||
+                              errZero
+                                ? 0.5
+                                : 1,
+                          }}
+                          onClick={addToCartItem}
+                        >
+                          Add to bag
+                        </button>
+                      )}
+
                       <div
                         className={`${styles.dropdown} ${styles.dropdown_container} ${styles.contact_dropdown} ${styles.dropdown_container_default}`}
                       >

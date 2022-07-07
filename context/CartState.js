@@ -4,25 +4,39 @@ import CartReducer from "./CartReducer";
 import { sumItems } from "./CartReducer";
 import { INCREASE } from "./CartTypes";
 
+// let Storage;
 //Local Storage
-const storage =
-  typeof window !== "undefined" && localStorage.getItem("cartItems")
-    ? JSON.parse(
-        typeof window !== "undefined" && localStorage.getItem("cartItems")
-      )
-    : [];
+// if (typeof window !== "undefined") {
+// const Storage =
+//   typeof window !== "undefined" && localStorage.getItem("cartItems")
+//     ? typeof window !== "undefined" &&
+//       JSON.parse(localStorage.getItem("cartItems"))
+//     : [];
+// }
 
 const CartState = ({ children }) => {
   //Change the code above to that below to get the initial state from local storage
   const initialState = {
-    cartItems: storage,
-    ...sumItems(storage),
+    cartItems: [],
+    ...sumItems,
     checkout: false,
     sidetoggle: false,
+    qtyZeroErr: false,
+    moreQtyErr: false,
   };
 
   //Set up the reducer
   const [state, dispatch] = useReducer(CartReducer, initialState);
+
+  //function to handle when sidebar is toggled
+  const qtyZeroErrFunc = (payload) => {
+    dispatch({ type: "ZEROQUANTITYERROR", payload });
+  };
+
+  //function to handle when sidebar is toggled
+  const moreQtyErrFunc = (payload) => {
+    dispatch({ type: "MOREQTYERROR", payload });
+  };
 
   //function to handle when sidebar is toggled
   const toggleSidebar = () => {
@@ -77,6 +91,8 @@ const CartState = ({ children }) => {
         removeFromCart,
         increase,
         decrease,
+        moreQtyErrFunc,
+        qtyZeroErrFunc,
         handleCheckout,
         deleteDataFromCart,
         clearCart,

@@ -18,6 +18,7 @@ export class ApiServices {
       return [];
     }
   }
+
   async searchProducts(keyword, storefront) {
     try {
       const { data } = await axios.get(
@@ -28,6 +29,7 @@ export class ApiServices {
       return [];
     }
   }
+
   async getProductDetail(slug) {
     try {
       const { data } = await axios.get(`product/verify/${slug}`);

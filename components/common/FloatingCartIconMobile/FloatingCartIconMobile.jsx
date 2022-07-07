@@ -5,7 +5,7 @@ import { useContext } from "react";
 
 const FloatingCartIconMobile = ({ onClose }) => {
   const { cartItems } = useContext(CartContext);
-  let len = cartItems.length;
+  let len = cartItems?.length;
 
   return (
     <div className={styles.bag_fab} onClick={onClose}>

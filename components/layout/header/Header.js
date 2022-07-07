@@ -14,7 +14,7 @@ const Header = ({ detail }) => {
   const { toggleSidebar, cartItems } = useContext(CartContext);
 
   useEffect(() => {
-    setLength(cartItems.length);
+    setLength(cartItems?.length);
   }, [cartItems]);
 
   let navCenterStyles = null;

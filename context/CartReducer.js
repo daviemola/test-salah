@@ -7,26 +7,22 @@ import {
   CLEAR,
   DELETE_FROM_CART,
   TOGGLESIDEBAR,
+  MOREQTYERROR,
+  ZEROQUANTITYERROR,
 } from "./CartTypes.js";
-
-// Save the cartItems to local storage
-const Storage = (cartItems) => {
-  typeof window !== "undefined" &&
-    localStorage.setItem(
-      "cartItems",
-      JSON.stringify(cartItems.length > 0 ? cartItems : [])
-    );
-};
 
 // Export function to calculate the total price of the cart and the total quantity of the cart
 export const sumItems = (cartItems) => {
-  Storage(cartItems);
+  // Storage(cartItems);
   let itemCount = cartItems.reduce(
-    (total, product) => total + product.quantity,
+    (total, product) => total + product.quantity_cart,
     0
   );
   let total = cartItems
-    .reduce((total, product) => total + product.price * product.quantity, 0)
+    .reduce(
+      (total, product) => total + product.price * product.quantity_cart,
+      0
+    )
     .toFixed(2);
   return { itemCount, total };
 };
@@ -40,6 +36,44 @@ const CartReducer = (state, action) => {
   console.log(action.type);
 
   switch (action.type) {
+    case MOREQTYERROR:
+      console.log(state.cart);
+      let cart_Clone = state.cart;
+      let isMoreThanErr;
+      for (let i = 0; i < cart_Clone?.length; i++) {
+        if (
+          cart_Clone[i].quantity_cart > cart_Clone[i].quantity &&
+          cart_Clone[i].unlimited === false
+        ) {
+          isMoreThanErr = true;
+          break;
+        }
+      }
+      return {
+        ...state,
+        moreQtyErr: isMoreThanErr,
+      };
+  }
+
+  switch (action.type) {
+    case ZEROQUANTITYERROR:
+      let cart_Clone = state.cart;
+      let isZeroErr;
+      for (let i = 0; i < cart_Clone?.length; i++) {
+        console.log("here; " + cart_Clone[i].quantity_cart);
+        if (cart_Clone[i].quantity_cart === 0) {
+          console.log("zero items");
+          isZeroErr = true;
+          break;
+        }
+      }
+      return {
+        ...state,
+        qtyZeroErr: isZeroErr,
+      };
+  }
+
+  switch (action.type) {
     case TOGGLESIDEBAR:
       return {
         ...state,
@@ -51,9 +85,13 @@ const CartReducer = (state, action) => {
     // If the action type is ADD_TO_CART, we want to add the item to the cartItems array
     case ADD_TO_CART:
       if (!state.cartItems.find((item) => item.id === action.payload.id)) {
+        console.log(action.payload);
+
+        action.payload.totalPrice =
+          action.payload.quantity_cart * Number(action.payload.price);
         state.cartItems.push({
           ...action.payload,
-          quantity: 1,
+          // quantity: 1,
         });
       }
 
@@ -79,13 +117,13 @@ const CartReducer = (state, action) => {
       }
       if (found_InCart) {
         productGet = cart_Clone[cart_Index];
-        if (productGet.quantity > 0) {
-          productGet.quantity--;
+        if (productGet.quantity_cart > 0) {
+          productGet.quantity_cart--;
           productGet.totalPrice =
-            productGet.quantity * Number(productGet.price);
+            productGet.quantity_cart * Number(productGet.price);
           cart_Clone.splice(cart_Index, 1, productGet);
         } else {
-          productGet.quantity = 0;
+          productGet.quantity_cart = 0;
           productGet.totalPrice = 0;
           cart_Clone.splice(cart_Index, 1);
         }
@@ -114,13 +152,13 @@ const CartReducer = (state, action) => {
       }
       if (foundInCart) {
         productItem = cartClone[cartIndex];
-        productItem.quantity++;
+        productItem.quantity_cart++;
         productItem.totalPrice =
-          productItem.quantity * Number(productItem.price);
+          productItem.quantity_cart * Number(productItem.price);
         cartClone.splice(cartIndex, 1, productItem);
       } else {
         productItem.totalPrice =
-          productItem.quantity * Number(productItem.price);
+          productItem.quantity_cart * Number(productItem.price);
         cartClone.push(productItem);
       }
       set_total_price = productItem.totalPrice;
@@ -148,13 +186,13 @@ const CartReducer = (state, action) => {
       }
       if (found_InCart) {
         productGet = cart_Clone[cart_Index];
-        if (productGet.quantity > 0) {
-          productGet.quantity--;
+        if (productGet.quantity_cart > 0) {
+          productGet.quantity_cart--;
           productGet.totalPrice =
-            productGet.quantity * Number(productGet.price);
+            productGet.quantity_cart * Number(productGet.price);
           cart_Clone.splice(cart_Index, 1, productGet);
         } else {
-          productGet.quantity = 0;
+          productGet.quantity_cart = 0;
           productGet.totalPrice = 0;
           cart_Clone.splice(cart_Index, 1);
         }

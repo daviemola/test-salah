@@ -45,12 +45,12 @@ const SearchBox = ({
           onKeyDown={(e) => {
             findKeywordData(e);
           }}
-          style={{ color: "#ffffff", backgroundColor: "#02507c" }}
+          style={{ color: "#fff", backgroundColor: "#02507c" }}
         />
         {searchKeyword ? (
           <a
             className="input-clear-icon"
-            style={{ color: "#ffffff" }}
+            style={{ color: "#fff" }}
             onClick={() => setSearchKeyword("")}
           >
             <svg

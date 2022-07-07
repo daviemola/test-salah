@@ -9,7 +9,8 @@ import OrderDeail from "./reviewOrder/reviewOrder";
 import axios from "axios";
 
 const SideBar = ({ cartItems, total, detail }) => {
-  const { toggleSidebar, deleteDataFromCart } = useContext(CartContext);
+  const { toggleSidebar, deleteDataFromCart, qtyZeroErr, moreQtyErr } =
+    useContext(CartContext);
   const [showCheckout, setShowCheckout] = useState(false);
   const [showOrderDeatil, setShowOrderDeatil] = useState(false);
 
@@ -43,7 +44,8 @@ const SideBar = ({ cartItems, total, detail }) => {
   const [customerLastNameError, setCustomerLastNameError] = useState(false);
   const [customerEmailError, setCustomerEmailError] = useState(false);
   const [customerPhoneError, setCustomerPhoneError] = useState(false);
-
+  const [err, setErr] = useState("");
+  const [errQty, setErrQty] = useState("");
   const [showPaymentSection, setShowPaymentSection] = useState(false);
   const [showEmailSection, setShowEmailSection] = useState(false);
   const [updatedCartItems, setUpdatedCartItems] = useState([]);
@@ -211,9 +213,40 @@ const SideBar = ({ cartItems, total, detail }) => {
   };
   useEffect(() => {
     manageCartItems();
-
     //eslint-disable-next-line
   }, [cartItems]);
+
+  function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
+  // useEffect(() => {
+  //   function checkZeroQuantity() {
+  //     cartItems.map((item) => {
+  //       console.log(item.quantity);
+  //       console.log(item.quantity_cart);
+  //       if (item?.quantity_cart === 0) {
+  //         console.log("first err");
+  //         setErr("You cannot order fewer than 1 item at a time");
+  //       } else if (
+  //         item?.unlimited === false &&
+  //         item.quantity_cart > item?.quantity
+  //       ) {
+  //         console.log("second err");
+  //         setErrQty(`Only ${item?.quantity} in stock`);
+  //       } else {
+  //         setErr("");
+  //         setErrQty("");
+  //       }
+  //     });
+  //   }
+  //   checkZeroQuantity();
+  // }, [cartItems]);
+  //check if quantity of any item is zero
+  //check if more items
+
+  console.log(moreQtyErr);
+  console.log(qtyZeroErr);
 
   return (
     <>
@@ -329,7 +362,20 @@ const SideBar = ({ cartItems, total, detail }) => {
                     </div>
                   </div>
                   <div className={styles.bagSummaryHeaderRight}>
-                    <p className={styles.bagSummaryPriceText}>NGN {total}</p>
+                    <p className={styles.bagSummaryPriceText}>
+                      NGN {numberWithCommas(total / 100)}
+                    </p>
+                  </div>
+                </div>
+                <div className={styles.bagSummaryHeader}>
+                  <div className={styles.bagSummaryHeaderLeft}></div>
+                  <div className={styles.bagSummaryHeaderRight}>
+                    <p
+                      className={styles.bagSummaryPriceText}
+                      style={{ color: "gray" }}
+                    >
+                      Shipping NGN 0
+                    </p>
                   </div>
                 </div>
               </div>
@@ -357,6 +403,10 @@ const SideBar = ({ cartItems, total, detail }) => {
                     className={`${styles.btn_primary} ${styles.btn_checkout}`}
                     onClick={() => {
                       setShowCheckout(!showCheckout);
+                    }}
+                    disabled={moreQtyErr || qtyZeroErr}
+                    style={{
+                      opacity: moreQtyErr || qtyZeroErr ? 0.5 : 1,
                     }}
                   >
                     Checkout

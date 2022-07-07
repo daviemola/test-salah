@@ -31,15 +31,17 @@ const StoreFront = ({ products, detail }) => {
   const router = useRouter();
   const { storefront, product } = router.query;
   const [searchKeyword, setSearchKeyword] = useState("");
+  const [checkItem, setcheckItem] = useState(true);
   const [showProducts, setShowProducts] = useState(products);
-  const [loading, setLoading] = useState(false);
-  const { toggleSidebar, sidetoggle, cartItems } = useContext(CartContext);
+  const [loading, setLoading] = useState(true);
+  const { toggleSidebar, sidetoggle, cartItems, total } =
+    useContext(CartContext);
 
   const toggleDrawer = () => {
     toggleSidebar();
   };
 
-  // console.log(showProducts);
+  console.log(sidetoggle);
 
   const findKeywordData = async (e) => {
     if (e.key === "Enter") {
@@ -49,20 +51,26 @@ const StoreFront = ({ products, detail }) => {
       if (data.length > 0) {
         setLoading(false);
         setShowProducts(data);
+        setcheckItem(false);
       } else {
         setLoading(false);
         setShowProducts(data);
+        setcheckItem(false);
       }
     }
-    if (searchKeyword == "") {
+    console.log(searchKeyword);
+    if (searchKeyword === "") {
+      console.log("nothing on searchkeyword");
       setShowProducts(products);
+      setcheckItem(false);
     }
   };
 
   useEffect(() => {
+    setLoading(true);
     const callSearchApi = setTimeout(async () => {
+      console.log("here");
       if (searchKeyword !== "") {
-        setLoading(true);
         const apiServices = new ApiServices();
         const data = await apiServices.searchProducts(
           searchKeyword,
@@ -71,12 +79,15 @@ const StoreFront = ({ products, detail }) => {
         if (data.length > 0) {
           setLoading(false);
           setShowProducts(data);
+          setcheckItem(false);
         } else {
           setLoading(false);
           setShowProducts(data);
+          setcheckItem(false);
         }
       } else {
         setShowProducts(products);
+        setLoading(false);
       }
     }, 2000);
 
@@ -111,14 +122,10 @@ const StoreFront = ({ products, detail }) => {
           ) : loading ? (
             <LoadingView />
           ) : (
-            <NoSearchFound />
+            <NoSearchFound searchKeyword={searchKeyword} />
           )}
           <Drawer anchor={"right"} open={sidetoggle} onClose={toggleDrawer}>
-            <Sidebar
-              cartItems={cartItems}
-              detail={detail}
-              // total={total}
-            />
+            <Sidebar cartItems={cartItems} detail={detail} total={total} />
           </Drawer>
           <FloatingCartIconMobile onClose={toggleDrawer} />
         </div>

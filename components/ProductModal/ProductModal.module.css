@@ -325,6 +325,7 @@
   font-size: 14px;
   line-height: 20px;
   min-height: 50px;
+  justify-content: center;
   border-radius: 5px;
   outline: none;
   background: #fafafa;
