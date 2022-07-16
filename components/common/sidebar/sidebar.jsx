@@ -44,8 +44,6 @@ const SideBar = ({ cartItems, total, detail }) => {
   const [customerLastNameError, setCustomerLastNameError] = useState(false);
   const [customerEmailError, setCustomerEmailError] = useState(false);
   const [customerPhoneError, setCustomerPhoneError] = useState(false);
-  const [err, setErr] = useState("");
-  const [errQty, setErrQty] = useState("");
   const [showPaymentSection, setShowPaymentSection] = useState(false);
   const [showEmailSection, setShowEmailSection] = useState(false);
   const [updatedCartItems, setUpdatedCartItems] = useState([]);
@@ -245,9 +243,6 @@ const SideBar = ({ cartItems, total, detail }) => {
   //check if quantity of any item is zero
   //check if more items
 
-  console.log(moreQtyErr);
-  console.log(qtyZeroErr);
-
   return (
     <>
       <div className={styles.off_canvas_sidebar}>
@@ -320,6 +315,7 @@ const SideBar = ({ cartItems, total, detail }) => {
             shippingPrice={shippingPrice}
             cart={cartItems}
             allTotal={total}
+            detail={detail}
             orderPlace={orderPlace}
           />
         ) : (
@@ -363,7 +359,7 @@ const SideBar = ({ cartItems, total, detail }) => {
                   </div>
                   <div className={styles.bagSummaryHeaderRight}>
                     <p className={styles.bagSummaryPriceText}>
-                      NGN {numberWithCommas(total / 100)}
+                      NGN {total ? numberWithCommas(total / 100) : 0}
                     </p>
                   </div>
                 </div>
@@ -374,7 +370,11 @@ const SideBar = ({ cartItems, total, detail }) => {
                       className={styles.bagSummaryPriceText}
                       style={{ color: "gray" }}
                     >
-                      Shipping NGN 0
+                      {`Shipping: ${detail?.shipping_fees[0]?.currency} ${
+                        detail?.shipping_fees[0].fee
+                          ? numberWithCommas(detail?.shipping_fees[0].fee / 100)
+                          : 0
+                      }`}
                     </p>
                   </div>
                 </div>

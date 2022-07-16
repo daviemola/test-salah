@@ -11,6 +11,16 @@ import { MdKeyboardArrowUp, MdKeyboardArrowDown } from "react-icons/md";
 
 const NoSearchFound = ({ searchKeyword }) => {
   const [toggleContactSeller, setToggleContactSeller] = React.useState(false);
+  //usestate for keyword
+  const [keyword, setKeyword] = React.useState(searchKeyword);
+
+  //settimeout for contact seller
+
+  // React.useEffect(() => {
+  setTimeout(() => {
+    setKeyword(searchKeyword);
+  }, 1100);
+  // }, [searchKeyword]);
 
   // console.log(searchKeyword);
   const toggleClick = () => {
@@ -28,7 +38,7 @@ const NoSearchFound = ({ searchKeyword }) => {
           className={styles.search_not_found_title_product}
           style={{ color: "#fff", fontSize: "24px" }}
         >
-          {`"${searchKeyword}"`}
+          {`"${keyword}"`}
         </span>
       </p>
       <p className={styles.search_not_found_title} style={{ color: "#fff" }}>

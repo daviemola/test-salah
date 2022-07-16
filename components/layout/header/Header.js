@@ -130,7 +130,7 @@ const Header = ({ detail }) => {
         </section>
       </header>
       <div className={styles.icons}>
-        <SocialMediaIcons />
+        <SocialMediaIcons detail={detail} />
       </div>
     </div>
   );

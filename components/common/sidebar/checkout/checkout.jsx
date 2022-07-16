@@ -76,6 +76,11 @@ const Checkout = ({
     setSelectedOption(selectedOption);
     setDeliveryCountry(selectedOption.label);
   };
+
+  function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
   const handleChangeShipment = (selectedOption) => {
     setShippingOption(selectedOption);
     if (selectedOption.label == "Lagos Mainland (NGN 1,500)") {
@@ -224,9 +229,16 @@ const Checkout = ({
               </div>
             </div>
             <div className={styles.bag_summary_header_right}>
-              <p className={styles.bag_summary_price_text}>ILS {allTotal}</p>
+              <p className={styles.bag_summary_price_text}>
+                {detail?.shipping_fees[0].currency}{" "}
+                {allTotal ? numberWithCommas(allTotal / 100) : 0}
+              </p>
               <p className={styles.bag_summary_shipping_price_text}>
-                Shipping: {shippingPrice ? shippingPrice : 0}
+                {`Shipping: ${detail?.shipping_fees[0]?.currency} ${
+                  detail?.shipping_fees[0].fee
+                    ? numberWithCommas(detail?.shipping_fees[0].fee / 100)
+                    : 0
+                }`}
               </p>
             </div>
           </div>
@@ -541,7 +553,7 @@ const CheckOutDetails = ({
         >
           <button
             className={`${styles.button} ${styles.btn_cta}`}
-            style={{ background: "rgb(59, 183, 94)" }}
+            style={{ background: "#03659B" }}
             type={"submit"}
           >
             Continue to pay
@@ -686,7 +698,7 @@ const PaymentSection = ({
           >
             <button
               className={`${styles.button} ${styles.btn_cta}`}
-              style={{ background: "rgb(59, 183, 94)" }}
+              style={{ background: "#" }}
               type={"submit"}
             >
               Review and pay

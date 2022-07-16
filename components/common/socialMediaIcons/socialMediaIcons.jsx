@@ -2,7 +2,8 @@ import React from "react";
 
 import styles from "./socialMediaIcons.module.css";
 import { lightOrDark } from "../../../utils/lightOrDark";
-import { BsTwitter, BsInstagram } from "react-icons/bs";
+import { BsTwitter, BsInstagram, BsFacebook } from "react-icons/bs";
+import { ImFacebook } from "react-icons/im";
 
 const SocialMediaIcons = ({ detail }) => {
   return (
@@ -25,6 +26,7 @@ const SocialMediaIcons = ({ detail }) => {
           />
         </a>
       </div>
+
       <div className={styles.socialMediaIcon}>
         <a
           href={`https://twitter.com/${
@@ -33,6 +35,22 @@ const SocialMediaIcons = ({ detail }) => {
           }`}
         >
           <BsTwitter
+            style={{
+              color: "#fff",
+            }}
+          />
+        </a>
+      </div>
+
+      <div className={styles.socialMediaIcon}>
+        <a
+          href={`https://facebook.com/${
+            detail?.social_media?.find(
+              (media) => media.type_name === "Facebook"
+            ).handle
+          }`}
+        >
+          <ImFacebook
             style={{
               color: "#fff",
             }}

@@ -43,7 +43,7 @@
 .navbar_cart_total {
   margin-left: 8px;
   font-weight: 500;
-  color: rgb(59, 183, 94);
+  color: #03659b;
 }
 .bagIcon {
   display: -webkit-flex;
@@ -93,7 +93,7 @@
 }
 .order_view_avatar {
   border-radius: 50%;
-  background-color: rgb(59, 183, 94);
+  background-color: #03659b;
   width: 20px;
   height: 20px;
   display: -webkit-flex;
@@ -220,12 +220,12 @@
   border-radius: 5px;
   padding: 10px 20px;
   color: #fff;
-  background: rgb(59, 183, 94);
+  background: #03659b;
 }
 .btn_cta:hover {
-  background: rgb(59, 183, 94);
+  background: #03659b;
   border: 1px solid rgba(0, 0, 0, 0.05);
 }
-.m_t_10{
-    margin-top: 10px;
+.m_t_10 {
+  margin-top: 10px;
 }

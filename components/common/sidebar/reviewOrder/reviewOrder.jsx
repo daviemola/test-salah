@@ -13,7 +13,11 @@ const ReviewOrder = ({
   cart,
   allTotal,
   orderPlace,
+  detail,
 }) => {
+  function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
   return (
     <div className={styles.off_canvas}>
       <div className={styles.sidebar_container}>
@@ -49,7 +53,7 @@ const ReviewOrder = ({
               <div className={styles.order_view_customer_info}>
                 <div className={styles.order_view_contact_info_row}>
                   <div className={styles.order_view_avatar}>
-                    {customerFirstName.charAt(0).toUpperCase()}
+                    {customerFirstName.charAt(0).toLowerCase()}
                   </div>
                   <span className={styles.order_view_customer_info_text}>
                     {customerFirstName} {customerLastName}
@@ -117,27 +121,10 @@ const ReviewOrder = ({
                           }
                         >
                           <span className={styles.order_summary_product_price}>
-                            {item.currency} {item.totalPrice}
-                          </span>
-                        </div>
-                      </div>
-                      <div className={styles.order_summary_row}>
-                        <div
-                          className={
-                            styles.order_summary_product_name_container
-                          }
-                        >
-                          <span className={styles.order_summary_variant_name}>
-                            {item?.size} {item?.border} {item?.frame}
-                          </span>
-                        </div>
-                        <div
-                          className={
-                            styles.order_summary_product_price_container
-                          }
-                        >
-                          <span className={styles.order_summary_product_price}>
-                            {item.currency} {item.totalPrice}
+                            {item.currency}{" "}
+                            {item.totalPrice
+                              ? numberWithCommas(item.totalPrice / 100)
+                              : 0}
                           </span>
                         </div>
                       </div>
@@ -152,7 +139,11 @@ const ReviewOrder = ({
                 </div>
                 <div className={styles.order_summary_product_price_container}>
                   <span className={styles.order_summary_product_price}>
-                    {shippingPrice}
+                    {`${detail?.shipping_fees[0]?.currency} ${
+                      detail?.shipping_fees[0].fee
+                        ? numberWithCommas(detail?.shipping_fees[0].fee / 100)
+                        : 0
+                    }`}
                   </span>
                 </div>
               </div>
@@ -164,7 +155,14 @@ const ReviewOrder = ({
                 </div>
                 <div className={styles.order_summary_product_price_container}>
                   <span className={styles.order_summary_product_price}>
-                    ILS {allTotal}
+                    {detail?.shipping_fees[0].currency}{" "}
+                    {allTotal
+                      ? numberWithCommas(
+                          (Number(allTotal) +
+                            Number(detail?.shipping_fees[0].fee)) /
+                            100
+                        )
+                      : 0}
                   </span>
                 </div>
               </div>
@@ -175,12 +173,19 @@ const ReviewOrder = ({
           <div className={styles.sidebar_actions}>
             <button
               className={`${styles.button} ${styles.btn_cta}`}
-              style={{ background: "rgb(59, 183, 94)" }}
+              style={{ background: "#03659B" }}
+              // style={{ background: "rgb(59, 183, 94)" }}
               onClick={(e) => {
                 orderPlace(e);
               }}
             >
-              Pay ILS {allTotal}
+              Pay {detail?.shipping_fees[0].currency}{" "}
+              {allTotal
+                ? numberWithCommas(
+                    (Number(allTotal) + Number(detail?.shipping_fees[0].fee)) /
+                      100
+                  )
+                : 0}
             </button>
             <button
               className={`${styles.button} ${styles.m_t_10}`}

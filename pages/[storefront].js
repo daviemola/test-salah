@@ -9,6 +9,7 @@ import Drawer from "@mui/material/Drawer";
 import { FloatingCartIconMobile } from "@/components/common/FloatingCartIconMobile/index";
 import { NoSearchFound } from "@/components/common/nosearchfound/index";
 import { LoadingView } from "@/components/common/loadingView/index";
+import { LoadingViewSearch } from "@/components/common/LoadingViewSearch/index";
 import CartContext from "@/context/CartContext";
 import { useContext } from "react";
 
@@ -28,12 +29,14 @@ export const getStaticPaths = () => {
 };
 
 const StoreFront = ({ products, detail }) => {
+  console.log(detail);
   const router = useRouter();
   const { storefront, product } = router.query;
   const [searchKeyword, setSearchKeyword] = useState("");
   const [checkItem, setcheckItem] = useState(true);
   const [showProducts, setShowProducts] = useState(products);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [loadingsearch, setLoadingsearch] = useState(true);
   const { toggleSidebar, sidetoggle, cartItems, total } =
     useContext(CartContext);
 
@@ -67,10 +70,13 @@ const StoreFront = ({ products, detail }) => {
   };
 
   useEffect(() => {
-    setLoading(true);
+    // setLoadingsearch(true);
     const callSearchApi = setTimeout(async () => {
       console.log("here");
+      setLoading(true);
+
       if (searchKeyword !== "") {
+        console.log("not search keyword");
         const apiServices = new ApiServices();
         const data = await apiServices.searchProducts(
           searchKeyword,
@@ -89,11 +95,13 @@ const StoreFront = ({ products, detail }) => {
         setShowProducts(products);
         setLoading(false);
       }
-    }, 2000);
+    }, 1000);
 
     return () => clearTimeout(callSearchApi);
     //eslint-disable-next-line
   }, [searchKeyword]);
+
+  console.log(loadingsearch);
 
   return (
     <>
@@ -133,6 +141,7 @@ const StoreFront = ({ products, detail }) => {
     </>
   );
 };
+
 export default StoreFront;
 
 export const getStaticProps = async (context) => {
