@@ -9,7 +9,6 @@ import Drawer from "@mui/material/Drawer";
 import { FloatingCartIconMobile } from "@/components/common/FloatingCartIconMobile/index";
 import { NoSearchFound } from "@/components/common/nosearchfound/index";
 import { LoadingView } from "@/components/common/loadingView/index";
-import { LoadingViewSearch } from "@/components/common/LoadingViewSearch/index";
 import CartContext from "@/context/CartContext";
 import { useContext } from "react";
 
