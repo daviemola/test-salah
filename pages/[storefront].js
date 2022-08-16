@@ -28,11 +28,12 @@ export const getStaticPaths = () => {
 };
 
 const StoreFront = ({ products, detail }) => {
-  console.log(detail);
+  // console.log(detail);
   const router = useRouter();
   const { storefront, product } = router.query;
   const [searchKeyword, setSearchKeyword] = useState("");
   const [checkItem, setcheckItem] = useState(true);
+  const [showing, setshowing] = useState(false);
   const [showProducts, setShowProducts] = useState(products);
   const [loading, setLoading] = useState(false);
   const [loadingsearch, setLoadingsearch] = useState(true);
@@ -42,8 +43,6 @@ const StoreFront = ({ products, detail }) => {
   const toggleDrawer = () => {
     toggleSidebar();
   };
-
-  console.log(sidetoggle);
 
   const findKeywordData = async (e) => {
     if (e.key === "Enter") {
@@ -69,12 +68,17 @@ const StoreFront = ({ products, detail }) => {
   };
 
   useEffect(() => {
-    // setLoadingsearch(true);
+    setshowing(true);
     const callSearchApi = setTimeout(async () => {
+      setTimeout(() => {
+        setshowing(false);
+      }, 2000);
       console.log("here");
       setLoading(true);
+      setshowing(true);
 
       if (searchKeyword !== "") {
+        setshowing(false);
         console.log("not search keyword");
         const apiServices = new ApiServices();
         const data = await apiServices.searchProducts(
@@ -86,6 +90,7 @@ const StoreFront = ({ products, detail }) => {
           setShowProducts(data);
           setcheckItem(false);
         } else {
+          setshowing(false);
           setLoading(false);
           setShowProducts(data);
           setcheckItem(false);
@@ -93,14 +98,28 @@ const StoreFront = ({ products, detail }) => {
       } else {
         setShowProducts(products);
         setLoading(false);
+        setshowing(false);
       }
-    }, 1000);
+    }, 1200);
 
     return () => clearTimeout(callSearchApi);
     //eslint-disable-next-line
   }, [searchKeyword]);
 
-  console.log(loadingsearch);
+  // React.useEffect(() => {
+  //   setTimeout(() => {
+  //     setLoadingsearch(false);
+  //   }, 100);
+  // }, []);
+
+  // React.useEffect(() => {
+  //   setTimeout(() => {
+  //     setLoading(false);
+  //   }, 1000);
+  // }, []);
+
+  // console.log(loadingsearch);
+  console.log(showing);
 
   return (
     <>
@@ -110,7 +129,9 @@ const StoreFront = ({ products, detail }) => {
             setSearchKeyword={setSearchKeyword}
             searchKeyword={searchKeyword}
             findKeywordData={findKeywordData}
+            showing={showing}
           />
+
           {showProducts && showProducts.length > 0 && loading == false ? (
             <div className="container page-height">
               <div className="columns">
@@ -126,6 +147,8 @@ const StoreFront = ({ products, detail }) => {
                 })}
               </div>
             </div>
+          ) : showing === true ? (
+            <div></div>
           ) : loading ? (
             <LoadingView />
           ) : (

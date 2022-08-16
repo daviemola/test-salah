@@ -121,7 +121,7 @@ const ProductModal = ({ openModal, objectDetail, toggle, detail }) => {
                   <div className={styles.product_view__media_container}>
                     <div className={styles.carousel_product_detail}>
                       <div className={styles.navigation_wrapper}>
-                        <ProductSlider images={objectDetail?.files} />
+                        <ProductSlider images={objectDetail} />
                       </div>
                     </div>
                   </div>

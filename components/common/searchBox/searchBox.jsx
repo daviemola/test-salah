@@ -3,8 +3,9 @@ const SearchBox = ({
   searchKeyword,
   setSearchKeyword,
   findKeywordData,
-  type,
+  showing,
 }) => {
+  // console.log(showing);
   return (
     <div
       style={{ marginBottom: "24px", marginTop: "12px" }}

@@ -19,8 +19,8 @@ const NoSearchFound = ({ searchKeyword }) => {
   // React.useEffect(() => {
   setTimeout(() => {
     setKeyword(searchKeyword);
-  }, 1100);
-  // }, [searchKeyword]);
+  }, 1200);
+  // }, []);
 
   // console.log(searchKeyword);
   const toggleClick = () => {

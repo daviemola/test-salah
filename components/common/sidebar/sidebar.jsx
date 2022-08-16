@@ -218,31 +218,6 @@ const SideBar = ({ cartItems, total, detail }) => {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 
-  // useEffect(() => {
-  //   function checkZeroQuantity() {
-  //     cartItems.map((item) => {
-  //       console.log(item.quantity);
-  //       console.log(item.quantity_cart);
-  //       if (item?.quantity_cart === 0) {
-  //         console.log("first err");
-  //         setErr("You cannot order fewer than 1 item at a time");
-  //       } else if (
-  //         item?.unlimited === false &&
-  //         item.quantity_cart > item?.quantity
-  //       ) {
-  //         console.log("second err");
-  //         setErrQty(`Only ${item?.quantity} in stock`);
-  //       } else {
-  //         setErr("");
-  //         setErrQty("");
-  //       }
-  //     });
-  //   }
-  //   checkZeroQuantity();
-  // }, [cartItems]);
-  //check if quantity of any item is zero
-  //check if more items
-
   return (
     <>
       <div className={styles.off_canvas_sidebar}>
@@ -359,7 +334,8 @@ const SideBar = ({ cartItems, total, detail }) => {
                   </div>
                   <div className={styles.bagSummaryHeaderRight}>
                     <p className={styles.bagSummaryPriceText}>
-                      NGN {total ? numberWithCommas(total / 100) : 0}
+                      {detail.shipping_fees[0].currency}{" "}
+                      {total ? numberWithCommas(total / 100) : 0}
                     </p>
                   </div>
                 </div>
@@ -370,11 +346,15 @@ const SideBar = ({ cartItems, total, detail }) => {
                       className={styles.bagSummaryPriceText}
                       style={{ color: "gray" }}
                     >
-                      {`Shipping: ${detail?.shipping_fees[0]?.currency} ${
-                        detail?.shipping_fees[0].fee
-                          ? numberWithCommas(detail?.shipping_fees[0].fee / 100)
-                          : 0
-                      }`}
+                      {cartItems.length === 0
+                        ? `Shipping:  ${detail?.shipping_fees[0]?.currency} 0`
+                        : `Shipping: ${detail?.shipping_fees[0]?.currency} ${
+                            detail?.shipping_fees[0].fee
+                              ? numberWithCommas(
+                                  detail?.shipping_fees[0].fee / 100
+                                )
+                              : 0
+                          }`}
                     </p>
                   </div>
                 </div>

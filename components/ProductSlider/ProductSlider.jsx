@@ -1,7 +1,6 @@
 import React from "react";
 import { useKeenSlider } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
-import styles from "./ProductSlider.module.css";
 
 const ProductSlider = ({ images }) => {
   const [currentSlide, setCurrentSlide] = React.useState(0);
@@ -12,26 +11,41 @@ const ProductSlider = ({ images }) => {
     },
   });
 
+  console.log(images.files.length);
+
   return (
     <div className="carousel-product-card">
       <div className="navigation-wrapper">
         <div ref={sliderRef} className="keen-slider">
-          {images &&
-            images.map((item) => {
+          {images.files.length !== 0 ? (
+            images?.files.map((item) => {
               return (
                 <div className={`keen-slider__slide slide`} key={item.key}>
                   <div className="slide-file-wrapper">
                     <img
                       className="slide-file"
-                      src={item.path}
-                      alt={item.type}
+                      src={
+                        images.files.length === 0 ? `/bagtwo.svg` : item?.path
+                      }
+                      alt={`product image`}
                     />
                   </div>
                 </div>
               );
-            })}
+            })
+          ) : (
+            <div className={`keen-slider__slide slide`}>
+              <div className="slide-file-wrapper">
+                <img
+                  className="slide-file"
+                  src={`/bagtwo.svg`}
+                  alt={`product image`}
+                />
+              </div>
+            </div>
+          )}
         </div>
-        {slider && (
+        {slider && images.files.length > 1 && (
           <>
             <ArrowLeft
               onClick={(e) => e.stopPropagation() || slider.prev()}

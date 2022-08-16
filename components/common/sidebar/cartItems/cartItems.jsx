@@ -65,7 +65,9 @@ const CartItemDisplay = ({ item, index, deleteItem }) => {
       <div className={`${styles.flex} ${styles.flex_justify_start}`}>
         <div>
           <img
-            src={item?.files[0]?.path}
+            src={
+              item?.files.length === 0 ? `/bagtwo.svg` : item?.files[0]?.path
+            }
             className={styles.bagView_product_image}
             alt="img"
           />
@@ -73,7 +75,9 @@ const CartItemDisplay = ({ item, index, deleteItem }) => {
         <div className={styles.bagView_product_price}>
           <p className={styles.bagView_product_price_text}>{item?.name}</p>
           <p className={styles.bagView_product_price_text}>
-            {item.currency} {numberWithCommas(item.price / 100)}
+            <span style={{ color: "#949494" }}>
+              {item.currency} {numberWithCommas(item.price / 100)}
+            </span>
           </p>
         </div>
       </div>

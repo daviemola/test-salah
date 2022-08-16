@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import ProductSlider from "../ProductSlider/ProductSlider";
 import ProductModal from "../ProductModal/ProductModal";
+import styles from "./ProductCard.module.css";
 
 const ProductCard = ({ item, productQuery, detail }) => {
   // console.log({ item, productQuery, detail });
+  console.log(item);
   const router = useRouter();
   const { storefront } = router.query;
   const [openModal, setOpenModal] = useState(false);
@@ -57,8 +59,25 @@ const ProductCard = ({ item, productQuery, detail }) => {
       >
         <div className="product">
           <div className="product__media-container product__media-container--single-file">
-            {item?.files?.length > 1 ? (
-              <ProductSlider images={item.files} />
+            {item?.files.length === 0 ? (
+              <>
+                <img
+                  src="/bag.svg"
+                  className="product-view__media--img "
+                  alt="product-image"
+                />
+              </>
+            ) : (
+              <>
+                <img
+                  src={`${item.files[0].path}`}
+                  className="product-view__media--img "
+                  alt="product-image"
+                />
+              </>
+            )}
+            {/* {item?.files?.length > 1 ? (
+              <ProductSlider images={item} />
             ) : (
               <div className="file-wrapper file-wrapper__single-image">
                 {item?.files?.length == 0 ? (
@@ -75,7 +94,7 @@ const ProductCard = ({ item, productQuery, detail }) => {
                   />
                 )}
               </div>
-            )}
+            )} */}
           </div>
           <div className="product__details">
             <div className="product__details__name">
