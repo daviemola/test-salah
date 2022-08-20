@@ -9,8 +9,13 @@ import OrderDeail from "./reviewOrder/reviewOrder";
 import axios from "axios";
 
 const SideBar = ({ cartItems, total, detail, item }) => {
-  const { toggleSidebar, deleteDataFromCart, qtyZeroErr, moreQtyErr } =
-    useContext(CartContext);
+  const {
+    toggleSidebar,
+    deleteDataFromCart,
+    qtyZeroErr,
+    itemCount,
+    moreQtyErr,
+  } = useContext(CartContext);
   const [showCheckout, setShowCheckout] = useState(false);
   const [showOrderDeatil, setShowOrderDeatil] = useState(false);
 
@@ -71,8 +76,8 @@ const SideBar = ({ cartItems, total, detail, item }) => {
         // item.quantity_cart = 0;
       }
     });
-    console.log(item.quantity_cart);
-    console.log(itemSelected[0]);
+    // console.log(item.quantity_cart);
+    // console.log(itemSelected[0]);
 
     deleteDataFromCart(itemSelected[0]);
   };
@@ -340,7 +345,7 @@ const SideBar = ({ cartItems, total, detail, item }) => {
                           fontWeight: "bold",
                         }}
                       >
-                        {cartItems?.length}
+                        {itemCount}
                       </span>
                     </div>
                   </div>

@@ -16,6 +16,7 @@ const ProductModal = ({ openModal, objectDetail, toggle, detail }) => {
   const [size, setSize] = React.useState("Choose");
   const [err, setErr] = React.useState("");
   const [errZero, setErrZero] = React.useState("");
+  const [apiErr, setApiErr] = React.useState(true);
   const [border, setBorder] = React.useState("");
   const [frame, setFrame] = React.useState("");
   const [variantlength, setVariantLength] = React.useState(
@@ -32,6 +33,8 @@ const ProductModal = ({ openModal, objectDetail, toggle, detail }) => {
       setCurrentSlide(s.details().relativeSlide);
     },
   });
+
+  console.log(variantlength);
 
   const { addToCart, toggleSidebar, cartItems, increase } =
     useContext(CartContext);
@@ -95,9 +98,11 @@ const ProductModal = ({ openModal, objectDetail, toggle, detail }) => {
       const { data } = await axios.get(
         `https://api.paystack.co/product/verify/${objectDetail?.name}/variant?size=${frame}&another%20option=${border}`
       );
+      if (data.data) setApiErr(false);
       return data.data;
     } catch (error) {
       setErr(error?.response?.data?.message);
+      setApiErr(true);
       // console.log(error.response.data);
       return [];
     }
@@ -174,7 +179,7 @@ const ProductModal = ({ openModal, objectDetail, toggle, detail }) => {
                                     styles.variant_select_container__input
                                   }
                                 >
-                                  <span>{size}</span>
+                                  <span>{border ? border : size}</span>
                                   <svg
                                     width="8"
                                     height="4"
@@ -196,6 +201,7 @@ const ProductModal = ({ openModal, objectDetail, toggle, detail }) => {
                                     setBorder(e.target.value);
                                     setErr("");
                                     validateItems();
+                                    // console.log(border);
                                     // objectDetail?.quantity === 0
                                     //   ? setErr("Product not foun d")
                                     //   : setErr("");
@@ -265,7 +271,12 @@ const ProductModal = ({ openModal, objectDetail, toggle, detail }) => {
                       <span>
                         <button
                           type="button"
-                          disabled={border === "" && err !== ""}
+                          disabled={
+                            objectDetail?.variant_options.length === 0
+                              ? border === "" && err !== ""
+                              : apiErr
+                          }
+                          // disabled={border === "" && err !== ""}
                           className="quantity--minus"
                           onClick={(e) => {
                             quantity > 1 && setQuantity(Number(quantity) - 1);
@@ -278,9 +289,10 @@ const ProductModal = ({ openModal, objectDetail, toggle, detail }) => {
                       <input
                         type="tel"
                         disabled={
-                          border === "" &&
-                          err !== "" &&
-                          objectDetail?.variant_options.length > 0
+                          (border === "" &&
+                            err !== "" &&
+                            objectDetail?.variant_options.length > 0) ||
+                          apiErr
                         }
                         className={styles.quantity_input}
                         value={Number(quantity)}
@@ -304,7 +316,12 @@ const ProductModal = ({ openModal, objectDetail, toggle, detail }) => {
                       <span>
                         <button
                           className="quantity--plus"
-                          disabled={border === "" && err !== ""}
+                          disabled={
+                            objectDetail?.variant_options.length === 0
+                              ? border === "" && err !== ""
+                              : apiErr
+                          }
+                          // disabled={apiErr}
                           onClick={(e) => {
                             // console.log("first");
                             setQuantity(Number(quantity) + 1);

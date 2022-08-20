@@ -1,5 +1,8 @@
 import React from "react";
 import styles from "./reviewOrder.module.css";
+import CartContext from "@/context/CartContext";
+import { useContext } from "react";
+
 const ReviewOrder = ({
   checkout,
   customerFirstName,
@@ -15,6 +18,7 @@ const ReviewOrder = ({
   orderPlace,
   detail,
 }) => {
+  const { itemCount } = useContext(CartContext);
   function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
@@ -45,7 +49,7 @@ const ReviewOrder = ({
                   fill="#03649A"
                 ></path>
               </svg>
-              <span className={styles.navbar_cart_total}>1</span>
+              <span className={styles.navbar_cart_total}>{itemCount}</span>
             </div>
           </div>
           <div className={styles.order_view_inner}>

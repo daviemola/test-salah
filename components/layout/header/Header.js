@@ -11,7 +11,7 @@ import { ApiServices } from "@/services/apiService";
 const Header = ({ detail }) => {
   const { width, height } = useWindowSize();
   const [length, setLength] = useState();
-  const { toggleSidebar, cartItems } = useContext(CartContext);
+  const { toggleSidebar, cartItems, itemCount } = useContext(CartContext);
 
   useEffect(() => {
     setLength(cartItems?.length);
@@ -118,7 +118,7 @@ const Header = ({ detail }) => {
                             : "#ffffff",
                       }}
                     >
-                      {length}
+                      {itemCount}
                     </div>
                   </>
                 ) : null}
