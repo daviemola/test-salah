@@ -98,7 +98,7 @@ const StoreFront = ({ products, detail }) => {
             setLoading(false);
             setShowProducts(data);
             setcheckItem(false);
-          }, 1000);
+          }, 500);
         }
       } else {
         setShowProducts(products);

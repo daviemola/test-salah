@@ -10,11 +10,11 @@ const LoadingView = () => {
     setTimeout(() => {
       setloading(false);
       // React.useEffect(() => {
-      setTimeout(() => {
-        setloading2(false);
-      }, 4000);
+      // setTimeout(() => {
+      //   setloading2(false);
+      // }, 1000);
       // }, []);
-    }, 250);
+    }, 3000);
   }, []);
 
   return (
@@ -23,7 +23,7 @@ const LoadingView = () => {
         className={styles.loading_view_title}
         style={{ color: "#fff", fontSize: "20px" }}
       >
-        {loading ? "" : loading2 ? "Searching Products..." : null}
+        {loading ? "Searching Products..." : null}
       </span>
     </div>
   );
