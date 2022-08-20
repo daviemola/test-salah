@@ -71,11 +71,11 @@ const StoreFront = ({ products, detail }) => {
   useEffect(() => {
     setshowing(true);
     const callSearchApi = setTimeout(async () => {
-      setTimeout(() => {
-        console.log("showing false");
-        setshowing(false);
-      }, 2000);
-      // console.log("here");
+      // setTimeout(() => {
+      //   console.log("showing false");
+      //   setshowing(false);
+      // }, 2000);
+      // // console.log("here");
       setLoading(true);
       setshowing(true);
 
