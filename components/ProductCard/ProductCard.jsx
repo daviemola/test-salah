@@ -6,7 +6,7 @@ import styles from "./ProductCard.module.css";
 
 const ProductCard = ({ item, productQuery, detail }) => {
   // console.log({ item, productQuery, detail });
-  console.log(item);
+  // console.log(item);
   const router = useRouter();
   const { storefront } = router.query;
   const [openModal, setOpenModal] = useState(false);

@@ -7,6 +7,7 @@ const CartItemDisplay = ({ item, index, deleteItem }) => {
   const {
     increase,
     decrease,
+    quantity: q,
     itemCount,
     addToCart,
     qtyZeroErrFunc,
@@ -15,6 +16,9 @@ const CartItemDisplay = ({ item, index, deleteItem }) => {
   const [quantity, setQuantity] = useState(itemCount);
   const [err, setErr] = useState("");
   const [errQty, setErrQty] = useState("");
+
+  // console.log(itemCount);
+  // console.log(q);
 
   React.useEffect(() => {
     setQuantity(itemCount);
@@ -58,7 +62,7 @@ const CartItemDisplay = ({ item, index, deleteItem }) => {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 
-  console.log(item);
+  // console.log(item);
 
   return (
     <div className={styles.bagView_product} key={index}>

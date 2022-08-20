@@ -8,7 +8,7 @@ import Checkout from "./checkout/checkout";
 import OrderDeail from "./reviewOrder/reviewOrder";
 import axios from "axios";
 
-const SideBar = ({ cartItems, total, detail }) => {
+const SideBar = ({ cartItems, total, detail, item }) => {
   const { toggleSidebar, deleteDataFromCart, qtyZeroErr, moreQtyErr } =
     useContext(CartContext);
   const [showCheckout, setShowCheckout] = useState(false);
@@ -60,8 +60,17 @@ const SideBar = ({ cartItems, total, detail }) => {
     // );
     setUpdatedCartItems(updateCart);
   };
+  let items = item;
   const deleteItem = (e, item) => {
     e.preventDefault();
+    console.log(items);
+    items.map((it) => {
+      if (it.id === item.id) {
+        console.log("item found");
+        item.quantity_cart = 0;
+      }
+    });
+    console.log(item.quantity_cart);
     deleteDataFromCart(item);
   };
 

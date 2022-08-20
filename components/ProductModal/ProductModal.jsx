@@ -33,21 +33,40 @@ const ProductModal = ({ openModal, objectDetail, toggle, detail }) => {
     },
   });
 
-  const { addToCart, toggleSidebar } = useContext(CartContext);
-  // console.log(quantity);
+  const { addToCart, toggleSidebar, cartItems, increase } =
+    useContext(CartContext);
 
-  const addToCartItem = () => {
-    console.log(size);
-    if (quantity !== 0) {
-      let data = objectDetail;
-      data.size = size;
-      data.border = border;
-      data.frame = frame;
-      data.quantity_cart = quantity;
-      addToCart(data);
-      setButtonShow(false);
-      toggle();
-      toggleSidebar();
+  const isInCart = (product) => {
+    return !!cartItems.find((item) => item.id === product.id);
+  };
+
+  const addToCartItems = () => {
+    if (isInCart(objectDetail)) {
+      if (quantity !== 0) {
+        console.log(objectDetail);
+        console.log("in cart");
+        let data = objectDetail;
+        data.quantity_cart = Number(quantity) + data.quantity_cart;
+        console.log(data.quantity_cart);
+        addToCart(data);
+        setButtonShow(false);
+        toggle();
+        toggleSidebar();
+      }
+    } else {
+      console.log("not in cart");
+      if (quantity !== 0) {
+        let data = objectDetail;
+        data.size = size;
+        data.border = border;
+        data.frame = frame;
+        data.quantity_cart = quantity;
+        console.log(data);
+        addToCart(data);
+        setButtonShow(false);
+        toggle();
+        toggleSidebar();
+      }
     }
   };
 
@@ -58,8 +77,8 @@ const ProductModal = ({ openModal, objectDetail, toggle, detail }) => {
   const getBorder = (e) => {
     setBorder(e.target.value);
   };
-  console.log(quantity);
-  console.log(err);
+  // console.log(quantity);
+  // console.log(err);
 
   const toggleClick = () => {
     setToggleContactSeller(!toggleContactSeller);
@@ -216,8 +235,8 @@ const ProductModal = ({ openModal, objectDetail, toggle, detail }) => {
                                           : `${styles.variant_button} ${styles.m_r_10}`
                                       }
                                       onClick={(e) => {
-                                        console.log("clicking");
-                                        console.log(border);
+                                        // console.log("clicking");
+                                        // console.log(border);
 
                                         setFrame(value.name);
                                         border ? validateItems() : null;
@@ -287,7 +306,7 @@ const ProductModal = ({ openModal, objectDetail, toggle, detail }) => {
                           className="quantity--plus"
                           disabled={border === "" && err !== ""}
                           onClick={(e) => {
-                            console.log("first");
+                            // console.log("first");
                             setQuantity(Number(quantity) + 1);
                             setErrZero("");
                           }}
@@ -336,7 +355,7 @@ const ProductModal = ({ openModal, objectDetail, toggle, detail }) => {
                             fontWeight: "600",
                             opacity: 0.5,
                           }}
-                          onClick={addToCartItem}
+                          onClick={addToCartItems}
                         >
                           Add to bag
                         </button>
@@ -362,7 +381,7 @@ const ProductModal = ({ openModal, objectDetail, toggle, detail }) => {
                                 ? 0.5
                                 : 1,
                           }}
-                          onClick={addToCartItem}
+                          onClick={addToCartItems}
                         >
                           Add to bag
                         </button>

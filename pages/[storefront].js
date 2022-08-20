@@ -46,6 +46,7 @@ const StoreFront = ({ products, detail }) => {
 
   const findKeywordData = async (e) => {
     if (e.key === "Enter") {
+      console.log("first");
       setLoading(true);
       const apiServices = new ApiServices();
       const data = await apiServices.searchProducts(searchKeyword, storefront);
@@ -61,7 +62,7 @@ const StoreFront = ({ products, detail }) => {
     }
     console.log(searchKeyword);
     if (searchKeyword === "") {
-      console.log("nothing on searchkeyword");
+      // console.log("nothing on searchkeyword");
       setShowProducts(products);
       setcheckItem(false);
     }
@@ -73,27 +74,31 @@ const StoreFront = ({ products, detail }) => {
       setTimeout(() => {
         setshowing(false);
       }, 2000);
-      console.log("here");
+      // console.log("here");
       setLoading(true);
       setshowing(true);
 
       if (searchKeyword !== "") {
         setshowing(false);
-        console.log("not search keyword");
+        // console.log("not search keyword");
         const apiServices = new ApiServices();
         const data = await apiServices.searchProducts(
           searchKeyword,
           storefront
         );
         if (data.length > 0) {
-          setLoading(false);
-          setShowProducts(data);
-          setcheckItem(false);
+          setTimeout(() => {
+            setLoading(false);
+            setShowProducts(data);
+            setcheckItem(false);
+          }, 500);
         } else {
-          setshowing(false);
-          setLoading(false);
-          setShowProducts(data);
-          setcheckItem(false);
+          setTimeout(() => {
+            setshowing(false);
+            setLoading(false);
+            setShowProducts(data);
+            setcheckItem(false);
+          }, 1000);
         }
       } else {
         setShowProducts(products);
@@ -105,21 +110,6 @@ const StoreFront = ({ products, detail }) => {
     return () => clearTimeout(callSearchApi);
     //eslint-disable-next-line
   }, [searchKeyword]);
-
-  // React.useEffect(() => {
-  //   setTimeout(() => {
-  //     setLoadingsearch(false);
-  //   }, 100);
-  // }, []);
-
-  // React.useEffect(() => {
-  //   setTimeout(() => {
-  //     setLoading(false);
-  //   }, 1000);
-  // }, []);
-
-  // console.log(loadingsearch);
-  console.log(showing);
 
   return (
     <>
@@ -155,7 +145,12 @@ const StoreFront = ({ products, detail }) => {
             <NoSearchFound searchKeyword={searchKeyword} />
           )}
           <Drawer anchor={"right"} open={sidetoggle} onClose={toggleDrawer}>
-            <Sidebar cartItems={cartItems} detail={detail} total={total} />
+            <Sidebar
+              cartItems={cartItems}
+              detail={detail}
+              total={total}
+              item={products}
+            />
           </Drawer>
           <FloatingCartIconMobile onClose={toggleDrawer} />
         </div>

@@ -60,7 +60,7 @@ const CartReducer = (state, action) => {
       let cart_Clone = state.cart;
       let isZeroErr;
       for (let i = 0; i < cart_Clone?.length; i++) {
-        console.log("here; " + cart_Clone[i].quantity_cart);
+        // console.log("here; " + cart_Clone[i].quantity_cart);
         if (cart_Clone[i].quantity_cart === 0) {
           console.log("zero items");
           isZeroErr = true;
@@ -84,15 +84,25 @@ const CartReducer = (state, action) => {
   switch (action.type) {
     // If the action type is ADD_TO_CART, we want to add the item to the cartItems array
     case ADD_TO_CART:
+      // console.log(state.cartItems);
+      // console.log(action.payload);
       if (!state.cartItems.find((item) => item.id === action.payload.id)) {
-        console.log(action.payload);
-
+        console.log("not here");
         action.payload.totalPrice =
           action.payload.quantity_cart * Number(action.payload.price);
         state.cartItems.push({
           ...action.payload,
-          // quantity: 1,
         });
+      } else {
+        console.log("here");
+        const item = state.cartItems.find(
+          (item) => item.id === action.payload.id
+        );
+        console.log(item);
+        console.log(action.payload);
+
+        item.quantity_cart = action.payload.quantity_cart;
+        console.log(item);
       }
 
       return {
@@ -222,15 +232,22 @@ const CartReducer = (state, action) => {
       };
 
     case DELETE_FROM_CART:
+      const ite = state.cartItems.map((item) => {
+        if (item.id === action.payload.id) item.quantity_cart = 0;
+        return item;
+      });
+      console.log(ite);
+      console.log(state.cartItems);
+
       return {
         ...state,
         ...sumItems(
           state.cartItems.filter((item) => {
-            console.log(item.id);
-            console.log(action.payload.id);
+            item.quantity_cart = 0;
             return item.id !== action.payload.id;
           })
         ),
+
         cartItems: [
           ...state.cartItems.filter((item) => item.id !== action.payload.id),
         ],
