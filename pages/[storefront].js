@@ -72,6 +72,7 @@ const StoreFront = ({ products, detail }) => {
     setshowing(true);
     const callSearchApi = setTimeout(async () => {
       setTimeout(() => {
+        console.log("showing false");
         setshowing(false);
       }, 2000);
       // console.log("here");
@@ -91,6 +92,7 @@ const StoreFront = ({ products, detail }) => {
             setLoading(false);
             setShowProducts(data);
             setcheckItem(false);
+            console.log("first success");
           }, 500);
         } else {
           setTimeout(() => {
@@ -98,6 +100,7 @@ const StoreFront = ({ products, detail }) => {
             setLoading(false);
             setShowProducts(data);
             setcheckItem(false);
+            console.log("second failure");
           }, 500);
         }
       } else {

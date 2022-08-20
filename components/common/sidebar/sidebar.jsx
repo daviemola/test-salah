@@ -64,14 +64,17 @@ const SideBar = ({ cartItems, total, detail, item }) => {
   const deleteItem = (e, item) => {
     e.preventDefault();
     console.log(items);
-    items.map((it) => {
+    let itemSelected = items.filter((it) => {
       if (it.id === item.id) {
-        console.log("item found");
-        item.quantity_cart = 0;
+        console.log("item found yeas");
+        return it;
+        // item.quantity_cart = 0;
       }
     });
     console.log(item.quantity_cart);
-    deleteDataFromCart(item);
+    console.log(itemSelected[0]);
+
+    deleteDataFromCart(itemSelected[0]);
   };
 
   const closeCheckOut = () => {

@@ -17,9 +17,10 @@ const NoSearchFound = ({ searchKeyword }) => {
   //settimeout for contact seller
 
   // React.useEffect(() => {
-  setTimeout(() => {
-    setKeyword(searchKeyword);
-  }, 1200);
+  // setTimeout(() => {
+  //   console.log("searching no results");
+  //   setKeyword(searchKeyword);
+  // }, 1200);
   // }, []);
 
   // console.log(searchKeyword);

@@ -7,7 +7,7 @@ const CartItemDisplay = ({ item, index, deleteItem }) => {
   const {
     increase,
     decrease,
-    quantity: q,
+    // quantity,
     itemCount,
     addToCart,
     qtyZeroErrFunc,

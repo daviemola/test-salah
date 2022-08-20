@@ -243,7 +243,7 @@ const CartReducer = (state, action) => {
         ...state,
         ...sumItems(
           state.cartItems.filter((item) => {
-            item.quantity_cart = 0;
+            // item.quantity_cart = 0;
             return item.id !== action.payload.id;
           })
         ),
