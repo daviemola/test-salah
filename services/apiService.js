@@ -2,10 +2,13 @@ import axios from "../helpers/axios";
 
 export class ApiServices {
   async getStoreFrontDetail(storefront) {
+    console.log("first");
     try {
       const { data } = await axios.get(`${storefront}`);
+      console.log(data);
       return data.data;
     } catch (error) {
+      console.log(error);
       return [];
     }
   }
@@ -32,7 +35,9 @@ export class ApiServices {
 
   async getProductDetail(slug) {
     try {
-      const { data } = await axios.get(`product/verify/${slug}`);
+      console.log("name ");
+      // const { data } = await axios.get(`product/verify/${slug}`);
+      const { data } = await axios.get(`product/verify/popup`);
       return data.data;
     } catch (error) {
       return [];

@@ -41,6 +41,9 @@ const CartItemDisplay = ({ item, index, deleteItem }) => {
       ) {
         moreQtyErrFunc();
         setErrQty(`Only ${item?.quantity} in stock`);
+      } else if (item?.quantity_cart < 0) {
+        qtyZeroErrFunc();
+        setErr("Nothing is in stock");
       } else {
         qtyZeroErrFunc();
         moreQtyErrFunc();

@@ -8,12 +8,13 @@ import {
 } from "react-icons/ai";
 import { BsTelephone } from "react-icons/bs";
 import { MdKeyboardArrowUp, MdKeyboardArrowDown } from "react-icons/md";
+import { lightOrDark } from "../../../utils/lightOrDark";
 
-const NoSearchFound = ({ searchKeyword }) => {
+const NoSearchFound = ({ searchKeyword, detail }) => {
   const [toggleContactSeller, setToggleContactSeller] = React.useState(false);
   //usestate for keyword
   const [keyword, setKeyword] = React.useState(searchKeyword);
-
+  console.log(detail);
   //settimeout for contact seller
 
   // React.useEffect(() => {
@@ -32,12 +33,24 @@ const NoSearchFound = ({ searchKeyword }) => {
     <div className={styles.search_not_found}>
       <p
         className={styles.search_not_found_title}
-        style={{ color: "#fff", fontSize: "24px" }}
+        style={{
+          color:
+            lightOrDark(detail?.background_color) === "light"
+              ? "#57584E"
+              : "#ffffff",
+          fontSize: "24px",
+        }}
       >
         We couldn&apos;t find{" "}
         <span
           className={styles.search_not_found_title_product}
-          style={{ color: "#fff", fontSize: "24px" }}
+          style={{
+            color:
+              lightOrDark(detail?.background_color) === "light"
+                ? "#57584E"
+                : "#ffffff",
+            fontSize: "24px",
+          }}
         >
           {`"${keyword}"`}
         </span>
@@ -54,9 +67,15 @@ const NoSearchFound = ({ searchKeyword }) => {
               className={`${styles.button} ${styles.button_default} ${styles.dropdown_toggle} ${styles.dropdown_container_button}`}
               onClick={toggleClick}
               style={{
-                border: "1px solid #fff",
-                color: "#fff",
-                backgroundColor: "#03649A",
+                border:
+                  lightOrDark(detail?.background_color) === "light"
+                    ? "1px solid #57584E"
+                    : "1px solid #fff",
+                color:
+                  lightOrDark(detail?.background_color) === "light"
+                    ? "#57584E"
+                    : "#ffffff",
+                backgroundColor: detail.background_color,
               }}
             >
               <span className={`${styles.icon_container} ${styles.start}`}>
@@ -72,11 +91,16 @@ const NoSearchFound = ({ searchKeyword }) => {
               </span>
               <span
                 className={styles.dropdown_container_title}
-                style={{ background: "#03649A" }}
+                // style={{ background: detail.background_color }}
               >
                 <span
                   className={styles.dropdown_container__title_default}
-                  style={{ color: "#fff" }}
+                  style={{
+                    color:
+                      lightOrDark(detail?.background_color) === "light"
+                        ? "#57584E"
+                        : "#ffffff",
+                  }}
                 >
                   Contact Seller
                 </span>
@@ -103,9 +127,15 @@ const NoSearchFound = ({ searchKeyword }) => {
                     <div
                       className={`${styles.tag} ${styles.tag_contact}`}
                       style={{
-                        border: "1px solid #fff",
-                        color: "#fff",
-                        backgroundColor: "#03649A",
+                        border:
+                          lightOrDark(detail?.background_color) === "light"
+                            ? "1px solid #57584E"
+                            : "1px solid #fff",
+                        color:
+                          lightOrDark(detail?.background_color) === "light"
+                            ? "#57584E"
+                            : "#ffffff",
+                        backgroundColor: detail.background_color,
                         paddingBottom: "24px",
                       }}
                     >
@@ -123,7 +153,13 @@ const NoSearchFound = ({ searchKeyword }) => {
 
                           <span
                             className={styles.tag_options}
-                            style={{ color: "#fff" }}
+                            style={{
+                              color:
+                                lightOrDark(detail?.background_color) ===
+                                "light"
+                                  ? "#57584E"
+                                  : "#ffffff",
+                            }}
                           >
                             Whatsapp
                           </span>
@@ -137,9 +173,15 @@ const NoSearchFound = ({ searchKeyword }) => {
                     <div
                       className={`${styles.tag} ${styles.tag_contact}`}
                       style={{
-                        border: "1px solid #fff",
-                        color: "#fff",
-                        backgroundColor: "#03649A",
+                        border:
+                          lightOrDark(detail?.background_color) === "light"
+                            ? "1px solid #57584E"
+                            : "1px solid #fff",
+                        color:
+                          lightOrDark(detail?.background_color) === "light"
+                            ? "#57584E"
+                            : "#ffffff",
+                        backgroundColor: detail.background_color,
                       }}
                     >
                       <span className={styles.w_100}>
@@ -149,15 +191,14 @@ const NoSearchFound = ({ searchKeyword }) => {
                           <BsTelephone
                             style={{ fontSize: "20px", marginLeft: "12px" }}
                           />
-                          {/* <img
-                            src="/assets/images/phone.svg"
-                            alt="click"
-                            className={styles.tag_img_custom}
-                          /> */}
                           <span
                             className={styles.tag_options}
                             style={{
-                              color: "#fff",
+                              color:
+                                lightOrDark(detail?.background_color) ===
+                                "light"
+                                  ? "#57584E"
+                                  : "#ffffff",
                             }}
                           >
                             Phone
@@ -175,9 +216,15 @@ const NoSearchFound = ({ searchKeyword }) => {
                     <div
                       className={`${styles.tag} ${styles.tag_contact}`}
                       style={{
-                        border: "1px solid #fff",
-                        color: "#fff",
-                        backgroundColor: "#03649A",
+                        border:
+                          lightOrDark(detail?.background_color) === "light"
+                            ? "1px solid #57584E"
+                            : "1px solid #fff",
+                        color:
+                          lightOrDark(detail?.background_color) === "light"
+                            ? "#57584E"
+                            : "#ffffff",
+                        backgroundColor: detail.background_color,
                       }}
                     >
                       <span className={styles.w_100}>
@@ -187,16 +234,14 @@ const NoSearchFound = ({ searchKeyword }) => {
                           <AiOutlineMail
                             style={{ fontSize: "24px", marginLeft: "12px" }}
                           />
-
-                          {/* <img
-                            src="https://paystack.shop/assets/images/mail-sm-gray.svg"
-                            alt="click"
-                            className={styles.tag_img}
-                          /> */}
                           <span
                             className={styles.tag_options}
                             style={{
-                              color: "#fff",
+                              color:
+                                lightOrDark(detail?.background_color) ===
+                                "light"
+                                  ? "#57584E"
+                                  : "#ffffff",
                             }}
                           >
                             Email

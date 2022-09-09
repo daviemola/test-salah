@@ -1,11 +1,13 @@
 import React from "react";
-
 import styles from "./socialMediaIcons.module.css";
 import { lightOrDark } from "../../../utils/lightOrDark";
-import { BsTwitter, BsInstagram, BsFacebook } from "react-icons/bs";
-import { ImFacebook } from "react-icons/im";
+import { BsTwitter, BsInstagram } from "react-icons/bs";
+import { ImWhatsapp } from "react-icons/im";
 
 const SocialMediaIcons = ({ detail }) => {
+  // console.log(
+  //   detail?.contacts?.find((media) => media.type_name === "Whatsapp")
+  // );
   return (
     <div
       className="social-media flex flex-justify--center"
@@ -21,13 +23,17 @@ const SocialMediaIcons = ({ detail }) => {
         >
           <BsInstagram
             style={{
-              color: "#fff",
+              color:
+                lightOrDark(detail?.background_color) === "light"
+                  ? "#57584E"
+                  : "#ffffff",
+              fontSize: "18px",
             }}
           />
         </a>
       </div>
 
-      <div className={styles.socialMediaIcon}>
+      {/* <div className={styles.socialMediaIcon}>
         <a
           href={`https://twitter.com/${
             detail?.social_media?.find((media) => media.type_name === "Twitter")
@@ -36,13 +42,17 @@ const SocialMediaIcons = ({ detail }) => {
         >
           <BsTwitter
             style={{
-              color: "#fff",
+              color:
+                lightOrDark(detail?.background_color) === "light"
+                  ? "#57584E"
+                  : "#ffffff",
+              fontSize: "18px",
             }}
           />
         </a>
-      </div>
+      </div> */}
 
-      <div className={styles.socialMediaIcon}>
+      {/* <div className={styles.socialMediaIcon}>
         <a
           href={`https://facebook.com/${
             detail?.social_media?.find(
@@ -52,11 +62,36 @@ const SocialMediaIcons = ({ detail }) => {
         >
           <ImFacebook
             style={{
-              color: "#fff",
+              color:
+                lightOrDark(detail?.background_color) === "light"
+                  ? "#57584E"
+                  : "#ffffff",
+              fontSize: "18px",
             }}
           />
         </a>
-      </div>
+      </div> */}
+      {detail?.contacts?.find((media) => media.type_name === "Whatsapp") !==
+        undefined && (
+        <div className={styles.socialMediaIcon}>
+          <a
+            href={`https://wa.me/${
+              detail?.contacts?.find((media) => media.type_name === "Whatsapp")
+                .value
+            }`}
+          >
+            <ImWhatsapp
+              style={{
+                color:
+                  lightOrDark(detail?.background_color) === "light"
+                    ? "#57584E"
+                    : "#ffffff",
+                fontSize: "18px",
+              }}
+            />
+          </a>
+        </div>
+      )}
     </div>
   );
 };

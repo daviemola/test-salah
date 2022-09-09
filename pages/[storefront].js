@@ -12,23 +12,8 @@ import { LoadingView } from "@/components/common/loadingView/index";
 import CartContext from "@/context/CartContext";
 import { useContext } from "react";
 
-export const getStaticPaths = () => {
-  const paths = [
-    {
-      params: { storefront: "shutabug" },
-    },
-    {
-      params: { storefront: "test-salah" },
-    },
-  ];
-  return {
-    paths,
-    fallback: false,
-  };
-};
-
 const StoreFront = ({ products, detail }) => {
-  // console.log(detail);
+  console.log(detail);
   const router = useRouter();
   const { storefront, product } = router.query;
   const [searchKeyword, setSearchKeyword] = useState("");
@@ -75,7 +60,7 @@ const StoreFront = ({ products, detail }) => {
       //   console.log("showing false");
       //   setshowing(false);
       // }, 2000);
-      // // console.log("here");
+      console.log("here");
       setLoading(true);
       setshowing(true);
 
@@ -123,6 +108,7 @@ const StoreFront = ({ products, detail }) => {
             searchKeyword={searchKeyword}
             findKeywordData={findKeywordData}
             showing={showing}
+            detail={detail}
           />
 
           {showProducts && showProducts.length > 0 && loading == false ? (
@@ -143,9 +129,9 @@ const StoreFront = ({ products, detail }) => {
           ) : showing === true ? (
             <div></div>
           ) : loading ? (
-            <LoadingView />
+            <LoadingView detail={detail} />
           ) : (
-            <NoSearchFound searchKeyword={searchKeyword} />
+            <NoSearchFound searchKeyword={searchKeyword} detail={detail} />
           )}
           <Drawer anchor={"right"} open={sidetoggle} onClose={toggleDrawer}>
             <Sidebar
@@ -164,7 +150,7 @@ const StoreFront = ({ products, detail }) => {
 
 export default StoreFront;
 
-export const getStaticProps = async (context) => {
+export async function getServerSideProps(context) {
   const storefront = context.params.storefront;
   const apiServices = new ApiServices();
   const products = await apiServices.getAllProducts(storefront);
@@ -175,4 +161,34 @@ export const getStaticProps = async (context) => {
       detail,
     },
   };
-};
+}
+
+// export const getStaticProps = async (context) => {
+//   const storefront = context.params.storefront;
+//   console.log(context);
+//   const apiServices = new ApiServices();
+//   const products = await apiServices.getAllProducts(storefront);
+//   const detail = await apiServices.getStoreFrontDetail(storefront);
+//   return {
+//     props: {
+//       products,
+//       detail,
+//     },
+//   };
+// };
+
+// export const getStaticPaths = () => {
+//   const paths = [
+//     {
+//       params: { storefront: "shutabug" },
+//     },
+//     {
+//       // params: { storefront: "test-salah" },
+//       params: { storefront: "balafaama" },
+//     },
+//   ];
+//   return {
+//     paths,
+//     fallback: false,
+//   };
+// };

@@ -8,10 +8,14 @@ import "keen-slider/keen-slider.min.css";
 import axios from "axios";
 import { useRouter } from "next/router";
 import ProductSlider from "../ProductSlider/ProductSlider";
+import { adjust } from "../../utils/coloradjust";
+import { lightOrDark } from "../../utils/lightOrDark";
+import ReactHtmlParser from "react-html-parser";
+import FirstStep from "./FirstStep";
 
 const regex = /(<([^>]+)>)/gi;
 const ProductModal = ({ openModal, objectDetail, toggle, detail }) => {
-  // console.log(objectDetail);
+  console.log(objectDetail);
   const router = useRouter();
   const [size, setSize] = React.useState("Choose");
   const [err, setErr] = React.useState("");
@@ -108,6 +112,8 @@ const ProductModal = ({ openModal, objectDetail, toggle, detail }) => {
     }
   };
 
+  console.log(objectDetail?.variant_options[0]?.name);
+
   return (
     <React.Fragment>
       <Modal
@@ -136,7 +142,7 @@ const ProductModal = ({ openModal, objectDetail, toggle, detail }) => {
               />
             </div>
           </div>
-          <div className={styles.productView_Content}>
+          <div className={``}>
             <div className={`content ${styles.container}`}>
               <div className={"columns m-0"}>
                 <div
@@ -159,109 +165,300 @@ const ProductModal = ({ openModal, objectDetail, toggle, detail }) => {
                   <h5 className={styles.product_view__merchant_name}>
                     {`By ${detail?.integration?.name}`}
                   </h5>
-                  <p className={styles.product_view__product_description}>
-                    {objectDetail?.description.replace(regex, "")}.
-                  </p>
+                  <div className={styles.product_view__product_description}>
+                    {ReactHtmlParser(objectDetail?.description)}
+                  </div>
                   <div>
-                    {objectDetail?.variant_options.map((option, index) => {
-                      if (option.name.length > 10) {
-                        return (
-                          <div key={index}>
-                            <h6 className={styles.product_view__text_light}>
-                              {option.name}
-                            </h6>
-                            <div
-                              className={styles.product_view__variant_container}
-                            >
-                              <div className={styles.variant_select_container}>
-                                <div
-                                  className={
-                                    styles.variant_select_container__input
-                                  }
-                                >
-                                  <span>{border ? border : size}</span>
-                                  <svg
-                                    width="8"
-                                    height="4"
-                                    viewBox="0 0 8 4"
-                                    fill="none"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    className="variant-select-container__input__caret"
+                    {objectDetail?.variant_options.length <= 10 ? (
+                      <FirstStep objectdetail={objectDetail} detail={detail} />
+                    ) : null}
+                  </div>
+                  {/* <div>
+                    {objectDetail?.variant_options[0]?.name.toLowerCase() ==
+                      "size" && (
+                      <div>
+                        <h6 className={styles.product_view__text_light}>
+                          {objectDetail?.variant_options[0]?.name}
+                        </h6>
+                        <div className={styles.product_view__variant_container}>
+                          {objectDetail?.variant_options[0].values.map(
+                            (value, index) => {
+                              return (
+                                <div key={index} className={"d-flex flex-wrap"}>
+                                  <button
+                                    // disabled={objectDetail?.quantity === 0}
+                                    className={
+                                      frame == value.name
+                                        ? `${styles.variant_button} ${styles.m_r_10} ${styles.active}`
+                                        : `${styles.variant_button} ${styles.m_r_10}`
+                                    }
+                                    onClick={(e) => {
+                                      console.log("clicking");
+                                      // console.log(border);
+                                      setFrame(value.name);
+                                      border ? validateItems() : null;
+                                      // objectDetail?.quantity === 0
+                                      //   ? setErr("Product not fou nd")
+                                      //   : setErr("");
+                                      // setButtonShow(true);
+                                    }}
                                   >
-                                    <path
-                                      d="M7.20157 0.25H0.798435C0.521425 0.25 0.392412 0.59336 0.600883 0.775772L3.80245 3.57714C3.91556 3.67611 4.08444 3.67611 4.19755 3.57714L7.39912 0.775773C7.60759 0.593361 7.47858 0.25 7.20157 0.25Z"
-                                      fill="#919191"
-                                    ></path>
-                                  </svg>
+                                    {value.name}
+                                  </button>
                                 </div>
-                                <select
-                                  value={border}
-                                  disabled={!frame}
-                                  onChange={(e) => {
-                                    setBorder(e.target.value);
-                                    setErr("");
-                                    validateItems();
-                                    // console.log(border);
-                                    // objectDetail?.quantity === 0
-                                    //   ? setErr("Product not foun d")
-                                    //   : setErr("");
-                                  }}
+                              );
+                            }
+                          )}
+                        </div>
+                      </div>
+                    )}
+                    {objectDetail?.variant_options[1]?.name.toLowerCase() ==
+                      "colour" && (
+                      <div>
+                        <h6 className={styles.product_view__text_light}>
+                          {objectDetail?.variant_options[1]?.name}
+                        </h6>
+                        <div className={styles.product_view__variant_container}>
+                          {objectDetail?.variant_options[1].values.map(
+                            (value, index) => {
+                              return (
+                                <div key={index} className={"d-flex flex-wrap"}>
+                                  <button
+                                    // disabled={objectDetail?.quantity === 0}
+                                    className={
+                                      frame == value.name
+                                        ? `${styles.variant_button} ${styles.m_r_10} ${styles.active}`
+                                        : `${styles.variant_button} ${styles.m_r_10}`
+                                    }
+                                    onClick={(e) => {
+                                      // console.log("clicking");
+                                      // console.log(border);
+
+                                      setFrame(value.name);
+                                      border ? validateItems() : null;
+                                      // objectDetail?.quantity === 0
+                                      //   ? setErr("Product not fou nd")
+                                      //   : setErr("");
+                                      // setButtonShow(true);
+                                    }}
+                                  >
+                                    {value.name}
+                                  </button>
+                                </div>
+                              );
+                            }
+                          )}
+                        </div>
+                      </div>
+                    )}
+                    {objectDetail?.variant_options[0]?.name.toLowerCase() ==
+                    "size"
+                      ? objectDetail?.variant_options.map((option, index) => {
+                          if (objectDetail?.variant_options.length === 2) {
+                            if (index < 2) return;
+                          } else {
+                            if (index < 1) return;
+                          }
+                          // if (
+                          //   // objectDetail?.variant_options.length === 2 &&
+                          //   objectDetail?.variant_options[0]?.name.toLowerCase() ==
+                          //     "size" &&
+                          //   objectDetail?.variant_options[0]?.name.toLowerCase() ==
+                          //     "colour" &&
+                          //   index < 2
+                          // )
+                          //   return;
+                          // console.log(objectDetail?.variant_options[0].name);
+                          return (
+                            <div key={index}>
+                              <h6 className={styles.product_view__text_light}>
+                                {option.name}
+                              </h6>
+                              <div
+                                className={
+                                  styles.product_view__variant_container
+                                }
+                              >
+                                <div
+                                  className={styles.variant_select_container}
                                 >
-                                  <option disabled>Choose</option>
-                                  {option.values.map((value, index) => (
-                                    <option key={index} value={value.name}>
-                                      {value.name}
-                                    </option>
-                                  ))}
-                                </select>
+                                  <div
+                                    className={
+                                      styles.variant_select_container__input
+                                    }
+                                  >
+                                    <span>{border ? border : size}</span>
+                                    <svg
+                                      width="8"
+                                      height="4"
+                                      viewBox="0 0 8 4"
+                                      fill="none"
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      className="variant-select-container__input__caret"
+                                    >
+                                      <path
+                                        d="M7.20157 0.25H0.798435C0.521425 0.25 0.392412 0.59336 0.600883 0.775772L3.80245 3.57714C3.91556 3.67611 4.08444 3.67611 4.19755 3.57714L7.39912 0.775773C7.60759 0.593361 7.47858 0.25 7.20157 0.25Z"
+                                        fill="#919191"
+                                      ></path>
+                                    </svg>
+                                  </div>
+                                  <select
+                                    value={border}
+                                    disabled={!frame}
+                                    onChange={(e) => {
+                                      setBorder(e.target.value);
+                                      setErr("");
+                                      validateItems();
+                                      // console.log(border);
+                                      // objectDetail?.quantity === 0
+                                      //   ? setErr("Product not foun d")
+                                      //   : setErr("");
+                                    }}
+                                  >
+                                    <option disabled>Choose</option>
+                                    {option.values.map((value, index) => (
+                                      <option key={index} value={value.name}>
+                                        {value.name}
+                                      </option>
+                                    ))}
+                                  </select>
+                                </div>
                               </div>
                             </div>
-                          </div>
-                        );
-                      } else {
-                        return (
-                          <div key={index}>
-                            <h6 className={styles.product_view__text_light}>
-                              {option.name}
-                            </h6>
-                            <div
-                              className={styles.product_view__variant_container}
-                            >
-                              {option.values.map((value, index) => {
-                                return (
+                          );
+                        })
+                      : objectDetail?.variant_options[1]?.name.toLowerCase() ==
+                        "colour"
+                      ? objectDetail?.variant_options.map((option, index) => {
+                          console.log("here s");
+                          if (index < 2) return;
+                          // if (
+                          //   // objectDetail?.variant_options.length === 2 &&
+                          //   objectDetail?.variant_options[0]?.name.toLowerCase() ==
+                          //     "size" &&
+                          //   objectDetail?.variant_options[0]?.name.toLowerCase() ==
+                          //     "colour" &&
+                          //   index < 2
+                          // )
+                          //   return;
+                          // console.log(objectDetail?.variant_options[0].name);
+                          return (
+                            <div key={index}>
+                              <h6 className={styles.product_view__text_light}>
+                                {option.name}
+                              </h6>
+                              <div
+                                className={
+                                  styles.product_view__variant_container
+                                }
+                              >
+                                <div
+                                  className={styles.variant_select_container}
+                                >
                                   <div
-                                    key={index}
-                                    className={"d-flex flex-wrap"}
+                                    className={
+                                      styles.variant_select_container__input
+                                    }
                                   >
-                                    <button
-                                      // disabled={objectDetail?.quantity === 0}
-                                      className={
-                                        frame == value.name
-                                          ? `${styles.variant_button} ${styles.m_r_10} ${styles.active}`
-                                          : `${styles.variant_button} ${styles.m_r_10}`
-                                      }
-                                      onClick={(e) => {
-                                        // console.log("clicking");
-                                        // console.log(border);
-
-                                        setFrame(value.name);
-                                        border ? validateItems() : null;
-                                        // objectDetail?.quantity === 0
-                                        //   ? setErr("Product not fou nd")
-                                        //   : setErr("");
-                                        // setButtonShow(true);
-                                      }}
+                                    <span>{border ? border : size}</span>
+                                    <svg
+                                      width="8"
+                                      height="4"
+                                      viewBox="0 0 8 4"
+                                      fill="none"
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      className="variant-select-container__input__caret"
                                     >
-                                      {value.name}
-                                    </button>
+                                      <path
+                                        d="M7.20157 0.25H0.798435C0.521425 0.25 0.392412 0.59336 0.600883 0.775772L3.80245 3.57714C3.91556 3.67611 4.08444 3.67611 4.19755 3.57714L7.39912 0.775773C7.60759 0.593361 7.47858 0.25 7.20157 0.25Z"
+                                        fill="#919191"
+                                      ></path>
+                                    </svg>
                                   </div>
-                                );
-                              })}
+                                  <select
+                                    value={border}
+                                    disabled={!frame}
+                                    onChange={(e) => {
+                                      setBorder(e.target.value);
+                                      setErr("");
+                                      validateItems();
+                                      // console.log(border);
+                                      // objectDetail?.quantity === 0
+                                      //   ? setErr("Product not foun d")
+                                      //   : setErr("");
+                                    }}
+                                  >
+                                    <option disabled>Choose</option>
+                                    {option.values.map((value, index) => (
+                                      <option key={index} value={value.name}>
+                                        {value.name}
+                                      </option>
+                                    ))}
+                                  </select>
+                                </div>
+                              </div>
                             </div>
-                          </div>
-                        );
-                      }
-                    })}
+                          );
+                        })
+                      : objectDetail?.variant_options.map((option, index) => {
+                          return (
+                            <div key={index}>
+                              <h6 className={styles.product_view__text_light}>
+                                {option.name}
+                              </h6>
+                              <div
+                                className={
+                                  styles.product_view__variant_container
+                                }
+                              >
+                                <div
+                                  className={styles.variant_select_container}
+                                >
+                                  <div
+                                    className={
+                                      styles.variant_select_container__input
+                                    }
+                                  >
+                                    <span>{border ? border : size}</span>
+                                    <svg
+                                      width="8"
+                                      height="4"
+                                      viewBox="0 0 8 4"
+                                      fill="none"
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      className="variant-select-container__input__caret"
+                                    >
+                                      <path
+                                        d="M7.20157 0.25H0.798435C0.521425 0.25 0.392412 0.59336 0.600883 0.775772L3.80245 3.57714C3.91556 3.67611 4.08444 3.67611 4.19755 3.57714L7.39912 0.775773C7.60759 0.593361 7.47858 0.25 7.20157 0.25Z"
+                                        fill="#919191"
+                                      ></path>
+                                    </svg>
+                                  </div>
+                                  <select
+                                    value={border}
+                                    disabled={!frame}
+                                    onChange={(e) => {
+                                      setBorder(e.target.value);
+                                      setErr("");
+                                      validateItems();
+                                      // console.log(border);
+                                      // objectDetail?.quantity === 0
+                                      //   ? setErr("Product not foun d")
+                                      //   : setErr("");
+                                    }}
+                                  >
+                                    <option disabled>Choose</option>
+                                    {option.values.map((value, index) => (
+                                      <option key={index} value={value.name}>
+                                        {value.name}
+                                      </option>
+                                    ))}
+                                  </select>
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        })}
                   </div>
                   <div>
                     <h6 className={styles.product_view__text_light}>
@@ -301,6 +498,8 @@ const ProductModal = ({ openModal, objectDetail, toggle, detail }) => {
                           objectDetail?.unlimited === false &&
                           Number(e.target.value) > objectDetail?.quantity
                             ? setErr(`Only ${objectDetail?.quantity} in stock.`)
+                            : !objectDetail?.in_stock
+                            ? setErr(`Sold out.`)
                             : setErr("");
                           Number(e.target.value) < 1
                             ? setErrZero(
@@ -341,9 +540,14 @@ const ProductModal = ({ openModal, objectDetail, toggle, detail }) => {
                     >
                       {objectDetail?.currency}{" "}
                       {`${objectDetail?.min_variant_price / 100} `}
+                      {`- ${objectDetail?.max_variant_price / 100} `}
                     </p>
                     {err ? (
                       <p style={{ color: "red", fontWeight: "500" }}>{err}</p>
+                    ) : objectDetail?.in_stock === false ? (
+                      <p
+                        style={{ color: "red", fontWeight: "500" }}
+                      >{`Sold out`}</p>
                     ) : objectDetail?.unlimited === false &&
                       quantity > objectDetail?.quantity ? (
                       <p
@@ -368,7 +572,10 @@ const ProductModal = ({ openModal, objectDetail, toggle, detail }) => {
                           //   // objectDetail?.quantity === 0
                           // }
                           style={{
-                            backgroundColor: "#03649A",
+                            backgroundColor:
+                              lightOrDark(detail?.background_color) === "light"
+                                ? "#3BB75E"
+                                : adjust(detail?.background_color, -30),
                             fontWeight: "600",
                             opacity: 0.5,
                           }}
@@ -383,16 +590,21 @@ const ProductModal = ({ openModal, objectDetail, toggle, detail }) => {
                             (Number(quantity) < 1 &&
                               objectDetail?.unlimited === false &&
                               quantity > objectDetail?.quantity) ||
+                            objectDetail?.quantity === 0 ||
                             err ||
                             errZero
                           }
                           style={{
-                            backgroundColor: "#03649A",
+                            backgroundColor: adjust(
+                              detail?.background_color,
+                              -30
+                            ),
                             fontWeight: "600",
                             opacity:
                               (objectDetail?.unlimited === false &&
                                 Number(quantity) > objectDetail?.quantity &&
                                 Number(quantity) < 1) ||
+                              objectDetail?.quantity === 0 ||
                               err ||
                               errZero
                                 ? 0.5
@@ -527,7 +739,7 @@ const ProductModal = ({ openModal, objectDetail, toggle, detail }) => {
                         )}
                       </div>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>

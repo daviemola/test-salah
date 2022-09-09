@@ -1,44 +1,44 @@
 import React from "react";
+import { lightOrDark } from "../../../utils/lightOrDark";
+import { FiSearch } from "react-icons/fi";
+import { adjust } from "../../../utils/coloradjust";
+
 const SearchBox = ({
   searchKeyword,
   setSearchKeyword,
   findKeywordData,
-  showing,
+  detail,
 }) => {
+  const inputFieldStyle = `
+           .inputField::-webkit-input-placeholder{
+                   color: ${
+                     lightOrDark(detail?.background_color) === "light"
+                       ? "#57584E"
+                       : "#ffffff"
+                   };
+           }`;
   // console.log(showing);
   return (
-    <div
-      style={{ marginBottom: "24px", marginTop: "12px" }}
-      // className={type === "showsm" ? "show-sm" : "hide-sm"}
-    >
+    <div style={{ marginBottom: "24px", marginTop: "12px" }}>
       <div className="input-search-wrapper">
-        <svg
+        <FiSearch
+          style={{
+            color:
+              lightOrDark(detail?.background_color) === "light"
+                ? "#57584E"
+                : "#ffffff",
+            fontSize: "24px",
+            position: "absolute",
+            left: "24px",
+            zIndex: "10",
+          }}
           className="input-search-icon"
-          width="20"
-          height="20"
-          viewBox="0 0 20 20"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M9.16667 15.8333C12.8486 15.8333 15.8333 12.8486 15.8333 9.16667C15.8333 5.48477 12.8486 2.5 9.16667 2.5C5.48477 2.5 2.5 5.48477 2.5 9.16667C2.5 12.8486 5.48477 15.8333 9.16667 15.8333Z"
-            stroke="#ffffff"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          ></path>
-          <path
-            d="M17.5 17.4999L13.875 13.8749"
-            stroke="#ffffff"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          ></path>
-        </svg>
+        />
+
         <input
           type="search"
           placeholder="Search for a product"
-          className="input-search"
+          className="input-search inputField"
           value={searchKeyword}
           onChange={(e) => {
             setSearchKeyword(e.target.value);
@@ -46,7 +46,13 @@ const SearchBox = ({
           onKeyDown={(e) => {
             findKeywordData(e);
           }}
-          style={{ color: "#fff", backgroundColor: "#02507c" }}
+          style={{
+            color:
+              lightOrDark(detail?.background_color) === "light"
+                ? "#000000"
+                : "#ffffff",
+            backgroundColor: adjust(detail?.background_color, -30),
+          }}
         />
         {searchKeyword ? (
           <a
@@ -72,6 +78,7 @@ const SearchBox = ({
           </a>
         ) : null}
       </div>
+      <style>{inputFieldStyle}</style>
     </div>
   );
 };

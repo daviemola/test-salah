@@ -58,6 +58,7 @@ const Header = ({ detail }) => {
                 lightOrDark(detail.background_color) === "light"
                   ? "#57584E"
                   : "#ffffff",
+              fontSize: "24px",
             }}
           >
             {detail?.name}
@@ -69,6 +70,7 @@ const Header = ({ detail }) => {
                   lightOrDark(detail.background_color) === "light"
                     ? "#57584E"
                     : "#ffffff",
+                fontSize: "16px",
               }}
               className="navbar-brand navbar-merchant-name"
             >

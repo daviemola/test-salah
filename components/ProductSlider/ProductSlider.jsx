@@ -11,7 +11,7 @@ const ProductSlider = ({ images }) => {
     },
   });
 
-  console.log(images.files.length);
+  console.log(images.files);
 
   return (
     <div className="carousel-product-card">
@@ -22,13 +22,30 @@ const ProductSlider = ({ images }) => {
               return (
                 <div className={`keen-slider__slide slide`} key={item.key}>
                   <div className="slide-file-wrapper">
-                    <img
-                      className="slide-file"
-                      src={
-                        images.files.length === 0 ? `/bagtwo.svg` : item?.path
-                      }
-                      alt={`product image`}
-                    />
+                    {item.type === "image" ? (
+                      <img
+                        className="slide-file"
+                        src={
+                          images.files.length === 0 ? `/bagtwo.svg` : item?.path
+                        }
+                        alt={`product image`}
+                      />
+                    ) : (
+                      <>
+                        <video
+                          style={{
+                            width: "100%",
+                            height: "auto",
+                            borderRadius: "6px",
+                          }}
+                          controls
+                        >
+                          <source src={item?.path} type="video/mp4" />
+                          {/* <source src={item?.path} type="video/ogg" /> */}
+                          Your browser does not support the video tag.
+                        </video>
+                      </>
+                    )}
                   </div>
                 </div>
               );
@@ -48,11 +65,17 @@ const ProductSlider = ({ images }) => {
         {slider && images.files.length > 1 && (
           <>
             <ArrowLeft
-              onClick={(e) => e.stopPropagation() || slider.prev()}
+              onClick={(e) => {
+                e.stopPropagation() || slider.prev();
+                console.log("arrow");
+              }}
               disabled={currentSlide === 0}
             />
             <ArrowRight
-              onClick={(e) => e.stopPropagation() || slider.next()}
+              onClick={(e) => {
+                e.stopPropagation() || slider.next();
+                console.log("arrow");
+              }}
               disabled={currentSlide === slider.details().size - 1}
             />
           </>
