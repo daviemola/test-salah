@@ -12,21 +12,22 @@ const LoadingView = (detail) => {
   //     setloading(false);
   //   }, 3000);
   // }, []);
+  console.log(lightOrDark(detail?.background_color));
 
   return (
     <div className={styles.loading_view}>
-      <span
+      <p
         className={styles.loading_view_title}
         style={{
           color:
             lightOrDark(detail?.background_color) === "light"
-              ? "#57584E"
-              : "#ffffff",
+              ? "#ffffff"
+              : "#000000",
           fontSize: "20px",
         }}
       >
         {loading ? "Searching Products..." : null}
-      </span>
+      </p>
     </div>
   );
 };

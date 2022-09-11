@@ -20,7 +20,7 @@ const StoreFront = ({ products, detail }) => {
   const [checkItem, setcheckItem] = useState(true);
   const [showing, setshowing] = useState(false);
   const [showProducts, setShowProducts] = useState(products);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const { toggleSidebar, sidetoggle, cartItems, total } =
     useContext(CartContext);
 
@@ -109,7 +109,6 @@ const StoreFront = ({ products, detail }) => {
             showing={showing}
             detail={detail}
           />
-
           {showProducts && showProducts.length > 0 && loading == false ? (
             <div className="container page-height">
               <div className="columns">

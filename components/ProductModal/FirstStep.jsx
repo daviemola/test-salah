@@ -15,7 +15,7 @@ export default function FirstStep({ objectdetail, detail, toggle }) {
   // let objectDetail = objectdetail;
   const [values, setValues] = React.useState([]);
   const router = useRouter();
-  const [size, setSize] = React.useState("Choose");
+  const [message, setMessage] = React.useState("Choose");
   const [err, setErr] = React.useState("");
   const [errZero, setErrZero] = React.useState("");
   const [searching, setSearching] = React.useState(false);
@@ -65,7 +65,7 @@ export default function FirstStep({ objectdetail, detail, toggle }) {
       if (quantity !== 0) {
         let data = objectDetail;
         // console.log(cartItems);
-        data.selected_details = details;
+        data.selected_details = values;
         console.log(data.quantity_cart);
         data.quantity_cart = quantity;
         console.log(data.quantity_cart);
@@ -97,7 +97,7 @@ export default function FirstStep({ objectdetail, detail, toggle }) {
     console.log("this runs");
     if (item.unlimited === true) {
       setErr("");
-    } else if (item.in_stock === false || item.quantity === 0) {
+    } else if ((item.in_stock === false || item.quantity === 0) && err !== "") {
       setErr("Sold out");
     } else if (Number(quantity) > item?.quantity) {
       setErr(`Only ${item?.quantity} in stock.`);
@@ -112,7 +112,7 @@ export default function FirstStep({ objectdetail, detail, toggle }) {
   const validateItems = async () => {
     try {
       setSearching(true);
-
+      setErr(" ");
       const val = values
         .map((val) => {
           return `${val.name.toLowerCase()}=${val.value}&`;
@@ -131,11 +131,19 @@ export default function FirstStep({ objectdetail, detail, toggle }) {
 
       console.log(data);
       if (data.message === "This product is not available") {
+        setErr("");
+        setMessage({
+          msg: data.message,
+          info: items,
+          name: objectDetail?.name,
+        });
         setErr(`${objectDetail?.name} ${items} is not available.`);
+      } else {
+        objectDetail = data.data;
+        setObjectDetail(data.data);
+        checkQuantity(data.data);
       }
-      // objectDetail = data.data;
-      setObjectDetail(data.data);
-      checkQuantity(data.data);
+
       if (data.data) setApiErr(false);
       setSearching(false);
       return data.data;
@@ -167,7 +175,7 @@ export default function FirstStep({ objectdetail, detail, toggle }) {
     checkQuantity(objectDetail);
   }, [quantity, values]);
 
-  // console.log(err);
+  console.log(err);
 
   const handleChange = (event, index, i, name, val) => {
     let obj = {};
@@ -192,10 +200,10 @@ export default function FirstStep({ objectdetail, detail, toggle }) {
   };
 
   React.useEffect(() => {
-    // setSelectedcity({ name: changing, id: 1234 });
-    // checkQuantity();
-    console.log("running on values");
-  }, [values]);
+    console.log("runs");
+    if (message.msg === "This product is not available")
+      setErr(`${message.name} ${message.info} is not available`);
+  }, [message]);
 
   // console.log(values);
 

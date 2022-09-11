@@ -5,13 +5,6 @@ import { BsTwitter, BsInstagram } from "react-icons/bs";
 import { ImWhatsapp, ImFacebook } from "react-icons/im";
 
 const SocialMediaIcons = ({ detail }) => {
-  console.log(
-    detail?.social_media?.find((media) => media.type_name === "Twitter")
-  );
-  console.log(detail?.social_media);
-  // console.log(
-  //   detail?.contacts?.find((media) => media.type_name === "Whatsapp")
-  // );
   return (
     <div
       className="social-media flex flex-justify--center"

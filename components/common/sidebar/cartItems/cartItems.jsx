@@ -18,8 +18,6 @@ const CartItemDisplay = ({ item, index, deleteItem }) => {
   const [err, setErr] = useState("");
   const [errQty, setErrQty] = useState("");
 
-  console.log(item);
-
   React.useEffect(() => {
     setQuantity(itemCount);
   }, [itemCount]);
@@ -65,7 +63,9 @@ const CartItemDisplay = ({ item, index, deleteItem }) => {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 
-  // console.log(item);
+  const getVal = item.selected_details.forEach(function (v) {
+    console.log(v);
+  });
 
   return (
     <div className={styles.bagView_product} key={index}>
@@ -80,7 +80,17 @@ const CartItemDisplay = ({ item, index, deleteItem }) => {
           />
         </div>
         <div className={styles.bagView_product_price}>
-          <p className={styles.bagView_product_price_text}>{item?.name}</p>
+          <p
+            className={styles.bagView_product_price_text}
+            style={{
+              width: "100%",
+            }}
+          >
+            {item?.name}
+          </p>
+          <div className="pill-shaped-details">
+            {item.selected_details.map((it) => `${it.value} `)}
+          </div>
           <p className={styles.bagView_product_price_text}>
             <span style={{ color: "#949494" }}>
               {item.currency} {numberWithCommas(item.price / 100)}

@@ -1,19 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import Select from "react-select";
 import styles from "./checkout.module.css";
 import { adjust, numberWithCommas } from "../../../../utils/coloradjust";
 import { lightOrDark } from "../../../../utils/lightOrDark";
+import countryList from "react-select-country-list";
 
-const options = [
-  { value: "pakistan", label: "Pakistan" },
-  { value: "dubai", label: "Dubai" },
-  { value: "saudia arabia", label: "Saudia Arabia" },
-];
+// const options = [
+//   { value: "pakistan", label: "Pakistan" },
+//   { value: "dubai", label: "Dubai" },
+//   { value: "saudia arabia", label: "Saudia Arabia" },
+// ];
 
-const shippingOptions = [
-  { value: "Lagos Mainland (NGN 1,500)", label: "Lagos Mainland (NGN 1,500)" },
-  { value: "Lagos Island (NGN 2,000)", label: "Lagos Island (NGN 2,000)" },
-];
+// const shippingOptions = [
+//   { value: "Lagos Mainland (NGN 1,500)", label: "Lagos Mainland (NGN 1,500)" },
+//   { value: "Lagos Island (NGN 2,000)", label: "Lagos Island (NGN 2,000)" },
+// ];
 
 const Checkout = ({
   close,
@@ -74,8 +75,12 @@ const Checkout = ({
   const [selectedOption, setSelectedOption] = useState(null);
   const [shippingOption, setShippingOption] = useState(null);
 
+  const [value, setValue] = useState("");
+  const options = useMemo(() => countryList().getData(), []);
+
   const handleChange = (selectedOption) => {
     console.log("changing");
+    console.log(selectedOption);
     setSelectedOption(selectedOption);
     setDeliveryCountry(selectedOption.label);
   };
@@ -158,6 +163,7 @@ const Checkout = ({
           />
         ) : (
           <CheckOutDetails
+            options={options}
             styles={styles}
             detail={detail}
             setChecked={setChecked}
@@ -170,7 +176,7 @@ const Checkout = ({
             handleChange={handleChange}
             shippingOption={shippingOption}
             handleChangeShipment={handleChangeShipment}
-            shippingOptions={shippingOptions}
+            // shippingOptions={shippingOptions}
             close={close}
             changeView={changeView}
             recipientFirstName={recipientFirstName}
@@ -258,11 +264,9 @@ const Checkout = ({
                 {allTotal ? numberWithCommas(allTotal / 100) : 0}
               </p>
               <p className={styles.bag_summary_shipping_price_text}>
-                {`Shipping: ${detail?.shipping_fees[0]?.currency} ${
-                  detail?.shipping_fees[0].fee
-                    ? numberWithCommas(detail?.shipping_fees[0].fee / 100)
-                    : 0
-                }`}
+                {`Shipping: ${
+                  detail?.shipping_fees[0]?.currency
+                } ${numberWithCommas(shippingPrice / 100)}`}
               </p>
             </div>
           </div>
@@ -317,8 +321,11 @@ const CheckOutDetails = ({
   deliveryCityError,
   shippingRegionError,
 }) => {
+  const [value, setValue] = useState("");
+  const options = useMemo(() => countryList().getData(), []);
+
   // console.log(detail.shipping_fees);
-  const options = detail.shipping_fees.map(function (row) {
+  const shippingoptions = detail.shipping_fees.map(function (row) {
     return { value: row.id, label: row.name, fee: row.fee };
   });
 
@@ -569,7 +576,7 @@ const CheckOutDetails = ({
                 default={shippingOption}
                 value={shippingOption}
                 onChange={handleChangeShipment}
-                options={options}
+                options={shippingoptions}
               />
             </div>
           </div>

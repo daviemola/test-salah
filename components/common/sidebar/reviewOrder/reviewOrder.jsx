@@ -20,6 +20,8 @@ const ReviewOrder = ({
   orderPlace,
   detail,
 }) => {
+  console.log(shippingPrice);
+  console.log(shippingPrice);
   const { itemCount } = useContext(CartContext);
   function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -175,11 +177,9 @@ const ReviewOrder = ({
                 </div>
                 <div className={styles.order_summary_product_price_container}>
                   <span className={styles.order_summary_product_price}>
-                    {`${detail?.shipping_fees[0]?.currency} ${
-                      detail?.shipping_fees[0].fee
-                        ? numberWithCommas(detail?.shipping_fees[0].fee / 100)
-                        : 0
-                    }`}
+                    {`${detail?.shipping_fees[0]?.currency} ${numberWithCommas(
+                      shippingPrice / 100
+                    )}`}
                   </span>
                 </div>
               </div>
@@ -194,9 +194,7 @@ const ReviewOrder = ({
                     {detail?.shipping_fees[0].currency}{" "}
                     {allTotal
                       ? numberWithCommas(
-                          (Number(allTotal) +
-                            Number(detail?.shipping_fees[0].fee)) /
-                            100
+                          (Number(allTotal) + Number(shippingPrice)) / 100
                         )
                       : 0}
                   </span>
@@ -223,8 +221,7 @@ const ReviewOrder = ({
               Pay {detail?.shipping_fees[0].currency}{" "}
               {allTotal
                 ? numberWithCommas(
-                    (Number(allTotal) + Number(detail?.shipping_fees[0].fee)) /
-                      100
+                    (Number(allTotal) + Number(shippingPrice)) / 100
                   )
                 : 0}
             </button>

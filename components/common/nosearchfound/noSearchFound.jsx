@@ -55,7 +55,16 @@ const NoSearchFound = ({ searchKeyword, detail }) => {
           {`"${keyword}"`}
         </span>
       </p>
-      <p className={styles.search_not_found_title} style={{ color: "#fff" }}>
+      <p
+        className={styles.search_not_found_title}
+        style={{
+          color:
+            lightOrDark(detail?.background_color) === "light"
+              ? "#57584E"
+              : "#ffffff",
+          fontSize: "24px",
+        }}
+      >
         Try again?
       </p>
       <div className={styles.search_not_found_contact}>
