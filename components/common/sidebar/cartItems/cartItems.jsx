@@ -17,8 +17,7 @@ const CartItemDisplay = ({ item, index, deleteItem }) => {
   const [err, setErr] = useState("");
   const [errQty, setErrQty] = useState("");
 
-  // console.log(itemCount);
-  // console.log(q);
+  // console.log(item);
 
   React.useEffect(() => {
     setQuantity(itemCount);

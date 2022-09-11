@@ -15,6 +15,7 @@ const SideBar = ({ cartItems, total, detail, item }) => {
     qtyZeroErr,
     itemCount,
     moreQtyErr,
+    cartItems: cartitems,
   } = useContext(CartContext);
   const [showCheckout, setShowCheckout] = useState(false);
   const [showOrderDeatil, setShowOrderDeatil] = useState(false);
@@ -68,8 +69,9 @@ const SideBar = ({ cartItems, total, detail, item }) => {
   let items = item;
   const deleteItem = (e, item) => {
     e.preventDefault();
-    console.log(items);
-    let itemSelected = items.filter((it) => {
+    console.log(cartitems);
+    console.log(item);
+    let itemSelected = cartitems.filter((it) => {
       if (it.id === item.id) {
         console.log("item found yeas");
         return it;
@@ -77,7 +79,7 @@ const SideBar = ({ cartItems, total, detail, item }) => {
       }
     });
     // console.log(item.quantity_cart);
-    // console.log(itemSelected[0]);
+    console.log(itemSelected);
 
     deleteDataFromCart(itemSelected[0]);
   };

@@ -11,7 +11,7 @@ const ProductSlider = ({ images }) => {
     },
   });
 
-  console.log(images.files);
+  // console.log(images.files);
 
   return (
     <div className="carousel-product-card">

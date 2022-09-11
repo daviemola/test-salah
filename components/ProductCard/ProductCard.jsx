@@ -7,8 +7,8 @@ import { adjust, numberWithCommas } from "../../utils/coloradjust";
 
 const ProductCard = ({ item, productQuery, detail }) => {
   // console.log({ item, productQuery, detail });
-  console.log(item);
-  console.log(detail);
+  // console.log(item);
+  // console.log(detail);
   const router = useRouter();
   const { storefront } = router.query;
   const [openModal, setOpenModal] = useState(false);

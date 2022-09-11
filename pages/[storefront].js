@@ -13,7 +13,7 @@ import CartContext from "@/context/CartContext";
 import { useContext } from "react";
 
 const StoreFront = ({ products, detail }) => {
-  console.log(detail);
+  // console.log(detail);
   const router = useRouter();
   const { storefront, product } = router.query;
   const [searchKeyword, setSearchKeyword] = useState("");
@@ -21,7 +21,6 @@ const StoreFront = ({ products, detail }) => {
   const [showing, setshowing] = useState(false);
   const [showProducts, setShowProducts] = useState(products);
   const [loading, setLoading] = useState(false);
-  const [loadingsearch, setLoadingsearch] = useState(true);
   const { toggleSidebar, sidetoggle, cartItems, total } =
     useContext(CartContext);
 

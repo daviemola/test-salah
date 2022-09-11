@@ -15,7 +15,7 @@ import FirstStep from "./FirstStep";
 
 const regex = /(<([^>]+)>)/gi;
 const ProductModal = ({ openModal, objectDetail, toggle, detail }) => {
-  console.log(objectDetail);
+  // console.log(objectDetail);
   const router = useRouter();
   const [size, setSize] = React.useState("Choose");
   const [err, setErr] = React.useState("");
@@ -38,7 +38,7 @@ const ProductModal = ({ openModal, objectDetail, toggle, detail }) => {
     },
   });
 
-  console.log(variantlength);
+  // console.log(variantlength);
 
   const { addToCart, toggleSidebar, cartItems, increase } =
     useContext(CartContext);
@@ -52,13 +52,13 @@ const ProductModal = ({ openModal, objectDetail, toggle, detail }) => {
       if (quantity !== 0) {
         console.log(objectDetail);
         console.log("in cart");
-        let data = objectDetail;
-        data.quantity_cart = Number(quantity) + data.quantity_cart;
-        console.log(data.quantity_cart);
-        addToCart(data);
-        setButtonShow(false);
-        toggle();
-        toggleSidebar();
+        // let data = objectDetail;
+        // data.quantity_cart = Number(quantity) + data.quantity_cart;
+        // console.log(data.quantity_cart);
+        // addToCart(data);
+        // setButtonShow(false);
+        // toggle();
+        // toggleSidebar();
       }
     } else {
       console.log("not in cart");
@@ -69,10 +69,10 @@ const ProductModal = ({ openModal, objectDetail, toggle, detail }) => {
         data.frame = frame;
         data.quantity_cart = quantity;
         console.log(data);
-        addToCart(data);
-        setButtonShow(false);
-        toggle();
-        toggleSidebar();
+        // addToCart(data);
+        // setButtonShow(false);
+        // toggle();
+        // toggleSidebar();
       }
     }
   };
@@ -112,7 +112,7 @@ const ProductModal = ({ openModal, objectDetail, toggle, detail }) => {
     }
   };
 
-  console.log(objectDetail?.variant_options[0]?.name);
+  // console.log(objectDetail?.variant_options[0]?.name);
 
   return (
     <React.Fragment>
@@ -170,7 +170,11 @@ const ProductModal = ({ openModal, objectDetail, toggle, detail }) => {
                   </div>
                   <div>
                     {objectDetail?.variant_options.length <= 10 ? (
-                      <FirstStep objectdetail={objectDetail} detail={detail} />
+                      <FirstStep
+                        objectdetail={objectDetail}
+                        detail={detail}
+                        toggle={toggle}
+                      />
                     ) : null}
                   </div>
                   {/* <div>

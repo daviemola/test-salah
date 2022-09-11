@@ -9,39 +9,98 @@ import styles from "./ProductModal.module.css";
 import axios from "axios";
 import { Listbox } from "@headlessui/react";
 
-export default function FirstStep({ objectdetail, detail }) {
+export default function FirstStep({ objectdetail, detail, toggle }) {
+  const [objectDetail, setObjectDetail] = React.useState(objectdetail);
   // console.log(objectdetail);
-  let objectDetail = objectdetail;
+  // let objectDetail = objectdetail;
   const [values, setValues] = React.useState([]);
   const router = useRouter();
   const [size, setSize] = React.useState("Choose");
   const [err, setErr] = React.useState("");
   const [errZero, setErrZero] = React.useState("");
-  const [searching, setSearching] = React.useState(true);
+  const [searching, setSearching] = React.useState(false);
   const [apiErr, setApiErr] = React.useState(true);
   let [quantity, setQuantity] = React.useState(1);
-  const [first, setFirst] = React.useState("");
-  const [name, setName] = React.useState("");
-  // const [second, setSecond] = React.useState("");
-  const [second, setSecond] = React.useState("");
+  const [active, setActive] = React.useState(false);
+  const [details, setDetails] = React.useState();
   const [toggleContactSeller, setToggleContactSeller] = React.useState(false);
+
+  const { addToCart, toggleSidebar, cartItems, increase, addNewToCart } =
+    useContext(CartContext);
+
+  const isInCart = (product) => {
+    return !!cartItems.find((item) => item.id === product.id);
+  };
+
+  const addToCartItems = () => {
+    if (isInCart(objectDetail)) {
+      // let data;
+      if (quantity !== 0) {
+        //   if (objectDetail.id !== objectdetail.id) {
+        let data = cartItems.find((item) => item.id === objectDetail.id);
+        // } else {
+        //   data = objectDetail;
+        // }
+        // const data = cartItems.find((item) => item.id === objectDetail.id);
+        console.log(data);
+        console.log("in cart");
+        // data.selected_details = details;
+        // console.log(data.quantity_cart);
+        // data.quantity_cart = Number(quantity) + data.quantity_cart;
+        // console.log(data.quantity_cart);
+        increase(data);
+        // addToCart(data);
+        // // setButtonShow(false);
+        toggle();
+        toggleSidebar();
+      }
+    } else {
+      console.log("not in cart");
+      if (quantity !== 0) {
+        let data = objectDetail;
+        // console.log(cartItems);
+        data.selected_details = details;
+        console.log(data.quantity_cart);
+        data.quantity_cart = quantity;
+        console.log(data.quantity_cart);
+        console.log(data);
+        console.log(cartItems);
+        if (cartItems.length === 0) {
+          console.log("nothing in cart");
+          addToCart(data);
+        } else {
+          console.log("items in cart");
+          addNewToCart(data);
+        }
+        // return;
+        // addToCart(data);
+        // addNewToCart(data);
+        // setButtonShow(false);
+        toggle();
+        toggleSidebar();
+      }
+    }
+  };
+  console.log(cartItems);
 
   const toggleClick = () => {
     setToggleContactSeller(!toggleContactSeller);
   };
 
-  const checkQuantity = () => {
-    if (objectDetail.unlimited === true) {
+  const checkQuantity = (item) => {
+    console.log("this runs");
+    if (item.unlimited === true) {
       setErr("");
-    } else if (objectDetail.in_stock === false) {
+    } else if (item.in_stock === false || item.quantity === 0) {
       setErr("Sold out");
-    } else if (Number(quantity) > objectDetail?.quantity) {
-      setErr(`Only ${objectDetail?.quantity} in stock.`);
+    } else if (Number(quantity) > item?.quantity) {
+      setErr(`Only ${item?.quantity} in stock.`);
     } else if (Number(quantity) < 0) {
       setErr("You cannot order fewer than 1 items at a time");
     } else {
       setErr("");
     }
+    console.log(err);
   };
 
   const validateItems = async () => {
@@ -50,7 +109,7 @@ export default function FirstStep({ objectdetail, detail }) {
 
       const val = values
         .map((val) => {
-          return `${val.name}=${val.value}&`;
+          return `${val.name.toLowerCase()}=${val.value}&`;
         })
         .join("");
 
@@ -68,6 +127,9 @@ export default function FirstStep({ objectdetail, detail }) {
       if (data.message === "This product is not available") {
         setErr(`${objectDetail?.name} ${items} is not available.`);
       }
+      // objectDetail = data.data;
+      setObjectDetail(data.data);
+      checkQuantity(data.data);
       if (data.data) setApiErr(false);
       setSearching(false);
       return data.data;
@@ -82,9 +144,21 @@ export default function FirstStep({ objectdetail, detail }) {
   };
 
   React.useEffect(() => {
+    if (
+      objectDetail?.variant_options.length === 0 &&
+      objectDetail.quantity > 0 &&
+      objectDetail.unlimited === true
+    ) {
+      console.log("set to active");
+      console.log(objectDetail?.variant_options.length);
+      setActive(true);
+    } else {
+      console.log("not active");
+    }
     console.log(values);
+    console.log(err);
     // validateItems();
-    checkQuantity();
+    checkQuantity(objectDetail);
   }, [quantity, values]);
 
   // console.log(err);
@@ -97,13 +171,23 @@ export default function FirstStep({ objectdetail, detail }) {
       values[i] = obj;
     }
     setValues([...values]);
-    console.log(objectDetail?.variant_options.length);
-    console.log(values.length);
+    // console.log(objectDetail?.variant_options.length);
+    const valz = values.reduce(
+      (acc, cur) => ({
+        ...acc,
+        [cur.name.toLowerCase()]: cur.value.toLowerCase(),
+      }),
+      {}
+    );
+    setDetails(valz);
+    console.log(valz);
+    console.log(values);
     if (values.length === objectDetail?.variant_options.length) validateItems();
   };
 
   React.useEffect(() => {
     // setSelectedcity({ name: changing, id: 1234 });
+    // checkQuantity();
     console.log("running on values");
   }, [values]);
 
@@ -113,7 +197,6 @@ export default function FirstStep({ objectdetail, detail }) {
     <>
       {objectDetail?.variant_options.map((option, index) => {
         let useButton;
-        // console.log(option.values);
         option.values.map((opt) => {
           // console.log(opt.name.split(" ").length);
           if (opt.name.split(" ").length === 1) {
@@ -158,15 +241,6 @@ export default function FirstStep({ objectdetail, detail }) {
                               option.name,
                               opt.name
                             );
-                            console.log(values[index - 1]);
-                            // if(values[index-1] === undefined)
-                            // console.log(option.name);
-                            // setSecond(opt.name);
-                            // first ? validateItems() : null;
-                            // objectDetail?.quantity === 0
-                            //   ? setErr("Product not fou nd")
-                            //   : setErr("");
-                            // setButtonShow(true);
                           }}
                         >
                           {opt.name}
@@ -231,56 +305,6 @@ export default function FirstStep({ objectdetail, detail }) {
                       </Listbox.Options>
                     </div>
                   </Listbox>
-                  {/* <h6 className={styles.product_view__text_light}>
-                    {option.name}
-                  </h6>
-                  <div className={styles.product_view__variant_container}>
-                    <div className={styles.variant_select_container}>
-                      <div className={styles.variant_select_container__input}>
-                        <span>
-                          {values[index]?.name ? values[index].value : "choose"}
-                        </span>
-                        <svg
-                          width="8"
-                          height="4"
-                          viewBox="0 0 8 4"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="variant-select-container__input__caret"
-                        >
-                          <path
-                            d="M7.20157 0.25H0.798435C0.521425 0.25 0.392412 0.59336 0.600883 0.775772L3.80245 3.57714C3.91556 3.67611 4.08444 3.67611 4.19755 3.57714L7.39912 0.775773C7.60759 0.593361 7.47858 0.25 7.20157 0.25Z"
-                            fill="#919191"
-                          ></path>
-                        </svg>
-                      </div>
-                      <select
-                        // value={values[index]?.value}
-                        value={second}
-                        name={option.name}
-                        id={option.id}
-                        // disabled={!first}
-                        onChange={(e) => {
-                          console.log("here");
-                          // handleChange(e, index, index);
-                          setSecond(e.target.value);
-                          setErr("");
-                          validateItems();
-                          // console.log(second);
-                          // objectDetail?.quantity === 0
-                          //   ? setErr("Product not foun d")
-                          //   : setErr("");
-                        }}
-                      >
-                        <option disabled>Choose</option>
-                        {option.values.map((value, index) => (
-                          <option key={index} value={value.name}>
-                            {value.name}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                  </div> */}
                 </>
               )}
             </>
@@ -293,12 +317,6 @@ export default function FirstStep({ objectdetail, detail }) {
           <span>
             <button
               type="button"
-              // disabled={
-              //   objectDetail?.variant_options.length === 0
-              //     ? first === "" && err !== ""
-              //     : apiErr
-              // }
-              // disabled={first === "" && err !== ""}
               className="quantity--minus"
               onClick={(e) => {
                 quantity > 1 && setQuantity(Number(quantity) - 1);
@@ -310,14 +328,6 @@ export default function FirstStep({ objectdetail, detail }) {
           </span>
           <input
             type="tel"
-            // disabled={
-            // err
-            // first === "" &&
-            // err !== "" &&
-            // objectDetail?.variant_options.length > 0
-            //   ||
-            // apiErr
-            // }
             className={styles.quantity_input}
             value={Number(quantity)}
             onChange={(e) => {
@@ -329,14 +339,7 @@ export default function FirstStep({ objectdetail, detail }) {
           <span>
             <button
               className="quantity--plus"
-              // disabled={
-              //   objectDetail?.variant_options.length === 0
-              //     ? first === "" && err !== ""
-              //     : apiErr
-              // }
-              // disabled={apiErr}
               onClick={(e) => {
-                // console.log("first");
                 setQuantity(Number(quantity) + 1);
                 setErrZero("");
               }}
@@ -361,57 +364,18 @@ export default function FirstStep({ objectdetail, detail }) {
         {err ? (
           <p style={{ color: "#C70039", fontWeight: "500" }}>{err}</p>
         ) : null}
-        {/* {err ? (
-          <p style={{ color: "red", fontWeight: "500" }}>{err}</p>
-        ) : objectDetail?.in_stock === false ? (
-          <p style={{ color: "red", fontWeight: "500" }}>{`Sold out`}</p>
-        ) : objectDetail?.unlimited === false &&
-          quantity > objectDetail?.quantity ? (
-          <p
-            style={{ color: "red", fontWeight: "500" }}
-          >{`Only ${objectDetail?.quantity} in stock.`}</p>
-        ) : errZero ? (
-          <p style={{ color: "red", fontWeight: "500" }}>
-            You cannot order fewer than 1 items at a time
-          </p>
-        ) : (
-          ""
-        )} */}
         <div
           className={`d-flex mt-6 ${styles.mobile_change}`}
           style={{ marginTop: "24px" }}
         >
-          {/* {objectDetail?.variant_options.length > 0 && first === "" && !err ? (
-            <button
-              className={`${styles.button} ${styles.button_cta}`}
-              disabled
-              // disabled={
-              //   !second
-              //   // objectDetail?.quantity === 0
-              // }
-              style={{
-                backgroundColor:
-                  lightOrDark(detail?.background_color) === "light"
-                    ? "#3BB75E"
-                    : adjust(detail?.background_color, -30),
-                fontWeight: "600",
-                opacity: 0.5,
-              }}
-              onClick={addToCartItems}
-            >
-              Add to bag
-            </button>
-          ) : ( */}
           <button
             className={`${styles.button} ${styles.button_cta}`}
             disabled={
-              (objectDetail?.unlimited === false &&
-                Number(quantity) > objectDetail?.quantity &&
-                Number(quantity) < 1) ||
-              searching ||
-              objectDetail?.quantity === 0 ||
-              err ||
-              errZero
+              !(
+                values.length === objectDetail?.variant_options.length &&
+                !searching &&
+                (active || err === "")
+              )
             }
             style={{
               backgroundColor:
@@ -420,22 +384,16 @@ export default function FirstStep({ objectdetail, detail }) {
                   : adjust(detail?.background_color, -30),
               fontWeight: "600",
               opacity:
-                (objectDetail?.unlimited === false &&
-                  Number(quantity) > objectDetail?.quantity &&
-                  Number(quantity) < 1) ||
-                searching ||
-                objectDetail?.quantity === 0 ||
-                err ||
-                errZero
-                  ? 0.5
-                  : 1,
+                values.length === objectDetail?.variant_options.length &&
+                !searching &&
+                (active || err === "")
+                  ? 1
+                  : 0.5,
             }}
-            // onClick={addToCartItems}
+            onClick={addToCartItems}
           >
             Add to bag
           </button>
-          {/* )} */}
-
           <div
             className={`${styles.dropdown} ${styles.dropdown_container} ${styles.contact_dropdown} ${styles.dropdown_container_default}`}
           >
@@ -543,74 +501,3 @@ export default function FirstStep({ objectdetail, detail }) {
     </>
   );
 }
-
-// {objectDetail?.variant_options[0]?.name.toLowerCase() == "size" && (
-//   <div>
-//     <h6 className={styles.product_view__text_light}>
-//       {objectDetail?.variant_options[0]?.name}
-//     </h6>
-//     <div className={styles.product_view__variant_container}>
-//       {objectDetail?.variant_options[0].values.map((value, index) => {
-//         return (
-//           <div key={index} className={"d-flex flex-wrap"}>
-//             <button
-//               // disabled={objectDetail?.quantity === 0}
-//               className={
-//                 second == value.name
-//                   ? `${styles.variant_button} ${styles.m_r_10} ${styles.active}`
-//                   : `${styles.variant_button} ${styles.m_r_10}`
-//               }
-//               onClick={(e) => {
-//                 console.log("clicking");
-//                 // console.log(first);
-//                 setsecond(value.name);
-//                 first ? validateItems() : null;
-//                 // objectDetail?.quantity === 0
-//                 //   ? setErr("Product not fou nd")
-//                 //   : setErr("");
-//                 // setButtonShow(true);
-//               }}
-//             >
-//               {value.name}
-//             </button>
-//           </div>
-//         );
-//       })}
-//     </div>
-//   </div>
-// )}
-// {objectDetail?.variant_options[1]?.name.toLowerCase() == "colour" && (
-//   <div>
-//     <h6 className={styles.product_view__text_light}>
-//       {objectDetail?.variant_options[1]?.name}
-//     </h6>
-//     <div className={styles.product_view__variant_container}>
-//       {objectDetail?.variant_options[1].values.map((value, index) => {
-//         return (
-//           <div key={index} className={"d-flex flex-wrap"}>
-//             <button
-//               // disabled={objectDetail?.quantity === 0}
-//               className={
-//                 second == value.name
-//                   ? `${styles.variant_button} ${styles.m_r_10} ${styles.active}`
-//                   : `${styles.variant_button} ${styles.m_r_10}`
-//               }
-//               onClick={(e) => {
-//                 // console.log("clicking");
-//                 // console.log(first);
-//                 setsecond(value.name);
-//                 first ? validateItems() : null;
-//                 // objectDetail?.quantity === 0
-//                 //   ? setErr("Product not fou nd")
-//                 //   : setErr("");
-//                 // setButtonShow(true);
-//               }}
-//             >
-//               {value.name}
-//             </button>
-//           </div>
-//         );
-//       })}
-//     </div>
-//   </div>
-// )}

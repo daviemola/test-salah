@@ -9,6 +9,7 @@ import {
   TOGGLESIDEBAR,
   MOREQTYERROR,
   ZEROQUANTITYERROR,
+  ADD_NEW_ITEM_TO_CART,
 } from "./CartTypes.js";
 
 // Export function to calculate the total price of the cart and the total quantity of the cart
@@ -34,10 +35,11 @@ export const sumItems = (cartItems) => {
 const CartReducer = (state, action) => {
   // The switch statement is checking the type of action that is being passed in
   console.log(action.type);
+  // console.log(state);
 
   switch (action.type) {
     case MOREQTYERROR:
-      console.log(state.cart);
+      // console.log(state.cart);
       let cart_Clone = state.cart;
       let isMoreThanErr;
       for (let i = 0; i < cart_Clone?.length; i++) {
@@ -84,9 +86,8 @@ const CartReducer = (state, action) => {
   switch (action.type) {
     // If the action type is ADD_TO_CART, we want to add the item to the cartItems array
     case ADD_TO_CART:
-      // console.log(state.cartItems);
-      // console.log(action.payload);
       if (!state.cartItems.find((item) => item.id === action.payload.id)) {
+        // console.log(action.payload);
         console.log("not here");
         action.payload.totalPrice =
           action.payload.quantity_cart * Number(action.payload.price);
@@ -95,14 +96,35 @@ const CartReducer = (state, action) => {
         });
       } else {
         console.log("here");
-        const item = state.cartItems.find(
-          (item) => item.id === action.payload.id
-        );
-        console.log(item);
-        console.log(action.payload);
+        const item = state.cartItems.find((item) => {
+          item.id === action.payload.id;
+          console.log(item.quantity_cart);
+          console.log(action.payload.quantity_cart);
 
-        item.quantity_cart = action.payload.quantity_cart;
-        console.log(item);
+          item.quantity_cart = action.payload.quantity_cart;
+        });
+      }
+
+      return {
+        ...state,
+        ...sumItems(state.cartItems),
+        cartItems: [...state.cartItems],
+      };
+
+    case ADD_NEW_ITEM_TO_CART:
+      console.log("clear type");
+      console.log(state.cartItems);
+      console.log(action.payload);
+      console.log("clear type");
+
+      if (!state.cartItems.find((item) => item.id === action.payload.id)) {
+        // console.log(action.payload);
+        console.log("ADDING NEW ITEM TO ARRAY OF CARTITEMS");
+        action.payload.totalPrice =
+          action.payload.quantity_cart * Number(action.payload.price);
+        state.cartItems.push({
+          ...action.payload,
+        });
       }
 
       return {
@@ -226,16 +248,22 @@ const CartReducer = (state, action) => {
 
     //If the action type is CLEAR, we want to clear the cartItems array
     case CLEAR:
+      console.log("clear type");
+      console.log(state.cartItems);
+      console.log(action.payload);
+      console.log("clear type");
+
       return {
-        cartItems: [],
-        ...sumItems([]),
+        // cartItems: [],
+        // ...sumItems([]),
       };
 
     case DELETE_FROM_CART:
       const ite = state.cartItems.map((item) => {
-        if (item.id === action.payload.id) item.quantity_cart = 0;
+        if (item.id === action?.payload?.id) item.quantity_cart = 0;
         return item;
       });
+      console.log(action);
       console.log(ite);
       console.log(state.cartItems);
 
@@ -244,12 +272,12 @@ const CartReducer = (state, action) => {
         ...sumItems(
           state.cartItems.filter((item) => {
             // item.quantity_cart = 0;
-            return item.id !== action.payload.id;
+            return item.id !== action?.payload?.id;
           })
         ),
 
         cartItems: [
-          ...state.cartItems.filter((item) => item.id !== action.payload.id),
+          ...state.cartItems.filter((item) => item?.id !== action?.payload?.id),
         ],
       };
 

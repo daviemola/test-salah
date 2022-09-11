@@ -45,7 +45,16 @@ const CartState = ({ children }) => {
 
   //Function to handle when an item is added from the store into the Cart
   const addToCart = (payload) => {
+    console.log(payload);
+    // console.log(cartItems);
     dispatch({ type: "ADD_TO_CART", payload });
+    // dispatch({ type: "CLEAR", payload });
+  };
+
+  const addNewToCart = (payload) => {
+    console.log(payload);
+    // console.log(cartItems);
+    dispatch({ type: "ADD_NEW_ITEM_TO_CART", payload });
   };
 
   //Function to handle when an item that is in the cart is added again
@@ -88,6 +97,7 @@ const CartState = ({ children }) => {
         showCart: state.showCart,
         cartItems: state.cartItems,
         addToCart,
+        addNewToCart,
         removeFromCart,
         increase,
         decrease,
