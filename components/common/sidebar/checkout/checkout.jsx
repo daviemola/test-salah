@@ -95,7 +95,8 @@ const Checkout = ({
       <div className={styles.w_100}>
         <div className={styles.sidebar_header}>
           <span className={styles.sidebar_header_title}>
-            Shutabug&apos;s store
+            {/* Shutabug&apos;s store */}
+            Shutabug's store
           </span>
           <div className={styles.sidebar_header_breadcrumbs}>
             <div className={styles.sidebar_header_breadcrumb_container}>

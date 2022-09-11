@@ -18,7 +18,7 @@ const PageNotFound = () => {
           href="https://paystack.com/storefront"
           className="error-view__content__link"
         >
-          What's a Paystack Storefront?
+          What&apos;s a Paystack Storefront?
         </a>
       </div>
       <div className="error-view__footer">

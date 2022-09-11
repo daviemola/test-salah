@@ -219,6 +219,7 @@ export default function FirstStep({ objectdetail, detail, toggle }) {
                     {option.values.map((opt, i) => {
                       return (
                         <button
+                          key={i}
                           disabled={
                             index !== 0 && values[index - 1] === undefined
                           }
@@ -332,6 +333,7 @@ export default function FirstStep({ objectdetail, detail, toggle }) {
             value={Number(quantity)}
             onChange={(e) => {
               setQuantity(e.target.value);
+              checkQuantity(objectDetail);
             }}
             min="0"
             max="100"
