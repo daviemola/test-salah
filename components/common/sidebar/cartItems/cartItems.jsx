@@ -88,9 +88,12 @@ const CartItemDisplay = ({ item, index, deleteItem }) => {
           >
             {item?.name}
           </p>
-          <div className="pill-shaped-details">
-            {item.selected_details.map((it) => `${it.value} `)}
-          </div>
+          {item.selected_details.length > 0 && (
+            <div className="pill-shaped-details">
+              {item.selected_details.map((it) => `${it.value} `)}
+            </div>
+          )}
+
           <p className={styles.bagView_product_price_text}>
             <span style={{ color: "#949494" }}>
               {item.currency} {numberWithCommas(item.price / 100)}
