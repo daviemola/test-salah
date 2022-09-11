@@ -9,6 +9,7 @@ const CartItemDisplay = ({ item, index, deleteItem }) => {
     decrease,
     // quantity,
     itemCount,
+    addMoreItemToCart,
     addToCart,
     qtyZeroErrFunc,
     moreQtyErrFunc,
@@ -17,7 +18,7 @@ const CartItemDisplay = ({ item, index, deleteItem }) => {
   const [err, setErr] = useState("");
   const [errQty, setErrQty] = useState("");
 
-  // console.log(item);
+  console.log(item);
 
   React.useEffect(() => {
     setQuantity(itemCount);
@@ -104,14 +105,18 @@ const CartItemDisplay = ({ item, index, deleteItem }) => {
               </button>
             </span>
             <input
-              type="tel"
+              type="number"
               className={styles.quantity_input}
+              min={1}
               value={Number(item?.quantity_cart)}
               onChange={(e) => {
                 setQuantity(Number(e.target.value));
                 let data = item;
+                if (Number(e.target.value) < 0) return;
+                if (Number(e.target.value) > item.quantity) return;
                 data.quantity_cart = Number(e.target.value);
-                addToCart(data);
+                // addToCart(data);
+                addMoreItemToCart(data);
               }}
             />
             <span>

@@ -25,8 +25,13 @@ export default function FirstStep({ objectdetail, detail, toggle }) {
   const [details, setDetails] = React.useState();
   const [toggleContactSeller, setToggleContactSeller] = React.useState(false);
 
-  const { addToCart, toggleSidebar, cartItems, increase, addNewToCart } =
-    useContext(CartContext);
+  const {
+    addToCart,
+    toggleSidebar,
+    cartItems,
+    addMoreItemToCart,
+    addNewToCart,
+  } = useContext(CartContext);
 
   const isInCart = (product) => {
     return !!cartItems.find((item) => item.id === product.id);
@@ -46,10 +51,11 @@ export default function FirstStep({ objectdetail, detail, toggle }) {
         console.log("in cart");
         // data.selected_details = details;
         // console.log(data.quantity_cart);
-        // data.quantity_cart = Number(quantity) + data.quantity_cart;
+        data.quantity_cart = Number(quantity) + data.quantity_cart;
         // console.log(data.quantity_cart);
-        increase(data);
+        // increase(data);
         // addToCart(data);
+        addMoreItemToCart(data);
         // // setButtonShow(false);
         toggle();
         toggleSidebar();
@@ -332,8 +338,17 @@ export default function FirstStep({ objectdetail, detail, toggle }) {
             className={styles.quantity_input}
             value={Number(quantity)}
             onChange={(e) => {
-              setQuantity(e.target.value);
-              checkQuantity(objectDetail);
+              if (Number(e.target.value) > 0) {
+                setQuantity(e.target.value);
+                console.log(Number(e.target.value));
+              }
+              // // e.target.value;
+              // if (Number(e.target.value) === 0) {
+              //   return;
+              //   console.log("err");
+              //   setErr("You cannot order fewer than 1 items at a time");
+              // }
+              // checkQuantity(objectDetail);
             }}
             min="0"
             max="100"

@@ -10,6 +10,7 @@ import {
   MOREQTYERROR,
   ZEROQUANTITYERROR,
   ADD_NEW_ITEM_TO_CART,
+  ADD_MORE_ITEMS,
 } from "./CartTypes.js";
 
 // Export function to calculate the total price of the cart and the total quantity of the cart
@@ -60,15 +61,37 @@ const CartReducer = (state, action) => {
   switch (action.type) {
     case ZEROQUANTITYERROR:
       let cart_Clone = state.cart;
+      let cart_clone_two = state.cartItems;
       let isZeroErr;
-      for (let i = 0; i < cart_Clone?.length; i++) {
-        // console.log("here; " + cart_Clone[i].quantity_cart);
-        if (cart_Clone[i].quantity_cart === 0) {
-          console.log("zero items");
+      let iszeroErrTwo;
+      // for (let i = 0; i < cart_Clone?.length; i++) {
+      //   console.log(cart_Clone);
+      //   if (cart_Clone[i].quantity_cart === 0) {
+      //     console.log("zero items");
+      //     isZeroErr = true;
+      //     break;
+      //   }
+      // }
+
+      for (let i = 0; i < cart_clone_two?.length; i++) {
+        if (
+          cart_clone_two[i]?.quantity_cart < 1 ||
+          cart_clone_two[i]?.quantity_cart === NaN
+        ) {
+          console.log("items in cart");
+          // iszeroErrTwo = true;
           isZeroErr = true;
+
           break;
         }
       }
+
+      // if (isZeroErr == true || iszeroErrTwo == true) isZeroErr = true;
+      console.log("first");
+      console.log(cart_clone_two);
+      console.log(isZeroErr);
+      console.log(iszeroErrTwo);
+      console.log("first");
       return {
         ...state,
         qtyZeroErr: isZeroErr,
@@ -168,6 +191,40 @@ const CartReducer = (state, action) => {
       };
     }
 
+    case ADD_MORE_ITEMS: {
+      let cartClone = state.cartItems;
+      let productItem = action.payload;
+      let set_total_price = 0;
+      let foundInCart = false;
+      let cartIndex;
+      for (let i = 0; i < cartClone.length; i++) {
+        if (cartClone[i].id == productItem.id) {
+          foundInCart = true;
+          cartIndex = i;
+          break;
+        }
+      }
+      if (foundInCart) {
+        console.log(productItem.quantity_cart);
+        productItem = cartClone[cartIndex];
+        productItem.quantity_cart;
+        productItem.totalPrice =
+          productItem.quantity_cart * Number(productItem.price);
+        cartClone.splice(cartIndex, 1, productItem);
+      } else {
+        productItem.totalPrice =
+          productItem.quantity_cart * Number(productItem.price);
+        cartClone.push(productItem);
+      }
+      set_total_price = productItem.totalPrice;
+      return {
+        ...state,
+        cart: cartClone,
+        total: set_total_price,
+        ...sumItems(state.cartItems),
+      };
+    }
+
     // If the action type is INCREASE, we want to increase the quantity of the particular item in the cartItems array
     case INCREASE: {
       let cartClone = state.cartItems;
@@ -254,18 +311,22 @@ const CartReducer = (state, action) => {
       console.log("clear type");
 
       return {
-        // cartItems: [],
-        // ...sumItems([]),
+        cartItems: [],
+        ...sumItems([]),
       };
 
     case DELETE_FROM_CART:
-      const ite = state.cartItems.map((item) => {
+      state.cartItems.map((item) => {
         if (item.id === action?.payload?.id) item.quantity_cart = 0;
         return item;
       });
-      console.log(action);
-      console.log(ite);
-      console.log(state.cartItems);
+      // state.cart.map((item) => {
+      //   if (item.id === action?.payload?.id) item.quantity_cart = 0;
+      //   return item;
+      // });
+      // console.log(action);
+      // console.log(ite);
+      // console.log(state.cartItems);
 
       return {
         ...state,

@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import Select from "react-select";
 import styles from "./checkout.module.css";
+import { adjust, numberWithCommas } from "../../../../utils/coloradjust";
+import { lightOrDark } from "../../../../utils/lightOrDark";
 
 const options = [
   { value: "pakistan", label: "Pakistan" },
@@ -73,31 +75,29 @@ const Checkout = ({
   const [shippingOption, setShippingOption] = useState(null);
 
   const handleChange = (selectedOption) => {
+    console.log("changing");
     setSelectedOption(selectedOption);
     setDeliveryCountry(selectedOption.label);
   };
 
-  function numberWithCommas(x) {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  }
-
   const handleChangeShipment = (selectedOption) => {
+    console.log("selected");
+    console.log(selectedOption);
     setShippingOption(selectedOption);
-    if (selectedOption.label == "Lagos Mainland (NGN 1,500)") {
-      setShippingPrice("NGN 1,500");
-    } else {
-      setShippingPrice("NGN 2,000");
-    }
+    // if (selectedOption.label == "Lagos Mainland (NGN 1,500)") {
+    //   setShippingPrice("NGN 1,500");
+    // } else {
+    //   setShippingPrice("NGN 2,000");
+    // }
     setShippingRegion(selectedOption.label);
+    setShippingPrice(selectedOption.fee);
   };
+
   return (
     <div className={styles.off_canvas}>
       <div className={styles.w_100}>
         <div className={styles.sidebar_header}>
-          <span className={styles.sidebar_header_title}>
-            {/* Shutabug&apos;s store */}
-            Shutabug&apos;s store
-          </span>
+          <span className={styles.sidebar_header_title}>{detail?.name}</span>
           <div className={styles.sidebar_header_breadcrumbs}>
             <div className={styles.sidebar_header_breadcrumb_container}>
               <span
@@ -139,6 +139,7 @@ const Checkout = ({
         {showPaymentSection ? (
           <PaymentSection
             styles={styles}
+            detail={detail}
             setShowPaymentSection={setShowPaymentSection}
             showPaymentSection={showPaymentSection}
             showDetail={show_order_detail}
@@ -215,18 +216,40 @@ const Checkout = ({
                 >
                   <path
                     d="M7.421 6.284h7.904v2.384c0 1.04-.416 2.038-1.157 2.774a3.969 3.969 0 01-5.59 0 3.908 3.908 0 01-1.157-2.774V6.284z"
-                    fill="#03649A"
+                    fill={
+                      lightOrDark(detail?.background_color) === "light"
+                        ? "#3BB75E"
+                        : adjust(detail?.background_color, -30)
+                    }
                   ></path>
                   <path
                     d="M11.373 0A3.969 3.969 0 008.58 1.15 3.908 3.908 0 007.42 3.923v2.53h1.635v-2.53a2.293 2.293 0 01.695-1.599 2.328 2.328 0 013.248 0c.434.423.683.997.695 1.6v2.53h1.635v-2.53a3.901 3.901 0 00-1.159-2.776A3.958 3.958 0 0011.373 0z"
-                    fill="#03649A"
+                    fill={
+                      lightOrDark(detail?.background_color) === "light"
+                        ? "#3BB75E"
+                        : adjust(detail?.background_color, -30)
+                    }
                   ></path>
                   <path
                     d="M21.996 23.67L20.102 7.343a1.19 1.19 0 00-.395-.754 1.208 1.208 0 00-.8-.303H13.71v2.317a2.31 2.31 0 01-.684 1.64 2.346 2.346 0 01-3.306 0 2.31 2.31 0 01-.684-1.64V6.285H3.844c-.296 0-.58.108-.801.303a1.19 1.19 0 00-.394.754L.758 23.671a1.185 1.185 0 00.297.93 1.201 1.201 0 00.898.399h18.844a1.21 1.21 0 00.9-.397 1.19 1.19 0 00.299-.932z"
-                    fill="#03649A"
+                    fill={
+                      lightOrDark(detail?.background_color) === "light"
+                        ? "#3BB75E"
+                        : adjust(detail?.background_color, -30)
+                    }
                   ></path>
                 </svg>
-                <span className={styles.cart_total}>{cartItems.length}</span>
+                <span
+                  className={styles.cart_total}
+                  style={{
+                    color:
+                      lightOrDark(detail?.background_color) === "light"
+                        ? "#3BB75E"
+                        : adjust(detail?.background_color, -30),
+                  }}
+                >
+                  {cartItems.length}
+                </span>
               </div>
             </div>
             <div className={styles.bag_summary_header_right}>
@@ -296,9 +319,11 @@ const CheckOutDetails = ({
 }) => {
   // console.log(detail.shipping_fees);
   const options = detail.shipping_fees.map(function (row) {
-    return { value: row.id, label: row.name };
+    return { value: row.id, label: row.name, fee: row.fee };
   });
+
   // console.log(options);
+  console.log(shippingOptions);
 
   return (
     <div className={styles.sidebar_container_inner}>
@@ -554,7 +579,12 @@ const CheckOutDetails = ({
         >
           <button
             className={`${styles.button} ${styles.btn_cta}`}
-            style={{ background: "#03659B" }}
+            style={{
+              backgroundColor:
+                lightOrDark(detail?.background_color) === "light"
+                  ? "#3BB75E"
+                  : adjust(detail?.background_color, -30),
+            }}
             type={"submit"}
           >
             Continue to pay
@@ -588,7 +618,9 @@ const PaymentSection = ({
   customerLastNameError,
   customerEmailError,
   customerPhoneError,
+  detail,
 }) => {
+  console.log(detail);
   return (
     <>
       <div className={styles.sidebar_container_inner}>
@@ -699,7 +731,12 @@ const PaymentSection = ({
           >
             <button
               className={`${styles.button} ${styles.btn_cta}`}
-              style={{ background: "#" }}
+              style={{
+                backgroundColor:
+                  lightOrDark(detail?.background_color) === "light"
+                    ? "#3BB75E"
+                    : adjust(detail?.background_color, -30),
+              }}
               type={"submit"}
             >
               Review and pay
@@ -725,7 +762,15 @@ const PaymentSection = ({
           <p>or</p>
           <div className={styles.divider_dashed}></div>
         </div>
-        <button className={`${styles.button} ${styles.button_cta}`}>
+        <button
+          className={`${styles.button} ${styles.button_cta}`}
+          style={{
+            color:
+              lightOrDark(detail?.background_color) === "light"
+                ? "#3BB75E"
+                : adjust(detail?.background_color, -30),
+          }}
+        >
           Let someone pay for you
         </button>
       </div>

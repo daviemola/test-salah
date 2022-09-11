@@ -2,9 +2,13 @@ import React from "react";
 import styles from "./socialMediaIcons.module.css";
 import { lightOrDark } from "../../../utils/lightOrDark";
 import { BsTwitter, BsInstagram } from "react-icons/bs";
-import { ImWhatsapp } from "react-icons/im";
+import { ImWhatsapp, ImFacebook } from "react-icons/im";
 
 const SocialMediaIcons = ({ detail }) => {
+  console.log(
+    detail?.social_media?.find((media) => media.type_name === "Twitter")
+  );
+  console.log(detail?.social_media);
   // console.log(
   //   detail?.contacts?.find((media) => media.type_name === "Whatsapp")
   // );
@@ -32,7 +36,51 @@ const SocialMediaIcons = ({ detail }) => {
           />
         </a>
       </div>
+      {detail?.social_media?.find((media) => media.type_name === "Twitter") !==
+        undefined && (
+        <div className={styles.socialMediaIcon}>
+          <a
+            href={`https://twitter.com/${
+              detail?.social_media?.find(
+                (media) => media.type_name === "Twitter"
+              ).handle
+            }`}
+          >
+            <BsTwitter
+              style={{
+                color:
+                  lightOrDark(detail?.background_color) === "light"
+                    ? "#57584E"
+                    : "#ffffff",
+                fontSize: "18px",
+              }}
+            />
+          </a>
+        </div>
+      )}
 
+      {detail?.social_media?.find((media) => media.type_name === "Facebook") !==
+        undefined && (
+        <div className={styles.socialMediaIcon}>
+          <a
+            href={`https://facebook.com/${
+              detail?.social_media?.find(
+                (media) => media.type_name === "Facebook"
+              ).handle
+            }`}
+          >
+            <ImFacebook
+              style={{
+                color:
+                  lightOrDark(detail?.background_color) === "light"
+                    ? "#57584E"
+                    : "#ffffff",
+                fontSize: "18px",
+              }}
+            />
+          </a>
+        </div>
+      )}
       {/* <div className={styles.socialMediaIcon}>
         <a
           href={`https://twitter.com/${

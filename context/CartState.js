@@ -45,16 +45,22 @@ const CartState = ({ children }) => {
 
   //Function to handle when an item is added from the store into the Cart
   const addToCart = (payload) => {
-    console.log(payload);
+    // console.log(payload);
     // console.log(cartItems);
     dispatch({ type: "ADD_TO_CART", payload });
     // dispatch({ type: "CLEAR", payload });
   };
 
   const addNewToCart = (payload) => {
-    console.log(payload);
+    // console.log(payload);
     // console.log(cartItems);
     dispatch({ type: "ADD_NEW_ITEM_TO_CART", payload });
+  };
+
+  const addMoreItemToCart = (payload) => {
+    // console.log(payload);
+    // console.log(cartItems);
+    dispatch({ type: "ADD_MORE_ITEMS", payload });
   };
 
   //Function to handle when an item that is in the cart is added again
@@ -87,9 +93,6 @@ const CartState = ({ children }) => {
     dispatch({ type: "CHECKOUT" });
   };
 
-  //check if user is logged in
-  const checkUserLoggedIn = async () => {};
-
   return (
     //Add the above functions into the Context provider, and pass to the children
     <CartContext.Provider
@@ -105,9 +108,9 @@ const CartState = ({ children }) => {
         qtyZeroErrFunc,
         handleCheckout,
         deleteDataFromCart,
+        addMoreItemToCart,
         clearCart,
         toggleSidebar,
-        // To access the total, we need to pass in the state
         ...state,
       }}
     >

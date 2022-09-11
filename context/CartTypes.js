@@ -1,5 +1,6 @@
 export const ADD_TO_CART = "ADD_TO_CART";
 export const ADD_NEW_ITEM_TO_CART = "ADD_NEW_ITEM_TO_CART";
+export const ADD_MORE_ITEMS = "ADD_MORE_ITEMS";
 export const REMOVE_ITEM = "REMOVE_ITEM";
 export const INCREASE = "INCREASE";
 export const DECREASE = "DECREASE";
