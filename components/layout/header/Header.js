@@ -13,6 +13,9 @@ const Header = ({ detail }) => {
   const [length, setLength] = useState();
   const { toggleSidebar, cartItems, itemCount } = useContext(CartContext);
 
+  console.log(detail.background_color);
+  console.log(lightOrDark(detail?.background_color));
+
   useEffect(() => {
     setLength(cartItems?.length);
   }, [cartItems]);
