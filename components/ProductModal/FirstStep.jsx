@@ -97,9 +97,13 @@ export default function FirstStep({ objectdetail, detail, toggle }) {
     console.log("this runs");
     if (item.unlimited === true) {
       setErr("");
+    } else if (item?.quantity === 0) {
+      setErr(`Sold out`);
     } else if ((item.in_stock === false || item.quantity === 0) && err !== "") {
       setErr("Sold out");
     } else if (Number(quantity) > item?.quantity) {
+      console.log(quantity);
+      console.log(item.quantity);
       setErr(`Only ${item?.quantity} in stock.`);
     } else if (Number(quantity) < 0) {
       setErr("You cannot order fewer than 1 items at a time");
