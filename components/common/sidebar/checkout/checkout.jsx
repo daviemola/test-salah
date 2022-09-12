@@ -324,9 +324,17 @@ const CheckOutDetails = ({
   const [value, setValue] = useState("");
   const options = useMemo(() => countryList().getData(), []);
 
-  // console.log(detail.shipping_fees);
+  console.log();
   const shippingoptions = detail.shipping_fees.map(function (row) {
-    return { value: row.id, label: row.name, fee: row.fee };
+    return {
+      value: row.id,
+      label: `${row.name} (${
+        row?.fee === 0
+          ? "Free"
+          : `${detail?.currency} ${numberWithCommas(row.fee / 100)}`
+      } )`,
+      fee: row.fee,
+    };
   });
 
   // console.log(options);

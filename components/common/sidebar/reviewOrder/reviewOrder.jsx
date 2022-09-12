@@ -176,7 +176,7 @@ const ReviewOrder = ({
                           }
                         >
                           <span className={styles.order_summary_product_name}>
-                            {item.name} x{item.quantity}
+                            {item.name} x {item.quantity_cart}
                           </span>
                         </div>
                         <div
