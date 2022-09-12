@@ -48,11 +48,17 @@ const AboutUs = ({ openModal, toggle, detail }) => {
                     (media) => media.type_name === "Email"
                   ) !== undefined && (
                     <a
+                      rel="noreferrer"
                       href={`mailto:${
                         detail?.contacts?.find(
                           (media) => media.type_name === "Email"
                         ).value
-                      }`}
+                      }?subject=Questions for ${
+                        detail?.name
+                      }&body=I have a question for ${
+                        detail?.name
+                      } https://paystack.shop/${detail?.slug}`}
+                      target="_blank"
                       className="m-b-2"
                     >
                       <img src="/assets/images/mail.svg" alt="Email" />
@@ -69,7 +75,7 @@ const AboutUs = ({ openModal, toggle, detail }) => {
                     (media) => media.type_name === "Whatsapp"
                   ) !== undefined && (
                     <a
-                      href={`https://wa.me/${
+                      href={`tel:${
                         detail?.contacts?.find(
                           (media) => media.type_name === "Whatsapp"
                         ).value
@@ -154,11 +160,14 @@ const AboutUs = ({ openModal, toggle, detail }) => {
                     ) !== undefined && (
                       <div className={styles.socialMediaIcon}>
                         <a
-                          href={`https://wa.me/${
+                          rel="noreferrer"
+                          className={styles.anchor}
+                          href={`https://api.whatsapp.com/send?phone=${
                             detail?.contacts?.find(
                               (media) => media.type_name === "Whatsapp"
                             ).value
-                          }`}
+                          }&text=I have a question for ${detail?.name}`}
+                          target="_blank"
                         >
                           <ImWhatsapp
                             style={{

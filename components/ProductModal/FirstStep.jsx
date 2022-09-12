@@ -24,6 +24,7 @@ export default function FirstStep({ objectdetail, detail, toggle }) {
   const [active, setActive] = React.useState(false);
   const [details, setDetails] = React.useState();
   const [toggleContactSeller, setToggleContactSeller] = React.useState(false);
+  let msg = `Hello, I have a question about Nike Tiempo Legend VIII Elite FG https://paystack.shop/fitsbettersports?product=nike-tempo-legend-viii-elite-fg-hedlkm`;
 
   const {
     addToCart,
@@ -209,7 +210,7 @@ export default function FirstStep({ objectdetail, detail, toggle }) {
       setErr(`${message.name} ${message.info} is not available`);
   }, [message]);
 
-  // console.log(values);
+  console.log(detail);
 
   return (
     <>
@@ -460,68 +461,99 @@ export default function FirstStep({ objectdetail, detail, toggle }) {
               <ul
                 className={`${styles.menu} ${styles.dropdown_container_menu}`}
               >
-                <a
-                  rel="noreferrer"
-                  className={styles.anchor}
-                  href="https://api.whatsapp.com/send?phone=112456789"
-                  target="_blank"
-                >
-                  <li>
-                    <div className={`${styles.tag} ${styles.tag_contact}`}>
-                      <span className={styles.w_100}>
-                        <div
-                          className={`${styles.flex} ${styles.flex_align_center}`}
-                        >
-                          <img
-                            src="/assets/images/social/whatsapp.svg"
-                            alt="click"
-                            className={styles.tag_img_custom}
-                          />
-                          <span className={styles.tag_options}>Whatsapp</span>
-                        </div>
-                      </span>
-                    </div>
-                  </li>
-                </a>
-                <a className={styles.anchor} href="tel:112456789">
-                  <li>
-                    <div className={`${styles.tag} ${styles.tag_contact}`}>
-                      <span className={styles.w_100}>
-                        <div
-                          className={`${styles.flex} ${styles.flex_align_center}`}
-                        >
-                          <img
-                            src="/assets/images/phone.svg"
-                            alt="click"
-                            className={styles.tag_img_custom}
-                          />
-                          <span className={styles.tag_options}>Phone</span>
-                        </div>
-                      </span>
-                    </div>
-                  </li>
-                </a>
-                <a
-                  className={styles.anchor}
-                  href="mailto:alamayowa@gmail.com?subject=Question about New style Durag&body=Hello, I have a question about New style Durag https://paystack.shop/test-salah?product=new-style-durag"
-                >
-                  <li>
-                    <div className={`${styles.tag} ${styles.tag_contact}`}>
-                      <span className={styles.w_100}>
-                        <div
-                          className={`${styles.flex} ${styles.flex_align_center}`}
-                        >
-                          <img
-                            src="https://paystack.shop/assets/images/mail-sm-gray.svg"
-                            alt="click"
-                            className={styles.tag_img}
-                          />
-                          <span className={styles.tag_options}>Email</span>
-                        </div>
-                      </span>
-                    </div>
-                  </li>
-                </a>
+                {detail?.contacts?.find(
+                  (media) => media.type_name === "Whatsapp"
+                ) !== undefined && (
+                  <a
+                    rel="noreferrer"
+                    className={styles.anchor}
+                    href={`https://api.whatsapp.com/send?phone=${
+                      detail?.contacts?.find(
+                        (media) => media.type_name === "Whatsapp"
+                      ).value
+                    }&text=${msg}`}
+                    target="_blank"
+                  >
+                    <li>
+                      <div className={`${styles.tag} ${styles.tag_contact}`}>
+                        <span className={styles.w_100}>
+                          <div
+                            className={`${styles.flex} ${styles.flex_align_center}`}
+                          >
+                            <img
+                              src="/assets/images/social/whatsapp.svg"
+                              alt="click"
+                              className={styles.tag_img_custom}
+                            />
+                            <span className={styles.tag_options}>Whatsapp</span>
+                          </div>
+                        </span>
+                      </div>
+                    </li>
+                  </a>
+                )}
+                {detail?.contacts?.find(
+                  (media) => media.type_name === "Phone"
+                ) !== undefined && (
+                  <a
+                    rel="noreferrer"
+                    className={styles.anchor}
+                    href={`tel:${
+                      detail?.contacts?.find(
+                        (media) => media.type_name === "Phone"
+                      ).value
+                    }`}
+                    target="_blank"
+                  >
+                    <li>
+                      <div className={`${styles.tag} ${styles.tag_contact}`}>
+                        <span className={styles.w_100}>
+                          <div
+                            className={`${styles.flex} ${styles.flex_align_center}`}
+                          >
+                            <img
+                              src="/assets/images/phone.svg"
+                              alt="click"
+                              className={styles.tag_img_custom}
+                            />
+                            <span className={styles.tag_options}>Phone</span>
+                          </div>
+                        </span>
+                      </div>
+                    </li>
+                  </a>
+                )}
+                {detail?.contacts?.find(
+                  (media) => media.type_name === "Email"
+                ) !== undefined && (
+                  <a
+                    rel="noreferrer"
+                    className={styles.anchor}
+                    href={`mailto:${
+                      detail?.contacts?.find(
+                        (media) => media.type_name === "Email"
+                      ).value
+                    }?subject=Question about ${objectDetail.name}&body=${msg}`}
+                    target="_blank"
+                  >
+                    <li>
+                      <div className={`${styles.tag} ${styles.tag_contact}`}>
+                        <span className={styles.w_100}>
+                          <div
+                            className={`${styles.flex} ${styles.flex_align_center}`}
+                          >
+                            <img
+                              src="https://paystack.shop/assets/images/mail-sm-gray.svg"
+                              alt="click"
+                              className={styles.tag_img}
+                            />
+                            <span className={styles.tag_options}>Email</span>
+                          </div>
+                        </span>
+                      </div>
+                    </li>
+                  </a>
+                )}
               </ul>
             )}
           </div>
