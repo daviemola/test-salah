@@ -231,16 +231,21 @@ const ReviewOrder = ({
         </div>
         <div className={styles.sidebar_footer}>
           <div className={styles.sidebar_actions}>
-            <PaystackButton
-              className={`${styles.button} ${styles.btn_cta}`}
-              // style={{
-              //   backgroundColor:
-              //     lightOrDark(detail?.background_color) === "light"
-              //       ? "#3BB75E"
-              //       : adjust(detail?.background_color, -30),
-              // }}
-              {...componentProps}
-            />
+            <div
+              style={{
+                backgroundColor:
+                  lightOrDark(detail?.background_color) === "light"
+                    ? "#3BB75E"
+                    : adjust(detail?.background_color, -30),
+                borderRadius: "5px",
+              }}
+            >
+              <PaystackButton
+                className={`${styles.button} ${styles.btn_cta}`}
+                {...componentProps}
+              />
+            </div>
+
             <button
               className={`${styles.button} ${styles.m_t_10}`}
               onClick={checkout}

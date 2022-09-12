@@ -23,15 +23,23 @@ const AboutUs = ({ openModal, toggle, detail }) => {
     >
       <>
         <div className="modal modal--slide-up-mobile modal--fade-in-bg-mobile flex-direction--column active">
+          {/* <button onClick={() => alert("clicked")}> */}
           <a
             onClick={toggle}
-            href="#close"
+            // onClick={() => alert("clicked")}
+            // href="#close"
             className="modal-overlay"
             aria-label="Close"
           ></a>
+          {/* </button> */}
+
           <div className="modal-container">
             <div className="modal-header about-view">
-              <a className="btn btn-clear float-right" aria-label="Close"></a>
+              <a
+                className="btn btn-clear float-right"
+                aria-label="Close"
+                onClick={toggle}
+              ></a>
               <div className="about-view__title">About Us</div>
             </div>
             <div className="modal-body">
@@ -180,52 +188,6 @@ const AboutUs = ({ openModal, toggle, detail }) => {
                         </a>
                       </div>
                     )}
-                    {/* <div className="about-view__icon">
-                      <a
-                        target="_blank"
-                        rel="noreferrer noopener"
-                        href="https://instagram.com/sad"
-                      >
-                        <img
-                          src="/assets/images/social/instagram-gray.svg"
-                          alt="Instagram"
-                        />
-                      </a>
-                    </div> */}
-                    {/* <div className="about-view__icon">
-                      <a
-                        target="_blank"
-                        rel="noreferrer noopener"
-                        href="https://twitter.com/asd"
-                      >
-                        <img
-                          src="/assets/images/social/twitter-gray.svg"
-                          alt="Twitter"
-                        />
-                      </a>
-                    </div> */}
-                    {/* <div className="about-view__icon">
-                      <a
-                        target="_blank"
-                        rel="noreferrer noopener"
-                        href="https://facebook.com/asd"
-                      >
-                        <img
-                          src="/assets/images/social/facebook-gray.svg"
-                          alt="Facebook"
-                        />
-                      </a>
-                    </div> */}
-                    {/* <a
-                      target="_blank"
-                      rel="noreferrer noopener"
-                      href="https://api.whatsapp.com/send?phone=+970599825671&amp;text=Hello, I have a question for Test Store https://paystack.shop/test-salah"
-                    >
-                      <img
-                        src="/assets/images/social/whatsapp-gray.svg"
-                        alt="Whatsapp"
-                      />
-                    </a> */}
                   </div>
                 </div>
               </div>
