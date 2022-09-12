@@ -241,26 +241,6 @@ const ReviewOrder = ({
               // }}
               {...componentProps}
             />
-            {/* <button
-              className={`${styles.button} ${styles.btn_cta}`}
-              style={{
-                backgroundColor:
-                  lightOrDark(detail?.background_color) === "light"
-                    ? "#3BB75E"
-                    : adjust(detail?.background_color, -30),
-              }}
-              // style={{ background: "rgb(59, 183, 94)" }}
-              onClick={(e) => {
-                orderPlace(e);
-              }}
-            >
-              Pay {detail?.shipping_fees[0].currency}{" "}
-              {allTotal
-                ? numberWithCommas(
-                    (Number(allTotal) + Number(shippingPrice)) / 100
-                  )
-                : 0}
-            </button> */}
             <button
               className={`${styles.button} ${styles.m_t_10}`}
               onClick={checkout}
