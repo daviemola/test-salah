@@ -4,6 +4,7 @@ import CartContext from "@/context/CartContext";
 import { useContext } from "react";
 import { adjust, numberWithCommas } from "../../../../utils/coloradjust";
 import { lightOrDark } from "../../../../utils/lightOrDark";
+import { PaystackButton } from "react-paystack";
 
 const ReviewOrder = ({
   checkout,
@@ -21,11 +22,36 @@ const ReviewOrder = ({
   detail,
 }) => {
   console.log(shippingPrice);
-  console.log(shippingPrice);
   const { itemCount } = useContext(CartContext);
-  function numberWithCommas(x) {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  }
+  let totalAmount = allTotal
+    ? numberWithCommas((Number(allTotal) + Number(shippingPrice)) / 100)
+    : 0;
+
+  const auth = {
+    email: customerEmail,
+    username: `${customerFirstName} ${customerLastName}`,
+    contact: customerEmail,
+  };
+  const amount = totalAmount * 100;
+  const publicKey = "pk_test_be8d8807ef6ad0749c7e5c9b6f03478b3dc76dc3";
+
+  const componentProps = {
+    email: auth.email,
+    amount,
+    metadata: {
+      userName: auth.username,
+      phone: auth.contact,
+      custom_field: [{ name: auth.username }],
+    },
+    publicKey,
+    text: `Pay ${detail?.shipping_fees[0].currency} ${totalAmount}`,
+    onSuccess: (e) => {
+      console.log(e);
+    },
+    onClose: () => {
+      alert("Wait! You need this product, don't go!!!!");
+    },
+  };
   return (
     <div className={styles.off_canvas}>
       <div className={styles.sidebar_container}>
@@ -205,7 +231,17 @@ const ReviewOrder = ({
         </div>
         <div className={styles.sidebar_footer}>
           <div className={styles.sidebar_actions}>
-            <button
+            <PaystackButton
+              className={`${styles.button} ${styles.btn_cta}`}
+              // style={{
+              //   backgroundColor:
+              //     lightOrDark(detail?.background_color) === "light"
+              //       ? "#3BB75E"
+              //       : adjust(detail?.background_color, -30),
+              // }}
+              {...componentProps}
+            />
+            {/* <button
               className={`${styles.button} ${styles.btn_cta}`}
               style={{
                 backgroundColor:
@@ -224,7 +260,7 @@ const ReviewOrder = ({
                     (Number(allTotal) + Number(shippingPrice)) / 100
                   )
                 : 0}
-            </button>
+            </button> */}
             <button
               className={`${styles.button} ${styles.m_t_10}`}
               onClick={checkout}

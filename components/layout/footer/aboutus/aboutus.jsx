@@ -2,8 +2,13 @@ import React from "react";
 import Modal from "@mui/material/Modal";
 import styles from "./aboutus.module.css";
 import ReactHtmlParser from "react-html-parser";
+import { BsTwitter, BsInstagram } from "react-icons/bs";
+import { ImWhatsapp, ImFacebook } from "react-icons/im";
+import { lightOrDark } from "../../../../utils/lightOrDark";
 
 const AboutUs = ({ openModal, toggle, detail }) => {
+  console.log(detail);
+
   return (
     <Modal
       open={openModal}
@@ -37,21 +42,145 @@ const AboutUs = ({ openModal, toggle, detail }) => {
               </div>
               <div className="about-view__footer">
                 <div className="flex flex-align--start flex-direction--column">
-                  <a
-                    href="mailto:asdasd@ad.com?subject=Question for Test Store&amp;body=Hello, I have a question for Test Store https://paystack.shop/test-salah"
-                    className="m-b-2"
-                  >
-                    <img src="/assets/images/mail.svg" alt="Email" />
-                    <span className="about-view__email">asdasd@ad.com</span>
-                  </a>
-                  <a href="tel:+970599825671" className="m-t-5">
+                  {detail?.contacts?.find(
+                    (media) => media.type_name === "Email"
+                  ) !== undefined && (
+                    <a
+                      href="mailto:asdasd@ad.com?subject=Question for Test Store&amp;body=Hello, I have a question for Test Store https://paystack.shop/test-salah"
+                      className="m-b-2"
+                    >
+                      <img src="/assets/images/mail.svg" alt="Email" />
+                      <span className="about-view__email">
+                        {
+                          detail?.contacts?.find(
+                            (media) => media.type_name === "Email"
+                          ).value
+                        }
+                      </span>
+                    </a>
+                  )}
+                  {detail?.contacts?.find(
+                    (media) => media.type_name === "Whatsapp"
+                  ) !== undefined && (
+                    <a
+                      href="mailto:asdasd@ad.com?subject=Question for Test Store&amp;body=Hello, I have a question for Test Store https://paystack.shop/test-salah"
+                      className="m-b-2"
+                    >
+                      <img src="/assets/images/phone.svg" alt="Email" />
+                      <span className="about-view__email">
+                        {
+                          detail?.contacts?.find(
+                            (media) => media.type_name === "Whatsapp"
+                          ).value
+                        }
+                      </span>
+                    </a>
+                  )}
+                  {/* <a href="tel:+970599825671" className="m-t-5">
                     <img src="/assets/images/phone.svg" alt="Email" />
                     <span className="about-view__email">+970599825671</span>
-                  </a>
+                  </a> */}
                 </div>
                 <div className="flex-align-self--end">
                   <div className="flex">
-                    <div className="about-view__icon">
+                    {detail?.social_media?.find(
+                      (media) => media.type_name === "Instagram"
+                    ) !== undefined && (
+                      <div className="social-media__icon-section">
+                        <a
+                          href={`https://instagram.com/${
+                            detail?.social_media?.find(
+                              (media) => media.type_name === "Instagram"
+                            ).handle
+                          }`}
+                        >
+                          <BsInstagram
+                            style={{
+                              color:
+                                lightOrDark(detail?.background_color) ===
+                                "light"
+                                  ? "#57584E"
+                                  : "#ffffff",
+                              fontSize: "18px",
+                            }}
+                          />
+                        </a>
+                      </div>
+                    )}
+                    {detail?.social_media?.find(
+                      (media) => media.type_name === "Twitter"
+                    ) !== undefined && (
+                      <div className={styles.socialMediaIcon}>
+                        <a
+                          href={`https://twitter.com/${
+                            detail?.social_media?.find(
+                              (media) => media.type_name === "Twitter"
+                            ).handle
+                          }`}
+                        >
+                          <BsTwitter
+                            style={{
+                              color:
+                                lightOrDark(detail?.background_color) ===
+                                "light"
+                                  ? "#57584E"
+                                  : "#ffffff",
+                              fontSize: "18px",
+                            }}
+                          />
+                        </a>
+                      </div>
+                    )}
+
+                    {detail?.social_media?.find(
+                      (media) => media.type_name === "Facebook"
+                    ) !== undefined && (
+                      <div className={styles.socialMediaIcon}>
+                        <a
+                          href={`https://facebook.com/${
+                            detail?.social_media?.find(
+                              (media) => media.type_name === "Facebook"
+                            ).handle
+                          }`}
+                        >
+                          <ImFacebook
+                            style={{
+                              color:
+                                lightOrDark(detail?.background_color) ===
+                                "light"
+                                  ? "#57584E"
+                                  : "#ffffff",
+                              fontSize: "18px",
+                            }}
+                          />
+                        </a>
+                      </div>
+                    )}
+                    {detail?.contacts?.find(
+                      (media) => media.type_name === "Whatsapp"
+                    ) !== undefined && (
+                      <div className={styles.socialMediaIcon}>
+                        <a
+                          href={`https://wa.me/${
+                            detail?.contacts?.find(
+                              (media) => media.type_name === "Whatsapp"
+                            ).value
+                          }`}
+                        >
+                          <ImWhatsapp
+                            style={{
+                              color:
+                                lightOrDark(detail?.background_color) ===
+                                "light"
+                                  ? "#57584E"
+                                  : "#ffffff",
+                              fontSize: "18px",
+                            }}
+                          />
+                        </a>
+                      </div>
+                    )}
+                    {/* <div className="about-view__icon">
                       <a
                         target="_blank"
                         rel="noreferrer noopener"
@@ -62,8 +191,8 @@ const AboutUs = ({ openModal, toggle, detail }) => {
                           alt="Instagram"
                         />
                       </a>
-                    </div>
-                    <div className="about-view__icon">
+                    </div> */}
+                    {/* <div className="about-view__icon">
                       <a
                         target="_blank"
                         rel="noreferrer noopener"
@@ -74,8 +203,8 @@ const AboutUs = ({ openModal, toggle, detail }) => {
                           alt="Twitter"
                         />
                       </a>
-                    </div>
-                    <div className="about-view__icon">
+                    </div> */}
+                    {/* <div className="about-view__icon">
                       <a
                         target="_blank"
                         rel="noreferrer noopener"
@@ -86,8 +215,8 @@ const AboutUs = ({ openModal, toggle, detail }) => {
                           alt="Facebook"
                         />
                       </a>
-                    </div>
-                    <a
+                    </div> */}
+                    {/* <a
                       target="_blank"
                       rel="noreferrer noopener"
                       href="https://api.whatsapp.com/send?phone=+970599825671&amp;text=Hello, I have a question for Test Store https://paystack.shop/test-salah"
@@ -96,7 +225,7 @@ const AboutUs = ({ openModal, toggle, detail }) => {
                         src="/assets/images/social/whatsapp-gray.svg"
                         alt="Whatsapp"
                       />
-                    </a>
+                    </a> */}
                   </div>
                 </div>
               </div>
