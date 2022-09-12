@@ -8,6 +8,9 @@ import { lightOrDark } from "../../../../utils/lightOrDark";
 
 const AboutUs = ({ openModal, toggle, detail }) => {
   console.log(detail);
+  console.log(
+    detail?.social_media?.find((media) => media.type_name === "Instagram")
+  );
 
   return (
     <Modal
@@ -23,16 +26,7 @@ const AboutUs = ({ openModal, toggle, detail }) => {
     >
       <>
         <div className="modal modal--slide-up-mobile modal--fade-in-bg-mobile flex-direction--column active">
-          {/* <button onClick={() => alert("clicked")}> */}
-          <a
-            onClick={toggle}
-            // onClick={() => alert("clicked")}
-            // href="#close"
-            className="modal-overlay"
-            aria-label="Close"
-          ></a>
-          {/* </button> */}
-
+          <a onClick={toggle} className="modal-overlay" aria-label="Close"></a>
           <div className="modal-container">
             <div className="modal-header about-view">
               <a
@@ -104,11 +98,7 @@ const AboutUs = ({ openModal, toggle, detail }) => {
                         >
                           <BsInstagram
                             style={{
-                              color:
-                                lightOrDark(detail?.background_color) ===
-                                "light"
-                                  ? "#57584E"
-                                  : "#ffffff",
+                              color: "#57584E",
                               fontSize: "18px",
                             }}
                           />
@@ -128,11 +118,7 @@ const AboutUs = ({ openModal, toggle, detail }) => {
                         >
                           <BsTwitter
                             style={{
-                              color:
-                                lightOrDark(detail?.background_color) ===
-                                "light"
-                                  ? "#57584E"
-                                  : "#ffffff",
+                              color: "#57584E",
                               fontSize: "18px",
                             }}
                           />
@@ -153,11 +139,7 @@ const AboutUs = ({ openModal, toggle, detail }) => {
                         >
                           <ImFacebook
                             style={{
-                              color:
-                                lightOrDark(detail?.background_color) ===
-                                "light"
-                                  ? "#57584E"
-                                  : "#ffffff",
+                              color: "#57584E",
                               fontSize: "18px",
                             }}
                           />
@@ -177,11 +159,7 @@ const AboutUs = ({ openModal, toggle, detail }) => {
                         >
                           <ImWhatsapp
                             style={{
-                              color:
-                                lightOrDark(detail?.background_color) ===
-                                "light"
-                                  ? "#57584E"
-                                  : "#ffffff",
+                              color: "#57584E",
                               fontSize: "18px",
                             }}
                           />
