@@ -5,6 +5,7 @@ import { useContext } from "react";
 import { adjust, numberWithCommas } from "../../../../utils/coloradjust";
 import { lightOrDark } from "../../../../utils/lightOrDark";
 import { PaystackButton } from "react-paystack";
+import axios from "axios";
 
 const ReviewOrder = ({
   checkout,
@@ -20,9 +21,83 @@ const ReviewOrder = ({
   allTotal,
   orderPlace,
   detail,
+  isThisIsGift,
+  deliveryCity,
+  deliveryCountry,
+  recipientFirstName,
+  recipientLastName,
+  recipientPhone,
+  recipientEmailAddress,
 }) => {
-  console.log(shippingPrice);
   const { itemCount } = useContext(CartContext);
+  const [loading, setLoading] = React.useState(true);
+  const [data, setData] = React.useState();
+  const [error, setError] = React.useState();
+
+  const array = cart.map((o) => {
+    return {
+      type: o.variant_options.length === 0 ? "product" : "variant",
+      item: o.id,
+      quantity: o.quantity_cart,
+    };
+  });
+  // console.log(array);
+  // console.log(detail);
+  const token = "pk_test_7f8acf3182b1c5c333c70f4f4d97537525637c79";
+  const config = {
+    headers: { Authorization: `Bearer ${token}` },
+  };
+  // console.log(detail);
+  const reqdata = {
+    storefront: detail.id,
+    currency: detail.currency,
+    email: customerEmail,
+    phone: customerPhone,
+    first_name: customerFirstName,
+    last_name: customerLastName,
+    items: array,
+    is_gift: isThisIsGift,
+    pay_for_me: false,
+    receiver: isThisIsGift
+      ? {
+          first_name: recipientFirstName,
+          last_name: recipientLastName,
+          phone: recipientPhone,
+        }
+      : null,
+    shipping: {
+      street_line: deliveryAddress,
+      city: deliveryCity,
+      country: deliveryCountry,
+      shipping_fee: shippingPrice,
+      delivery_note: deliveryNote,
+    },
+  };
+
+  React.useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const { data: response } = await axios.post(
+          "https://api.paystack.co/order",
+          reqdata,
+          config
+        );
+        setData(response);
+        console.log(response);
+      } catch (error) {
+        setError(error.response.data.message);
+        console.log(error.response.data.message);
+        console.error(error.response);
+      }
+      setLoading(false);
+    };
+
+    fetchData();
+  }, []);
+
+  console.log(data);
+
   let totalAmount = allTotal
     ? numberWithCommas((Number(allTotal) + Number(shippingPrice)) / 100)
     : 0;
@@ -44,7 +119,9 @@ const ReviewOrder = ({
       custom_field: [{ name: auth.username }],
     },
     publicKey,
-    text: `Pay ${detail?.shipping_fees[0].currency} ${totalAmount}`,
+    text: loading
+      ? `Please wait...`
+      : `Pay ${detail?.shipping_fees[0].currency} ${totalAmount}`,
     onSuccess: (e) => {
       console.log(e);
     },
@@ -146,6 +223,26 @@ const ReviewOrder = ({
                   </span>
                 </div>
               </div>
+              {isThisIsGift && (
+                <div className={styles.reciepient_details}>
+                  <div>
+                    <span className={styles.order_view_address_text_title}>
+                      Gifting to
+                    </span>
+                  </div>
+                  <div>
+                    <span className={styles.order_view_address_text}>
+                      {`${recipientFirstName} ${recipientLastName}`}
+                    </span>
+                  </div>
+                  <div>
+                    <span className={styles.order_view_address_text}>
+                      {`${recipientPhone}`}
+                    </span>
+                  </div>
+                </div>
+              )}
+
               <div className={styles.order_view_address}>
                 <span className={styles.order_view_address_text_title}>
                   Delivery Address
@@ -230,6 +327,9 @@ const ReviewOrder = ({
           </div>
         </div>
         <div className={styles.sidebar_footer}>
+          <div style={{ color: "darkred", textAlign: "center" }}>
+            {error ? error : null}
+          </div>
           <div className={styles.sidebar_actions}>
             <div
               style={{
@@ -238,6 +338,8 @@ const ReviewOrder = ({
                     ? "#3BB75E"
                     : adjust(detail?.background_color, -30),
                 borderRadius: "5px",
+                opacity: loading || error ? 0.5 : 1,
+                pointerEvents: loading || error ? "none" : "auto",
               }}
             >
               <PaystackButton

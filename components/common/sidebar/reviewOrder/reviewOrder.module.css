@@ -132,6 +132,11 @@
   -moz-box-direction: normal;
   flex-direction: column;
 }
+.reciepient_details {
+  background-color: #e8f6ff;
+  border-radius: 5px;
+  padding: 16px 12px;
+}
 .order_view_address_text_title {
   font-weight: 600;
   margin-bottom: 10px;

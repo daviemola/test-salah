@@ -160,6 +160,10 @@ const Checkout = ({
             customerLastNameError={customerLastNameError}
             customerEmailError={customerEmailError}
             customerPhoneError={customerPhoneError}
+            recipientFirstName={recipientFirstName}
+            recipientLastName={recipientLastName}
+            recipientPhone={recipientPhone}
+            recipientEmailAddress={recipientEmailAddress}
           />
         ) : (
           <CheckOutDetails

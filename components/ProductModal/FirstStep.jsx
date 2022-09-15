@@ -11,7 +11,8 @@ import { Listbox } from "@headlessui/react";
 
 export default function FirstStep({ objectdetail, detail, toggle }) {
   const [objectDetail, setObjectDetail] = React.useState(objectdetail);
-  // console.log(objectdetail);
+  console.log(objectdetail);
+  console.log(detail);
   // let objectDetail = objectdetail;
   const [values, setValues] = React.useState([]);
   const router = useRouter();
@@ -24,7 +25,7 @@ export default function FirstStep({ objectdetail, detail, toggle }) {
   const [active, setActive] = React.useState(false);
   const [details, setDetails] = React.useState();
   const [toggleContactSeller, setToggleContactSeller] = React.useState(false);
-  let msg = `Hello, I have a question about Nike Tiempo Legend VIII Elite FG https://paystack.shop/fitsbettersports?product=nike-tempo-legend-viii-elite-fg-hedlkm`;
+  let msg = `Hello, I have a question about ${objectDetail.name} https://paystack.shop/${detail?.slug}?product=${objectDetail?.slug}`;
 
   const {
     addToCart,
@@ -88,14 +89,13 @@ export default function FirstStep({ objectdetail, detail, toggle }) {
       }
     }
   };
-  console.log(cartItems);
 
   const toggleClick = () => {
     setToggleContactSeller(!toggleContactSeller);
   };
 
   const checkQuantity = (item) => {
-    console.log("this runs");
+    // console.log("this runs");
     if (item.unlimited === true) {
       setErr("");
     } else if (item?.quantity === 0) {
@@ -103,7 +103,7 @@ export default function FirstStep({ objectdetail, detail, toggle }) {
     } else if ((item.in_stock === false || item.quantity === 0) && err !== "") {
       setErr("Sold out");
     } else if (Number(quantity) > item?.quantity) {
-      console.log(quantity);
+      // console.log(quantity);
       console.log(item.quantity);
       setErr(`Only ${item?.quantity} in stock.`);
     } else if (Number(quantity) < 0) {
@@ -111,7 +111,7 @@ export default function FirstStep({ objectdetail, detail, toggle }) {
     } else {
       setErr("");
     }
-    console.log(err);
+    // console.log(err);
   };
 
   const validateItems = async () => {
@@ -168,19 +168,17 @@ export default function FirstStep({ objectdetail, detail, toggle }) {
       objectDetail.quantity > 0 &&
       objectDetail.unlimited === true
     ) {
-      console.log("set to active");
+      // console.log("set to active");
       console.log(objectDetail?.variant_options.length);
       setActive(true);
     } else {
-      console.log("not active");
+      // console.log("not active");
     }
-    console.log(values);
-    console.log(err);
+    // console.log(values);
+    // console.log(err);
     // validateItems();
     checkQuantity(objectDetail);
   }, [quantity, values]);
-
-  console.log(err);
 
   const handleChange = (event, index, i, name, val) => {
     let obj = {};
@@ -199,18 +197,18 @@ export default function FirstStep({ objectdetail, detail, toggle }) {
       {}
     );
     setDetails(valz);
-    console.log(valz);
-    console.log(values);
+    // console.log(valz);
+    // console.log(values);
     if (values.length === objectDetail?.variant_options.length) validateItems();
   };
 
   React.useEffect(() => {
-    console.log("runs");
+    // console.log("runs");
     if (message.msg === "This product is not available")
       setErr(`${message.name} ${message.info} is not available`);
   }, [message]);
 
-  console.log(detail);
+  // console.log(detail);
 
   return (
     <>

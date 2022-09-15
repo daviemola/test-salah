@@ -313,6 +313,13 @@ const SideBar = ({ cartItems, total, detail, item }) => {
             allTotal={total}
             detail={detail}
             orderPlace={orderPlace}
+            isThisIsGift={isThisIsGift}
+            deliveryCity={deliveryCity}
+            deliveryCountry={deliveryCountry}
+            recipientFirstName={recipientFirstName}
+            recipientLastName={recipientLastName}
+            recipientPhone={recipientPhone}
+            recipientEmailAddress={recipientEmailAddress}
           />
         ) : (
           <div className={styles.bagView}>
