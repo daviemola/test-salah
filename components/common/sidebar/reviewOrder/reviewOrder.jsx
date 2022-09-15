@@ -45,7 +45,7 @@ const ReviewOrder = ({
   // console.log(detail);
   const token = "pk_test_7f8acf3182b1c5c333c70f4f4d97537525637c79";
   const config = {
-    headers: { Authorization: `Bearer ${token}` },
+    headers: { Authorization: `Bearer ${detail.integration.key}` },
   };
   // console.log(detail);
   const reqdata = {
@@ -96,7 +96,7 @@ const ReviewOrder = ({
     fetchData();
   }, []);
 
-  console.log(data);
+  // console.log(data);
 
   let totalAmount = allTotal
     ? numberWithCommas((Number(allTotal) + Number(shippingPrice)) / 100)
