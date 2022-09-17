@@ -307,7 +307,8 @@ export default function FirstStep({ objectdetail, detail, toggle }) {
                       <Listbox.Options className={styles.listoptions}>
                         <Listbox.Option
                           className={styles.listitemone}
-                          disabled={values[index - 1]?.value === undefined}
+                          // disabled={values[index - 1]?.value === undefined}
+                          disabled
                         >
                           Choose
                         </Listbox.Option>

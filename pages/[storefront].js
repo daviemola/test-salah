@@ -20,7 +20,7 @@ const StoreFront = ({ products, detail }) => {
   const [checkItem, setcheckItem] = useState(true);
   const [showing, setshowing] = useState(false);
   const [showProducts, setShowProducts] = useState(products);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const { toggleSidebar, sidetoggle, cartItems, total } =
     useContext(CartContext);
 
@@ -29,8 +29,9 @@ const StoreFront = ({ products, detail }) => {
   };
 
   const findKeywordData = async (e) => {
+    console.log("first");
+
     if (e.key === "Enter") {
-      console.log("first");
       setLoading(true);
       const apiServices = new ApiServices();
       const data = await apiServices.searchProducts(searchKeyword, storefront);
@@ -53,19 +54,15 @@ const StoreFront = ({ products, detail }) => {
   };
 
   useEffect(() => {
-    setshowing(true);
     const callSearchApi = setTimeout(async () => {
-      // setTimeout(() => {
-      //   console.log("showing false");
-      //   setshowing(false);
-      // }, 2000);
-      console.log("here");
-      setLoading(true);
-      setshowing(true);
-
-      if (searchKeyword !== "") {
+      if (searchKeyword === "") {
+        setLoading(false);
+        console.log("here.....");
+        console.log("loading " + loading);
+        setShowProducts(products);
         setshowing(false);
-        // console.log("not search keyword");
+      } else {
+        setLoading(true);
         const apiServices = new ApiServices();
         const data = await apiServices.searchProducts(
           searchKeyword,
@@ -87,11 +84,8 @@ const StoreFront = ({ products, detail }) => {
             console.log("second failure");
           }, 500);
         }
-      } else {
-        setShowProducts(products);
-        setLoading(false);
-        setshowing(false);
       }
+      console.log("here...");
     }, 1200);
 
     return () => clearTimeout(callSearchApi);
